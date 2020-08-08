@@ -18,7 +18,7 @@ public class Patron {
     /**
      * a minimal score a book must be assigned by the patron in order for he to enjoy that book
      */
-    int patronEnjoymentThreshold;
+    final int patronEnjoymentThreshold;
 
     /**
      * @param patronFirstName          - first name as string
