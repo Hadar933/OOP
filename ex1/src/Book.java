@@ -88,11 +88,10 @@ class Book {
      * Sets the given id as the id of the current borrower of this book, -1 if no patron is currently
      * borrowing it.
      *
-     * @param borrowerId-
+     * @param borrowerId - id of some patron borrowing this book
      */
     void setBorrowerId(int borrowerId) {
-        if(currentBorrowerId==-1)
-        {
+        if (currentBorrowerId == -1) {
             currentBorrowerId = borrowerId;
         }
     }
