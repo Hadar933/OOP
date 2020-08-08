@@ -76,7 +76,7 @@ class Book {
     void setBorrowerId(int borrowerId){
         //your code goes here
     }
-
+    
     /**
      * @return the id of the current borrower of this book.
      */
