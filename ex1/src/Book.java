@@ -4,7 +4,7 @@
 
 public class Book {
 
-    int NEGATIVE_VALUE = -1;
+    int EMPTY = -1;
     /**
      * The title of this book.
      */
@@ -94,7 +94,7 @@ public class Book {
      * @param borrowerId - id of some patron borrowing this book
      */
     void setBorrowerId(int borrowerId) {
-        if (currentBorrowerId == NEGATIVE_VALUE) {
+        if (currentBorrowerId == EMPTY) {
             currentBorrowerId = borrowerId;
         }
     }
@@ -110,7 +110,7 @@ public class Book {
      * Marks this book as returned.
      */
     void returnBook() {
-        currentBorrowerId = NEGATIVE_VALUE;
+        currentBorrowerId = EMPTY;
         ;
     }
 

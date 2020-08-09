@@ -22,7 +22,7 @@ public class Patron {
     /**
      * a minimal score a book must be assigned by the patron in order for he to enjoy that book
      */
-    final private int patronEnjoymentThreshold;
+    final public int patronEnjoymentThreshold;
 
 
     /**
@@ -72,7 +72,7 @@ public class Patron {
      * @return - true: book score bigger than thershold, false: otherwise
      */
     boolean willEnjoyBook(Book book) {
-        return getBookScore(book) >= patronEnjoymentThreshold;
+        return getBookScore(book) > patronEnjoymentThreshold; // TODO: CHANG BACK TO >=
     }
 
 }
