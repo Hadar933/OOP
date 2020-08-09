@@ -141,11 +141,11 @@ public class Library {
      * @return - true if the book with the given id is available, false otherwise.
      */
     boolean isBookAvailable(int bookId) {
-        if (allBooks[bookId] == null) {
-            return false;
-        }
         if (isBookIdValid(bookId)) {
             return allBooks[bookId].getCurrentBorrowerId() == EMPTY;
+        }
+        if (allBooks[bookId] == null) {
+            return false;
         }
         return false;
     }
@@ -222,13 +222,12 @@ public class Library {
         if (isPatronIdValid(patronId)) {
             Patron patron = allPatrons[patronId];
             int bestID = -1;
-            int bestEnjoyment = 0;
-            for (int i = 0; i < maxBookCapacity; i++) {
-                if (allBooks[i] != null) {
-                    int currEnjoyment = patron.getBookScore(allBooks[i]);
-                    if (currEnjoyment > bestEnjoyment + patron.patronEnjoymentThreshold
-                            && allBooks[i].currentBorrowerId == EMPTY) {
-                        bestEnjoyment = currEnjoyment;
+            int bestScore = 0;
+            for (int i = 0; i < maxBookCapacity; i++) { // finding maximum 
+                if (allBooks[i] != null && allBooks[i].currentBorrowerId == EMPTY) {
+                    int currentScore = patron.getBookScore(allBooks[i]);
+                    if (currentScore > bestScore + patron.patronEnjoymentThreshold) {
+                        bestScore = currentScore;
                         bestID = i;
                     }
                 }
