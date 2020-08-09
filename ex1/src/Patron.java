@@ -1,24 +1,29 @@
+/**
+ * This class represents a library patron that has a name and assigns values to different
+ * literary aspects of books.
+ */
 public class Patron {
 
-    final String firstName;
-    final String lastName;
+    final private String firstName;
+    final private String lastName;
     /**
      * the weight the patron assigns to comic
      */
-    final int comicTendency;
+    final private int comicTendency;
     /**
      * the weight the patron assigns to drama
      */
-    final int dramaticTendency;
+    final private int dramaticTendency;
     /**
      * the weight the patron assigns to education
      */
-    final int educationalTendency;
+    final private int educationalTendency;
 
     /**
      * a minimal score a book must be assigned by the patron in order for he to enjoy that book
      */
-    final int patronEnjoymentThreshold;
+    final private int patronEnjoymentThreshold;
+
 
     /**
      * @param patronFirstName          - first name as string
@@ -40,7 +45,8 @@ public class Patron {
     }
 
     /**
-     *Returns the literary value this patron assigns to the given book.
+     * Returns the literary value this patron assigns to the given book.
+     *
      * @param book - The book to asses.
      * @return - the literary value this patron assigns to the given book.
      */
@@ -52,6 +58,7 @@ public class Patron {
     /**
      * Returns a string representation of the patron, which is a sequence of its first and last name,
      * separated by a single white space.
+     *
      * @return the String representation of this patron.
      */
     String stringRepresentation() {
@@ -60,12 +67,12 @@ public class Patron {
 
     /**
      * Returns true of this patron will enjoy the given book, false otherwise.
+     *
      * @param book - some book the patron might approve or disapprove
      * @return - true: book score bigger than thershold, false: otherwise
      */
-    boolean willEnjoyBook(Book book)
-    {
-        return getBookScore(book)>patronEnjoymentThreshold;
+    boolean willEnjoyBook(Book book) {
+        return getBookScore(book) >= patronEnjoymentThreshold;
     }
 
 }

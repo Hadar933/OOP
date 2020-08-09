@@ -1,42 +1,44 @@
 /**
  * This class represents a book, which has a title, author, year of publication and different literary aspects.
  */
+
 public class Book {
 
+    int NEGATIVE_VALUE = -1;
     /**
      * The title of this book.
      */
-    final String title;
+    final public String title;
 
     /**
      * The name of the author of this book.
      */
-    final String author;
+    final public String author;
 
     /**
      * The year this book was published.
      */
-    final int yearOfPublication;
+    final private int yearOfPublication;
 
     /**
      * The comic value of this book.
      */
-    final int comicValue;
+    final public int comicValue;
 
     /**
      * The dramatic value of this book.
      */
-    final int dramaticValue;
+    final public int dramaticValue;
 
     /**
      * The educational value of this book.
      */
-    final int educationalValue;
+    final public int educationalValue;
 
     /**
      * The id of the current borrower of this book.
      */
-    int currentBorrowerId = -1;
+    public int currentBorrowerId = -1;
 
     /*----=  Constructors  =-----*/
 
@@ -61,6 +63,7 @@ public class Book {
     }
 
     /*----=  Instance Methods  =-----*/
+
 
     /**
      * Returns a string representation of the book, which is a sequence
@@ -91,7 +94,7 @@ public class Book {
      * @param borrowerId - id of some patron borrowing this book
      */
     void setBorrowerId(int borrowerId) {
-        if (currentBorrowerId == -1) {
+        if (currentBorrowerId == NEGATIVE_VALUE) {
             currentBorrowerId = borrowerId;
         }
     }
@@ -107,7 +110,8 @@ public class Book {
      * Marks this book as returned.
      */
     void returnBook() {
-        currentBorrowerId = -1;
+        currentBorrowerId = NEGATIVE_VALUE;
+        ;
     }
 
 }
