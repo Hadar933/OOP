@@ -39,6 +39,11 @@ public class Patron {
         this.patronEnjoymentThreshold = patronEnjoymentThreshold;
     }
 
+    /**
+     *Returns the literary value this patron assigns to the given book.
+     * @param book - The book to asses.
+     * @return - the literary value this patron assigns to the given book.
+     */
     int getBookScore(Book book) {
         return book.comicValue * comicTendency + book.dramaticValue * dramaticTendency
                 + book.educationalValue * educationalTendency;
