@@ -7,7 +7,7 @@ public class Special extends SpaceShip {
 	private final static double MIN_DISTANCE = 0.35;
 
 	/**
-	 * the special ship has a defence mode in which when ever some ship is too close, it automatically
+	 * the special ship has a defense mode in which when ever some ship is too close, it automatically
 	 * recognises it and shoots towards the ship. other then that, it moves freely
 	 * @param game the game object to which this ship belongs.
 	 */

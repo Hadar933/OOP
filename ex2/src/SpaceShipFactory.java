@@ -1,5 +1,8 @@
 import oop.ex2.*;
 
+/**
+ * this class parses through the input and create the relevant ship instances
+ */
 public class SpaceShipFactory {
     public static SpaceShip[] createSpaceShips(String[] args) {
         SpaceShip[] allShips = new SpaceShip[args.length];

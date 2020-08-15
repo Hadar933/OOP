@@ -135,7 +135,7 @@ public class SpaceShip {
 		if (coolDown > 0) {
 			coolDown--;
 		}
-		if(energy<maxEnergy){
+		if (energy < maxEnergy) {
 			energy++;
 		}
 	}
@@ -202,7 +202,7 @@ public class SpaceShip {
 	 * @return the image of this ship.
 	 */
 	public Image getImage() {
-		if(shield){
+		if (shield) {
 			return shieldImage;
 		}
 		return image;

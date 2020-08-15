@@ -1,0 +1,16 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="unnamed">
+    <output-path>$PROJECT_DIR$/out/artifacts/unnamed</output-path>
+    <root id="archive" name="unnamed.jar">
+      <element id="file-copy" path="$PROJECT_DIR$/src/SpaceShip.java" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/Human.java" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/Runner.java" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/Special.java" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/Drunkard.java" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/Basher.java" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/Aggressive.java" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/SpaceShipFactory.java" />
+      <element id="file-copy" path="$PROJECT_DIR$/README" />
+    </root>
+  </artifact>
+</component>
