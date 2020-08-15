@@ -20,7 +20,7 @@ public class Aggressive extends SpaceShip {
         else if(angleBetweenShips<0){
             angle--;
         }
-        getPhysics().move(true,angle);
+        getPhysics().move(true, angle);
         if(Math.abs(angleBetweenShips)<=SHOOTING_ANGLE){
             fire(game);
         }

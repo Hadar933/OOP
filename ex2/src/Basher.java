@@ -19,8 +19,8 @@ public class Basher extends SpaceShip {
         else if(angleBetweenShips<0){
             angle--;
         }
-        getPhysics().move(true,angle);
-        if(getPhysics().distanceFrom(other.getPhysics())<=SHIELD_RANGE){
+        getPhysics().move(true, angle);
+        if(getPhysics().distanceFrom(other.getPhysics()) <= SHIELD_RANGE){
             shieldOn();
         }
 

@@ -21,9 +21,9 @@ public class Drunkard extends SpaceShip {
         else if(angleBetweenShips<0){
             angle++;
         }
-        getPhysics().move(true,angle);
+        getPhysics().move(true, angle);
         Random distance = new Random();
-        if(getPhysics().distanceFrom(other.getPhysics())<distance.nextDouble()){
+        if(getPhysics().distanceFrom(other.getPhysics()) < distance.nextDouble()){
             fire(game);
         }
 
