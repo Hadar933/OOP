@@ -72,7 +72,7 @@ public class Patron {
      * @return - true: book score bigger than thershold, false: otherwise
      */
     boolean willEnjoyBook(Book book) {
-        return getBookScore(book) > patronEnjoymentThreshold; // TODO: CHANG BACK TO >=
+        return getBookScore(book) >= patronEnjoymentThreshold;
     }
 
 }

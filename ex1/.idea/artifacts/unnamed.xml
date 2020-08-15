@@ -5,7 +5,7 @@
       <element id="file-copy" path="$PROJECT_DIR$/src/Book.java" />
       <element id="file-copy" path="$PROJECT_DIR$/src/Library.java" />
       <element id="file-copy" path="$PROJECT_DIR$/src/Patron.java" />
-      <element id="file-copy" path="$PROJECT_DIR$/src/README.txt" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/README" />
     </root>
   </artifact>
 </component>
