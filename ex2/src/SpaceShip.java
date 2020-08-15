@@ -10,11 +10,21 @@ import oop.ex2.*;
  * @author oop
  */
 public class SpaceShip {
+    final private static int SHIELD_ADDITION = 18;
+    final private static int SHIELD_SUBSTITUTION = 10;
+    final public static int ZERO_COOLDOWN = 0;
+    final public static int DEAD = 0;
+    final public static int HEALTH_LOSS = 1;
+    final public static int SHOT_PRICE = 19;
+    final public static int TELEPORT_PRICE = 140;
+    final public static int SHIELD_PRICE = 3;
+    final public static int COOL_DOWN_TIME = 7;
+
 
     /**
      * the image of the spaceship, that is being provided
      */
-    public Image spaceShipImage;
+    public Image image;
     /**
      * the representation of position, direction and velocity of the ship
      */
@@ -35,7 +45,7 @@ public class SpaceShip {
     private int health;
 
     /**
-    /**
+     * /**
      * the energy of initialization
      */
     private final int defaultEnergy = 210;
@@ -45,31 +55,62 @@ public class SpaceShip {
      */
     private static final int defaultHealth = 22;
 
+    /**
+     * the cooldown between two consecutive shots
+     */
+    public int coolDown;
+
+    /**
+     * true = the shield is on. false = shield is off
+     */
+    public boolean shield;
+
     /*
      * constructor for a space ship instance
      */
     SpaceShip() {
-        this.spaceShipImage = GameGUI.ENEMY_SPACESHIP_IMAGE;
+        this.image = GameGUI.ENEMY_SPACESHIP_IMAGE;
         this.physics = new SpaceShipPhysics();
         this.energy = defaultEnergy;
         this.health = defaultHealth;
+        this.shield = false;
+        this.coolDown = ZERO_COOLDOWN;
     }
 
     /**
-     * Does the actions of this ship for this round.
+     * Does the actions of this ship for this round:
+     * 1. disables shield (and updates GUI)
+     * 2. checks the shooting cool-down
      * This is called once per round by the SpaceWars game driver.
+     * note these actions are relevant for all ships BUT human (which we initialize
+     * with SPACESHIP_IMAGE)
      *
      * @param game the game object to which this ship belongs.
      */
     public void doAction(SpaceWars game) {
-
+        if (shield) {
+            shield = false;
+            image = GameGUI.ENEMY_SPACESHIP_IMAGE;
+        }
+        if (coolDown > ZERO_COOLDOWN) {
+            coolDown--;
+        }
     }
 
     /**
      * This method is called every time a collision with this ship occurs
      */
     public void collidedWithAnotherShip() {
-
+        if (shield) {
+            maxEnergy += SHIELD_ADDITION;
+            energy += SHIELD_ADDITION;
+        } else {
+            maxEnergy -= SHIELD_SUBSTITUTION;
+            if (energy > maxEnergy) {
+                energy = maxEnergy;
+                health--;
+            }
+        }
     }
 
     /**
@@ -77,7 +118,11 @@ public class SpaceShip {
      * attributes, and starts it at a new random position.
      */
     public void reset() {
-
+        physics = new SpaceShipPhysics();
+        energy = defaultEnergy;
+        health = defaultHealth;
+        shield = false;
+        coolDown = ZERO_COOLDOWN;
     }
 
     /**
@@ -86,7 +131,7 @@ public class SpaceShip {
      * @return true if the ship is dead. false otherwise.
      */
     public boolean isDead() {
-        return false;
+        return health <= DEAD;
     }
 
     /**
@@ -95,7 +140,7 @@ public class SpaceShip {
      * @return the physics object that controls the ship.
      */
     public SpaceShipPhysics getPhysics() {
-        return null;
+        return physics;
     }
 
     /**
@@ -103,7 +148,10 @@ public class SpaceShip {
      * gets hit by a shot.
      */
     public void gotHit() {
-
+        if (!shield) {
+            maxEnergy -= SHIELD_SUBSTITUTION;
+            health -= HEALTH_LOSS;
+        }
     }
 
     /**
@@ -114,7 +162,7 @@ public class SpaceShip {
      * @return the image of this ship.
      */
     public Image getImage() {
-        return null;
+        return image;
     }
 
     /**
@@ -123,13 +171,22 @@ public class SpaceShip {
      * @param game the game object.
      */
     public void fire(SpaceWars game) {
-
+        if (energy >= SHOT_PRICE && coolDown == ZERO_COOLDOWN) {
+            game.addShot(physics);
+            energy -= SHOT_PRICE;
+            coolDown += COOL_DOWN_TIME;
+        }
     }
 
     /**
      * Attempts to turn on the shield.
      */
     public void shieldOn() {
+        if(energy >= SHIELD_PRICE){
+            shield = true;
+            energy -= SHIELD_PRICE;
+            image = GameGUI.ENEMY_SPACESHIP_IMAGE_SHIELD;
+        }
 
     }
 
@@ -137,7 +194,10 @@ public class SpaceShip {
      * Attempts to teleport.
      */
     public void teleport() {
-
+        if(energy >= TELEPORT_PRICE){
+            physics = new SpaceShipPhysics();
+            energy -= TELEPORT_PRICE;
+        }
     }
 
 }
