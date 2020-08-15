@@ -174,7 +174,7 @@ public class SpaceShip {
         if (energy >= SHOT_PRICE && coolDown == ZERO_COOLDOWN) {
             game.addShot(physics);
             energy -= SHOT_PRICE;
-            coolDown += COOL_DOWN_TIME;
+            coolDown = COOL_DOWN_TIME;
         }
     }
 
@@ -187,7 +187,6 @@ public class SpaceShip {
             energy -= SHIELD_PRICE;
             image = GameGUI.ENEMY_SPACESHIP_IMAGE_SHIELD;
         }
-
     }
 
     /**
