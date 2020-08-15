@@ -2,6 +2,9 @@ import oop.ex2.GameGUI;
 
 import java.util.zip.ZipEntry;
 
+/**
+ * a class that represents a spaceship of type human
+ */
 public class Human extends SpaceShip {
     Human() {
         this.image = GameGUI.SPACESHIP_IMAGE;
@@ -16,7 +19,6 @@ public class Human extends SpaceShip {
         GameGUI gui = game.getGUI();
         int angle = 0;
         boolean accelerate = false;
-
         if (shield) {
             shield = false;
             image = GameGUI.SPACESHIP_IMAGE;
@@ -30,8 +32,6 @@ public class Human extends SpaceShip {
         }
         if (gui.isShotPressed()) {
             fire(game);
-            System.out.println("cooldown= d"+coolDown);
-            System.out.println("@@@@@@@@@");
         }
         if (gui.isRightPressed()) {
             angle--;
