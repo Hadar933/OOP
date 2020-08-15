@@ -135,6 +135,9 @@ public class SpaceShip {
 		if (coolDown > 0) {
 			coolDown--;
 		}
+		if(energy<maxEnergy){
+			energy++;
+		}
 	}
 
 	/**
