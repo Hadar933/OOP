@@ -1,15 +1,9 @@
 import oop.ex2.GameGUI;
 
-import java.util.zip.ZipEntry;
-
 /**
  * a class that represents a spaceship of type human
  */
 public class Human extends SpaceShip {
-    Human() {
-        this.image = GameGUI.SPACESHIP_IMAGE;
-    }
-
     /**
      * performs all possible actions of a human ship
      * @param game the game object to which this ship belongs.
@@ -17,10 +11,11 @@ public class Human extends SpaceShip {
     @Override
     public void doAction(SpaceWars game) {
         GameGUI gui = game.getGUI();
+        image = GameGUI.SPACESHIP_IMAGE;
         int angle = 0;
         boolean accelerate = false;
-        if (shield) {
-            shield = false;
+        if (isShield()) {
+            setShield(false);
             image = GameGUI.SPACESHIP_IMAGE;
         }
         if (gui.isShieldsPressed()) {
@@ -42,11 +37,11 @@ public class Human extends SpaceShip {
         if(gui.isUpPressed()){
             accelerate = true;
         }
-        if (coolDown > ZERO_COOLDOWN) {
-            coolDown--;
+        if (getCoolDown() > 0) {
+            setCoolDown(getCoolDown()-1);
         }
-        if(energy < maxEnergy){
-            energy++;
+        if(getEnergy() < getMaxEnergy()){
+            setEnergy(getEnergy()+1);
         }
         getPhysics().move(accelerate, angle);
     }
