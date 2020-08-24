@@ -50,7 +50,7 @@ public class BoopingSite {
 				Integer stars1 = h1.getStarRating();
 				Integer stars2 = h2.getStarRating();
 				if (stars1.equals(stars2)) { // compare by name
-					return h1.getPropertyName().compareTo(h2.getPropertyName());
+					return h2.getPropertyName().compareTo(h1.getPropertyName());
 				}
 				return stars1.compareTo(stars2); // compare by star rating
 			}
