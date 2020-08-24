@@ -42,6 +42,8 @@ public abstract class Spaceship {
 	 */
 	private final Map<Integer, Locker> storage;
 
+	private int currentNumOfLockers;
+
 	/**
 	 * initiates a Spaceship instance
 	 * @param name - ships name
@@ -56,6 +58,7 @@ public abstract class Spaceship {
 		this.constraints = constraints;
 		this.storage = new HashMap<>();
 		this.lts = new LongTermStorage();
+		this.currentNumOfLockers = 0;
 	}
 
 	/**
@@ -65,6 +68,17 @@ public abstract class Spaceship {
 		return lts;
 	}
 
+	/*
+	finds if some id is in the crew ids list
+	 */
+	private boolean idInArray(int crewID){
+		for(int id: crewIDs){
+			if(id==crewID){
+				return true;
+			}
+		}
+		return false;
+	}
 	/**
 	 * creates a locker obj and adds it as part of the spaceship's storage
 	 * @param crewID - the id to which the new locker belongs
@@ -73,12 +87,17 @@ public abstract class Spaceship {
 	 * 		added succesfully
 	 */
 	public int createLocker(int crewID, int capacity) {
-		if (crewID < 0) {
+		if (!idInArray(crewID)) {
 			return INVALID_ID;
 		}
-		//TODO: add cases -2 and -3
-		Locker newLocker = new Locker(lts, capacity, constraints);
-		storage.put(crewID, newLocker);
+		if(capacity<0){
+			return INVALID_CAPACITY;
+		}
+		if(currentNumOfLockers==numOfLockers){
+			return REACHED_MAX_LOCKER_CAPACITY;
+		}
+		storage.put(crewID,new Locker(lts,capacity,constraints));
+		currentNumOfLockers++;
 		return SUCCESS;
 	}
 

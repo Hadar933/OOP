@@ -10,9 +10,8 @@ public class Locker {
 	private static final int ADDITION_ERROR = -1;
 	private static final int LTS_ERROR = 1;
 	private static final int REMOVE_ERROR = -1;
-	private static final String CANNOT_DELETE_MSG1 = "Error: Your request cannot be completed at this time" +
-													 "." +
-													 " Problem: the locker does not contain ";
+	private static final String CANNOT_DELETE_MSG1 = "Error: Your request cannot be completed at this time."
+													 + " Problem: the locker does not contain ";
 	private static final String CANNOT_ADD_MSG1 = "Error: Your request cannot be completed at this time." +
 												  " Problem: no room for ";
 	private static final String NEG_VALUE_ERR = "Error: Your request cannot be completed at this time. " +
@@ -73,14 +72,14 @@ public class Locker {
 		for (Item[] tuple : constraints) {
 			if (tuple[0] == item) { // meaning the item is the first element of some tuple in the constraints
 				{
-					if (inventory.get(tuple[1].getType()) != null) {
+					if (inventory.containsKey(tuple[1].getType())) {
 						return true;
 					}
 				}
 			} else if (tuple[1] == item) { // meaning the item is the second element of some tuple in the
 				// constraints
 				{
-					if (inventory.get(tuple[0].getType()) != null) {
+					if (inventory.containsKey(tuple[0].getType())) {
 						return true;
 					}
 				}
@@ -120,8 +119,8 @@ public class Locker {
 				currentVolume + totalVolume <= lts.getAvailableCapacity()) {
 				// removing items so that there are 20% left in the locker, and moving all the remaining
 				// to the long term
-				int nItemsToRemove = (int) (REMOVAL_VOLUME*capacity) / item.getVolume();
-				inventory.put(item.getType(),inventory.get(item.getType())-nItemsToRemove);
+				int nItemsToRemove = (int) (REMOVAL_VOLUME * capacity) / item.getVolume();
+				inventory.put(item.getType(), inventory.get(item.getType()) - nItemsToRemove);
 				lts.addItem(item, nItemsToRemove);
 				System.out.println(LTS_MSG);
 				return LTS_ERROR;
@@ -163,14 +162,22 @@ public class Locker {
 		} else {
 			inventory.put(item.getType(), inventory.get(item.getType()) - n);
 		}
-		availableCapacity+=n*item.getVolume();
+		availableCapacity += n * item.getVolume();
 		return SUCCESS;
 	}
 
+	/**
+	 * @param type - some type of an item
+	 * @return - returns the amount of items of the given type are in the lts
+	 */
 	public int getItemCount(String type) {
 		return inventory.get(type);
 	}
 
+
+	/**
+	 * @return - returns the inventory
+	 */
 	public Map<String, Integer> getInventory() {
 		return inventory;
 	}
