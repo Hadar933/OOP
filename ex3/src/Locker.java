@@ -5,11 +5,13 @@ import java.util.Map;
 
 
 public class Locker {
+	private static final double REMOVAL_VOLUME = 0.2; // 20% of the capacity should remain when moving items
 	private static final int SUCCESS = 0;
 	private static final int ADDITION_ERROR = -1;
 	private static final int LTS_ERROR = 1;
 	private static final int REMOVE_ERROR = -1;
-	private static final String CANNOT_DELETE_MSG1 = "Error: Your request cannot be completed at this time." +
+	private static final String CANNOT_DELETE_MSG1 = "Error: Your request cannot be completed at this time" +
+													 "." +
 													 " Problem: the locker does not contain ";
 	private static final String CANNOT_ADD_MSG1 = "Error: Your request cannot be completed at this time." +
 												  " Problem: no room for ";
@@ -43,7 +45,7 @@ public class Locker {
 	current capacity of the locker
 	 */
 
-	private final int availableCapacity;
+	private int availableCapacity;
 
 
 	/**
@@ -98,14 +100,14 @@ public class Locker {
 	 */
 	public int addItem(Item item, int n) {
 		double totalVolume = n * item.getVolume();
-		double halfCapacity = (double) getCapacity() / 2;
+		double halfCapacity = (double) availableCapacity / 2;
 		if (itemInConstraints(item)) { // cannot add items that are in the constraints list
 			System.out.println(CANNOT_ADD_MSG1 + n + ERROR_MSG_PREFIX + item.getType());
 			return ADDITION_ERROR;
 		} else { // items are not in the constraints list
 
 			// CASE I - locker cannot contain n items
-			if (totalVolume > getCapacity()) {
+			if (totalVolume > availableCapacity) {
 				System.out.println(CANNOT_ADD_MSG1 + n + ERROR_MSG_PREFIX + item.getType());
 				return ADDITION_ERROR;
 			}
@@ -115,20 +117,25 @@ public class Locker {
 				currentVolume = inventory.get(item.getType());
 			}
 			if (currentVolume + totalVolume > halfCapacity &&
-				currentVolume + totalVolume <= lts.getCapacity()) {
-				lts.addItem(item, n);
+				currentVolume + totalVolume <= lts.getAvailableCapacity()) {
+				// removing items so that there are 20% left in the locker, and moving all the remaining
+				// to the long term
+				int nItemsToRemove = (int) (REMOVAL_VOLUME*capacity) / item.getVolume();
+				inventory.put(item.getType(),inventory.get(item.getType())-nItemsToRemove);
+				lts.addItem(item, nItemsToRemove);
 				System.out.println(LTS_MSG);
 				return LTS_ERROR;
 			}
 			// CASE III - adding n items causes storing in lts and lts CANNOT contain said n items
 			if (currentVolume + totalVolume > halfCapacity &&
-				currentVolume + totalVolume > lts.getCapacity()) {
+				currentVolume + totalVolume > lts.getAvailableCapacity()) {
 				System.out.println(CANNOT_ADD_MSG1 + n + ERROR_MSG_PREFIX + item.getType());
 				return ADDITION_ERROR;
 			}
 			// CASE IV - adding n items is possible
 			if (currentVolume + totalVolume < halfCapacity) {
 				inventory.put(item.getType(), inventory.get(item.getType()) + n);
+				availableCapacity -= totalVolume;
 				return SUCCESS;
 			}
 		}
@@ -144,27 +151,27 @@ public class Locker {
 	 */
 	public int removeItem(Item item, int n) {
 		if (inventory.get(item.getType()) < n) { // not enough items in inventory
-			System.out.println(CANNOT_DELETE_MSG1+n+ERROR_MSG_PREFIX+item.getType());
-			return(REMOVE_ERROR);
+			System.out.println(CANNOT_DELETE_MSG1 + n + ERROR_MSG_PREFIX + item.getType());
+			return (REMOVE_ERROR);
 		}
-		if(n<0){
+		if (n < 0) {
 			System.out.println(NEG_VALUE_ERR);
-			return(REMOVE_ERROR);
+			return (REMOVE_ERROR);
 		}
-		if( inventory.get(item.getType())==n){ // we have exactly n items - so we remove the item completely
+		if (inventory.get(item.getType()) == n) { //exactly n items - remove the item completely
 			inventory.remove(item.getType());
-		}
-		else{
+		} else {
 			inventory.put(item.getType(), inventory.get(item.getType()) - n);
 		}
+		availableCapacity+=n*item.getVolume();
 		return SUCCESS;
 	}
 
 	public int getItemCount(String type) {
-		return 0;
+		return inventory.get(type);
 	}
 
-	public Map<Item, Integer> getInventory() {
+	public Map<String, Integer> getInventory() {
 		return inventory;
 	}
 
