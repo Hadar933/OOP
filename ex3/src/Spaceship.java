@@ -5,11 +5,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.locks.Lock;
 
+/**
+ * a class that represents a Spaceship instance, with storage units
+ */
 public abstract class Spaceship {
-	private final int SUCCESS = 0;
-	private final int INVALID_ID = -1;
-	private final int INVALID_CAPACITY = -2;
-	private final int REACHED_MAX_LOCKER_CAPACITY = -3;
+	private static final int SUCCESS = 0;
+	private static final int INVALID_ID = -1;
+	private static final int INVALID_CAPACITY = -2;
+	private static final int REACHED_MAX_LOCKER_CAPACITY = -3;
 
 	/**
 	 * list of all crew ids
