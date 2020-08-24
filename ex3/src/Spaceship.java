@@ -1,9 +1,7 @@
 import oop.ex3.spaceship.Item;
-import oop.ex3.spaceship.ItemFactory;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.locks.Lock;
 
 /**
  * a class that represents a Spaceship instance, with storage units
@@ -37,12 +35,12 @@ public abstract class Spaceship {
 	/**
 	 * long term storage object associated with the spaceship
 	 */
-	private LongTermStorage lts;
+	private final LongTermStorage lts;
 
 	/**
 	 * a map of all lockers in the ship. key = crewID, value = Locker
 	 */
-	private Map<Integer, Locker> allLockers;
+	private final Map<Integer, Locker> storage;
 
 	/**
 	 * initiates a Spaceship instance
@@ -56,7 +54,8 @@ public abstract class Spaceship {
 		this.crewIDs = crewIDs;
 		this.numOfLockers = numOfLockers;
 		this.constraints = constraints;
-		this.allLockers = new HashMap<>();
+		this.storage = new HashMap<>();
+		this.lts = new LongTermStorage();
 	}
 
 	/**
@@ -79,7 +78,7 @@ public abstract class Spaceship {
 		}
 		//TODO: add cases -2 and -3
 		Locker newLocker = new Locker(lts, capacity, constraints);
-		allLockers.put(crewID, newLocker);
+		storage.put(crewID, newLocker);
 		return SUCCESS;
 	}
 
@@ -96,7 +95,7 @@ public abstract class Spaceship {
 	public Locker[] getLockers() {
 		int index = 0;
 		Locker[] lockersArray = new Locker[numOfLockers];
-		for(Locker locker: allLockers.values()){
+		for (Locker locker : storage.values()) {
 			lockersArray[index] = locker;
 			index++;
 		}
