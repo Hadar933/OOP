@@ -87,7 +87,7 @@ public class BoopingSite {
 	 */
 	public Hotel[] getHotelsByProximity(double latitude, double longitude) {
 		ArrayList<Hotel> hotels = new ArrayList<>();
-		if (badCoordinates(longitude, latitude)) {
+		if (badCoordinates(longitude,latitude)) {
 			//bad coordinates so we return an empty array
 			return hotels.toArray(new Hotel[0]);
 		}
@@ -120,7 +120,7 @@ public class BoopingSite {
 	public Hotel[] getHotelsInCityByProximity(String city, double latitude, double longitude) {
 		// fetching hotels that are relevant the the city:
 		ArrayList<Hotel> hotels = new ArrayList<>();
-		if (badCoordinates(latitude, longitude)) {
+		if (badCoordinates(longitude,latitude)) {
 			//bad coordinates so we return an empty array
 			return hotels.toArray(new Hotel[0]);
 		}
@@ -135,7 +135,7 @@ public class BoopingSite {
 				if (distance1.equals(distance2)) { // compare according to p-o-i
 					Integer poi1 = h1.getNumPOI();
 					Integer poi2 = h2.getNumPOI();
-					return poi1.compareTo(poi2);
+					return poi2.compareTo(poi1);
 				}
 				return distance1.compareTo(distance2);
 			}

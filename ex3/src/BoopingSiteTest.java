@@ -214,10 +214,11 @@ public class BoopingSiteTest {
 		for (double latitude : latitudeValues) {
 			for (double longitude : longitudeValues) {
 				// checking the small data ( city = manali )
+				testHelperGetHotelsInCityByProximity(smallSite,latitude,longitude,goodCities[0]);
 				smallSite.getHotelsInCityByProximity(goodCities[0], latitude, longitude);
 				// checking the big data ( for various cities)
 				for (String city : goodCities) {
-					bigSite.getHotelsInCityByProximity(city, latitude, longitude);
+					testHelperGetHotelsInCityByProximity(bigSite,latitude,longitude,city);
 				}
 			}
 		}
