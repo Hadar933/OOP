@@ -8,8 +8,8 @@ import java.util.Comparator;
 
 public class BoopingSite {
 
-	private final static double LATITUDE_THRESHOLD = 90;
-	private final static double LONGITUDE_THRESHOLD = 180;
+	private final static int LATITUDE_THRESHOLD = 90;
+	private final static int LONGITUDE_THRESHOLD = 180;
 
 	private final ArrayList<Hotel> allHotels;
 
@@ -63,7 +63,7 @@ public class BoopingSite {
 	/*
 	calculates distance between two dots represented by (x1,y1) and (x2,y2)
 	 */
-	private double euclideanDistance(double x1, double y1, double x2, double y2) {
+	private double distance(double x1, double y1, double x2, double y2) {
 		return Math.sqrt(((x2 - x1) * (x2 - x1)) + ((y2 - y1) * (y2 - y1)));
 	}
 
@@ -95,14 +95,12 @@ public class BoopingSite {
 		hotels.sort(new Comparator<Hotel>() {
 			@Override
 			public int compare(Hotel h1, Hotel h2) {
-				Double distance1 = euclideanDistance(latitude, longitude, h1.getLatitude(),
-													 h1.getLongitude());
-				Double distance2 = euclideanDistance(latitude, longitude, h2.getLatitude(),
-													 h2.getLongitude());
+				Double distance1 = distance(latitude, longitude, h1.getLatitude(), h1.getLongitude());
+				Double distance2 = distance(latitude, longitude, h2.getLatitude(), h2.getLongitude());
 				if (distance1.equals(distance2)) { // compare according to p-o-i
 					Integer poi1 = h1.getNumPOI();
 					Integer poi2 = h2.getNumPOI();
-					return poi1.compareTo(poi2);
+					return poi2.compareTo(poi1);
 				}
 				return distance1.compareTo(distance2);
 			}
@@ -130,10 +128,10 @@ public class BoopingSite {
 		hotels.sort(new Comparator<Hotel>() {
 			@Override
 			public int compare(Hotel h1, Hotel h2) {
-				Double distance1 = euclideanDistance(latitude, longitude, h1.getLatitude(),
-													 h1.getLongitude());
-				Double distance2 = euclideanDistance(latitude, longitude, h2.getLatitude(),
-													 h2.getLongitude());
+				Double distance1 = distance(latitude, longitude, h1.getLatitude(),
+											h1.getLongitude());
+				Double distance2 = distance(latitude, longitude, h2.getLatitude(),
+											h2.getLongitude());
 				if (distance1.equals(distance2)) { // compare according to p-o-i
 					Integer poi1 = h1.getNumPOI();
 					Integer poi2 = h2.getNumPOI();

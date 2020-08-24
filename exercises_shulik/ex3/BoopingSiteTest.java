@@ -111,10 +111,8 @@ public class BoopingSiteTest {
                 TestSite.getHotelsInCityByProximity("manali", -340, 0).length);
         assertEquals(0, //illegal longitude
                 TestSite.getHotelsInCityByProximity("manali", 0, 400).length);
-        for (int i=0 ;
-             i <= TestSite.getHotelsInCityByProximity("manali", 0,0).length - 1; i++) {
-            assertEquals("manali",
-                    TestSite.getHotelsInCityByProximity("manali", 0,0)[i].getCity());
+        for (int i=0 ; i <= TestSite.getHotelsInCityByProximity("manali", 0,0).length - 1; i++) {
+            assertEquals("manali", TestSite.getHotelsInCityByProximity("manali", 0,0)[i].getCity());
         }
         Hotel[] sortedByCityProxArray =
                 this.TestSite.getHotelsInCityByProximity("manali", randomLat, randomLong);
