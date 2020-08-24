@@ -6,14 +6,16 @@ import java.util.Map;
 
 public class Locker {
 	private static final int SUCCESS = 0;
-	private static final int CANNOT_ADD_RETURN = -1;
-	private static final int LTS_RETURN = 1;
-	private static final int INVALID_CAPACITY = -2;
-	private static final int REACHED_MAX_LOCKER_CAPACITY = -3;
-
+	private static final int ADDITION_ERROR = -1;
+	private static final int LTS_ERROR = 1;
+	private static final int REMOVE_ERROR = -1;
+	private static final String CANNOT_DELETE_MSG1 = "Error: Your request cannot be completed at this time." +
+													 " Problem: the locker does not contain ";
 	private static final String CANNOT_ADD_MSG1 = "Error: Your request cannot be completed at this time." +
 												  " Problem: no room for ";
-	private static final String CANNOT_ADD_MSG2 = "items of type ";
+	private static final String NEG_VALUE_ERR = "Error: Your request cannot be completed at this time. " +
+												"Problem: cannot remove a negative number of items of type";
+	private static final String ERROR_MSG_PREFIX = "items of type ";
 	private static final String LTS_MSG = "Warning: Action successful, but has caused items to be moved to" +
 										  "storage";
 
@@ -69,14 +71,14 @@ public class Locker {
 		for (Item[] tuple : constraints) {
 			if (tuple[0] == item) { // meaning the item is the first element of some tuple in the constraints
 				{
-					if (inventory.get(tuple[1]) != null) {
+					if (inventory.get(tuple[1].getType()) != null) {
 						return true;
 					}
 				}
 			} else if (tuple[1] == item) { // meaning the item is the second element of some tuple in the
 				// constraints
 				{
-					if (inventory.get(tuple[0]) != null) {
+					if (inventory.get(tuple[0].getType()) != null) {
 						return true;
 					}
 				}
@@ -98,14 +100,14 @@ public class Locker {
 		double totalVolume = n * item.getVolume();
 		double halfCapacity = (double) getCapacity() / 2;
 		if (itemInConstraints(item)) { // cannot add items that are in the constraints list
-			System.out.println(CANNOT_ADD_MSG1 + n + CANNOT_ADD_MSG2 + item.getType());
-			return CANNOT_ADD_RETURN;
+			System.out.println(CANNOT_ADD_MSG1 + n + ERROR_MSG_PREFIX + item.getType());
+			return ADDITION_ERROR;
 		} else { // items are not in the constraints list
 
 			// CASE I - locker cannot contain n items
 			if (totalVolume > getCapacity()) {
-				System.out.println(CANNOT_ADD_MSG1 + n + CANNOT_ADD_MSG2 + item.getType());
-				return CANNOT_ADD_RETURN;
+				System.out.println(CANNOT_ADD_MSG1 + n + ERROR_MSG_PREFIX + item.getType());
+				return ADDITION_ERROR;
 			}
 			// CASE II - adding n items causes storing in lts and lts CAN contain said n items
 			int currentVolume = 0;
@@ -116,13 +118,13 @@ public class Locker {
 				currentVolume + totalVolume <= lts.getCapacity()) {
 				lts.addItem(item, n);
 				System.out.println(LTS_MSG);
-				return LTS_RETURN;
+				return LTS_ERROR;
 			}
 			// CASE III - adding n items causes storing in lts and lts CANNOT contain said n items
 			if (currentVolume + totalVolume > halfCapacity &&
 				currentVolume + totalVolume > lts.getCapacity()) {
-				System.out.println(CANNOT_ADD_MSG1 + n + CANNOT_ADD_MSG2 + item.getType());
-				return CANNOT_ADD_RETURN;
+				System.out.println(CANNOT_ADD_MSG1 + n + ERROR_MSG_PREFIX + item.getType());
+				return ADDITION_ERROR;
 			}
 			// CASE IV - adding n items is possible
 			if (currentVolume + totalVolume < halfCapacity) {
@@ -141,10 +143,21 @@ public class Locker {
 	 * @return - 0: success. -1: there are less than n items in the locker or n is negative
 	 */
 	public int removeItem(Item item, int n) {
-		if (inventory.get(item) < n) {
-			System.out.println();
-
+		if (inventory.get(item.getType()) < n) { // not enough items in inventory
+			System.out.println(CANNOT_DELETE_MSG1+n+ERROR_MSG_PREFIX+item.getType());
+			return(REMOVE_ERROR);
 		}
+		if(n<0){
+			System.out.println(NEG_VALUE_ERR);
+			return(REMOVE_ERROR);
+		}
+		if( inventory.get(item.getType())==n){ // we have exactly n items - so we remove the item completely
+			inventory.remove(item.getType());
+		}
+		else{
+			inventory.put(item.getType(), inventory.get(item.getType()) - n);
+		}
+		return SUCCESS;
 	}
 
 	public int getItemCount(String type) {
