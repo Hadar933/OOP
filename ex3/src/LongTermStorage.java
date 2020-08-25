@@ -10,7 +10,7 @@ public class LongTermStorage {
 	private static final int SUCCESS = 0;
 	private static final String CANNOT_ADD_MSG1 = "Error: Your request cannot be completed at this time." +
 												  " Problem: no room for ";
-	private static final String ERROR_MSG_PREFIX = "items of type ";
+	private static final String ERROR_MSG_PREFIX = " items of type ";
 	/*
 	 * the items that are stored in the locker: key = item's type, value = number of items
 	 */
@@ -27,14 +27,13 @@ public class LongTermStorage {
 
 	public int addItem(Item item, int n) {
 		double totalVolume = n * item.getVolume();
-		if (totalVolume > availableCapacity) {
+		if (totalVolume > availableCapacity || n < 0) {
 			System.out.println(CANNOT_ADD_MSG1 + n + ERROR_MSG_PREFIX + item.getType());
 			return ADDITION_ERROR;
 		} else {
-			if(inventory.containsKey(item.getType())){
+			if (inventory.containsKey(item.getType())) {
 				inventory.put(item.getType(), inventory.get(item.getType()) + n);
-			}
-			else{
+			} else {
 				inventory.put(item.getType(), n);
 			}
 			availableCapacity -= totalVolume;
@@ -55,8 +54,10 @@ public class LongTermStorage {
 	 * @return - returns the amount of items of the given type are in the lts
 	 */
 	public int getItemCount(String type) {
-		return inventory.get(type);
-
+		if (inventory.containsKey(type)) {
+			return inventory.get(type);
+		}
+		return 0;
 	}
 
 	/**
