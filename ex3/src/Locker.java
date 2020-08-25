@@ -3,13 +3,19 @@ import oop.ex3.spaceship.Item;
 import java.util.HashMap;
 import java.util.Map;
 
-
+/**
+ * a class that represents a locker, which is a part of the storage of a spaceship
+ */
 public class Locker {
 	private static final double REMOVAL_VOLUME = 0.2; // 20% of the capacity should remain when moving items
 	private static final int SUCCESS = 0;
 	private static final int ADDITION_ERROR = -1;
+	private static final int CONSTRAINTS_ERROR = -2;
 	private static final int LTS_ERROR = 1;
 	private static final int REMOVE_ERROR = -1;
+	private static final String CONSTRAINTS_MSG1 = "Error: Your request cannot be completed at this time. " +
+												   "Problem: the locker cannot contain items of type ";
+	private static final String CONSTRAINTS_MSG2 = " ,as it contains a contradicting item";
 	private static final String CANNOT_DELETE_MSG1 = "Error: Your request cannot be completed at this time."
 													 + " Problem: the locker does not contain ";
 	private static final String CANNOT_ADD_MSG1 = "Error: Your request cannot be completed at this time." +
@@ -19,8 +25,6 @@ public class Locker {
 	private static final String ERROR_MSG_PREFIX = " items of type ";
 	private static final String LTS_MSG = "Warning: Action successful, but has caused items to be moved to" +
 										  " storage";
-
-
 	/*
 	 * list of constraints between items
 	 */
@@ -46,7 +50,6 @@ public class Locker {
 
 	private int availableCapacity;
 
-
 	/**
 	 * constructor for a Locker instance
 	 * @param lts - long term storage associated with the locker
@@ -70,17 +73,15 @@ public class Locker {
 	 */
 	private boolean itemInConstraints(Item item) {
 		for (Item[] tuple : constraints) {
-			if (tuple[0].getType().equals(item.getType())) { // meaning the item is the first element of some tuple in the
-				// constraints
+			if (tuple[0].getType().equals(item.getType())) { // meaning the item is the first element of
+				// some tuple in the constraints
 				{
 					if (inventory.containsKey(tuple[1].getType())) {
 						return true;
 					}
 				}
 			} else if (tuple[1].getType().equals(item.getType())) { // meaning the item is the second
-				// element of some tuple in
-				// the
-				// constraints
+				// element of some tuple in the constraints
 				{
 					if (inventory.containsKey(tuple[0].getType())) {
 						return true;
@@ -98,18 +99,18 @@ public class Locker {
 	 * @param n - number of items to insert
 	 * @return - 0: successfully added n items. -1: could not add n items. 1: if the action causes to be
 	 * moved
-	 * 		to lts  (yet accomodation is possible)
+	 * 		to lts (yet accommodation is possible)
 	 */
 	public int addItem(Item item, int n) {
-		if(n<0){
+		if (n < 0) {
 			System.out.println(CANNOT_ADD_MSG1 + n + ERROR_MSG_PREFIX + item.getType());
 			return ADDITION_ERROR;
 		}
 		double totalVolume = n * item.getVolume();
 		double halfCapacity = (double) availableCapacity / 2;
 		if (itemInConstraints(item)) { //CASE I -  cannot add items that are in the constraints list
-			System.out.println(CANNOT_ADD_MSG1 + n + ERROR_MSG_PREFIX + item.getType());
-			return ADDITION_ERROR;
+			System.out.println(CONSTRAINTS_MSG1 + item.getType() + CONSTRAINTS_MSG2);
+			return CONSTRAINTS_ERROR;
 		} else { // items are not in the constraints list
 
 			// CASE II - adding n items causes storing in lts and lts CAN contain said n items
@@ -122,7 +123,7 @@ public class Locker {
 				// removing items so that there are 20% left in the locker, and moving all the remaining
 				// to the long term
 				int nItemsToRemove = (int) (REMOVAL_VOLUME * capacity) / item.getVolume();
-				if(inventory.containsKey(item.getType())){
+				if (inventory.containsKey(item.getType())) {
 					inventory.put(item.getType(), inventory.get(item.getType()) - nItemsToRemove);
 				}
 				lts.addItem(item, n);
@@ -137,11 +138,10 @@ public class Locker {
 			}
 			// CASE IV - adding n items is possible
 			if (currentVolume + totalVolume <= halfCapacity) {
-				if(inventory.containsKey(item.getType())){
+				if (inventory.containsKey(item.getType())) {
 					inventory.put(item.getType(), inventory.get(item.getType()) + n);
-				}
-				else{
-					inventory.put(item.getType(),n);
+				} else {
+					inventory.put(item.getType(), n);
 				}
 				availableCapacity -= totalVolume;
 				return SUCCESS;
@@ -181,12 +181,11 @@ public class Locker {
 	 * @return - returns the amount of items of the given type are in the lts
 	 */
 	public int getItemCount(String type) {
-		if(inventory.containsKey(type)) {
+		if (inventory.containsKey(type)) {
 			return inventory.get(type);
 		}
 		return 0;
 	}
-
 
 	/**
 	 * @return - returns the inventory
@@ -195,10 +194,16 @@ public class Locker {
 		return inventory;
 	}
 
+	/**
+	 * @return the capacity of the locker
+	 */
 	public int getCapacity() {
 		return capacity;
 	}
 
+	/**
+	 * @return the available capacity of the locker
+	 */
 	public int getAvailableCapacity() {
 		return availableCapacity;
 	}

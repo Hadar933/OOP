@@ -6,6 +6,9 @@ import java.util.Map;
 
 import static org.junit.Assert.*;
 
+/**
+ * a class that tests the long term storage class
+ */
 public class LongTermTest {
 	private static final int CAPACITY_SIZE = 1000;
 	private static final int ADDITION_ERROR = -1;
@@ -88,7 +91,5 @@ public class LongTermTest {
 		assertTrue("test 3.6 failed", lts.getInventory().containsKey(baseballBat.getType()));
 		lts.resetInventory();
 		assertEquals("test 3.6 failed", 1000, lts.getAvailableCapacity());
-
-
 	}
 }

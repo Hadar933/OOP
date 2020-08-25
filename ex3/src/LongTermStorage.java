@@ -3,6 +3,9 @@ import oop.ex3.spaceship.Item;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * a class that represents the long term storage associated with a spaceship
+ */
 public class LongTermStorage {
 	private static final int CAPACITY_SIZE = 1000;
 	private static final int ADDITION_ERROR = -1;
@@ -18,12 +21,21 @@ public class LongTermStorage {
 	private final int capacity;
 	private int availableCapacity;
 
+	/**
+	 * a constructor for a lts instance
+	 */
 	public LongTermStorage() {
 		this.inventory = new HashMap<>();
 		this.capacity = CAPACITY_SIZE;
 		this.availableCapacity = capacity;
 	}
 
+	/**
+	 * this method adds n items to the lts
+	 * @param item - some item to add
+	 * @param n - the amount of items to add
+	 * @return - -1: cannot add the item. 0: added succesfuly
+	 */
 	public int addItem(Item item, int n) {
 		double totalVolume = n * item.getVolume();
 		if (totalVolume > availableCapacity || n < 0) {
@@ -66,10 +78,16 @@ public class LongTermStorage {
 		return inventory;
 	}
 
+	/**
+	 * @return the lts capacity
+	 */
 	public int getCapacity() {
 		return capacity;
 	}
 
+	/**
+	 * @return - the current available capacity of the lts
+	 */
 	public int getAvailableCapacity() {
 		return availableCapacity;
 	}

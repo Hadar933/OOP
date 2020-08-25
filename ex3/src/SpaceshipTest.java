@@ -4,6 +4,9 @@ import org.junit.*;
 
 import static org.junit.Assert.*;
 
+/**
+ * a class that tests the class spaceship
+ */
 public class SpaceshipTest {
 	private static final int SUCCESS = 0;
 	private static final int INVALID_ID = -1;

@@ -9,6 +9,7 @@ import static org.junit.Assert.*;
  */
 public class LockerTest {
 	private static final int SUCCESS = 0;
+	private static final int CONSTRAINTS_ERROR = -2;
 	private static final int ADDITION_ERROR = -1;
 	private static final int LTS_ERROR = 1;
 	private static final int REMOVE_ERROR = -1;
@@ -53,7 +54,7 @@ public class LockerTest {
 	public void testAddItems() {
 		//CASE 1 -  items with constraints:
 		locker.addItem(baseballBat, 1);
-		assertEquals("test 1 failed", ADDITION_ERROR, locker.addItem(football, 1));
+		assertEquals("test 1 failed", CONSTRAINTS_ERROR, locker.addItem(football, 1));
 
 		// resetting locker for further use
 		locker = new Locker(lts, capacity, constraints);
@@ -79,7 +80,7 @@ public class LockerTest {
 		assertEquals("test 5.1 failed", SUCCESS, locker.addItem(helmetSize1, 1));
 		assertEquals("test 5.2 failed", LTS_ERROR, locker.addItem(helmetSize3, 1));
 		assertEquals("test 5.3 failed", LTS_ERROR, locker.addItem(engine, 1));
-		assertEquals("test 5.4 failed", ADDITION_ERROR, locker.addItem(football, 1));
+		assertEquals("test 5.4 failed", CONSTRAINTS_ERROR, locker.addItem(football, 1));
 		assertEquals("test 5.5 failed", ADDITION_ERROR, locker.addItem(helmetSize3, 1000));
 		assertEquals("test 5.6 failed", 5, locker.getAvailableCapacity());
 		assertEquals("test 5.7 failed", 985, lts.getAvailableCapacity());
