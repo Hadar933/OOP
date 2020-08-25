@@ -140,7 +140,9 @@ public class Locker {
 				if(inventory.containsKey(item.getType())){
 					inventory.put(item.getType(), inventory.get(item.getType()) + n);
 				}
-				inventory.put(item.getType(),n);
+				else{
+					inventory.put(item.getType(),n);
+				}
 				availableCapacity -= totalVolume;
 				return SUCCESS;
 			}

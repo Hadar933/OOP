@@ -6,7 +6,9 @@ import static org.junit.Assert.*;
 
 import java.util.Map;
 
-
+/**
+ * this class tests the class Locker
+ */
 public class LockerTest {
 	private static final int SUCCESS = 0;
 	private static final int ADDITION_ERROR = -1;
@@ -16,7 +18,6 @@ public class LockerTest {
 	LongTermStorage lts = new LongTermStorage();
 	int capacity = 10;
 	Item[][] constraints;
-	private Item[] allItems;
 	private Locker locker;
 	Item baseballBat;
 	Item helmetSize1;
@@ -24,12 +25,14 @@ public class LockerTest {
 	Item engine;
 	Item football;
 
+	/**
+	 * this method initializes the data
+	 */
 	@Before
 	public void lockerTest() {
 		this.constraints = ItemFactory.getConstraintPairs();
 		this.locker = new Locker(lts, capacity, constraints);
-		this.allItems = ItemFactory.createAllLegalItems();
-
+		Item[] allItems = ItemFactory.createAllLegalItems();
 		baseballBat = allItems[0];
 		helmetSize1 = allItems[1];
 		helmetSize3 = allItems[2];
@@ -37,11 +40,17 @@ public class LockerTest {
 		football = allItems[4];
 	}
 
+	/**
+	 * this method checks the initialization was made properly
+	 */
 	@Test
 	public void testInitialization() {
 		assertEquals(10, locker.getCapacity());
 	}
 
+	/**
+	 * this method tests the addition of items to the locker
+	 */
 	@Test
 	public void testAddItems() {
 		//CASE 1 -  items with constraints:
@@ -81,6 +90,9 @@ public class LockerTest {
 		assertEquals("test 6 failed",ADDITION_ERROR, locker.addItem(helmetSize3,-1));
 	}
 
+	/**
+	 * this method tests deletion of items from the locker
+	 */
 	@Test
 	public void testDeleteItems(){
 		lts.resetInventory();
@@ -113,6 +125,10 @@ public class LockerTest {
 		assertEquals("test 10.3 failed",SUCCESS,locker.removeItem(helmetSize1,1));
 	}
 
+	/**
+	 * this method tests the inventory of the locker, as well as some other small methods  such as
+	 * item count
+	 */
 	@Test
 	public void testInventory(){
 		locker = new Locker(lts,capacity,constraints);
@@ -130,6 +146,28 @@ public class LockerTest {
 		locker.removeItem(baseballBat,1);
 		assertFalse("test 11.6 failed", locker.getInventory().containsKey(baseballBat.getType()));
 		assertEquals("test 11.7 failed",0, locker.getItemCount(baseballBat.getType()));
-		System.out.println("Passed Locker Tests!");
 	}
+
+	/**
+	 * when adding items of the same type, if we exceed 50% of the available storage, only 20% should remain
+	 * in the locker. this method tests that feature
+	 */
+	@Test
+	public void testPercentage(){
+		locker = new Locker(lts,capacity,constraints);
+		lts.resetInventory();
+
+		// adding three basket balls (volume 6) should move 2 basketballs from the locker to the lts
+		locker.addItem(baseballBat,2);
+		assertEquals("test 12 failed",2, locker.getItemCount(baseballBat.getType()));
+		locker.addItem(baseballBat,1);
+		assertEquals("test 12.1 failed",1, locker.getItemCount(baseballBat.getType()));
+		assertEquals("test 12.2 failed",1, lts.getItemCount(baseballBat.getType()));
+		locker.addItem(baseballBat,1);
+		assertEquals("test 12.3 failed",2, locker.getItemCount(baseballBat.getType()));
+		locker.addItem(baseballBat,1);
+		assertEquals("test 12.3 failed",1, locker.getItemCount(baseballBat.getType()));
+	}
+
+
 }
