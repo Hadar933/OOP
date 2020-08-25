@@ -1,0 +1,58 @@
+hadar933
+
+=============================
+=      File description     =
+=============================
+
+README
+Classes:
+BoopingSite.java
+Locker.java
+LongTermStorage.java
+Spaceship.java
+
+Tests:
+BoopingSiteTest.java
+LockerTest.java
+LongTermTest.java
+SpaceshipTest.java
+SpaceshipDepositoryTest.java
+
+==============================
+= Locker & Long term storage =
+==============================
+in both the locker and the long term storage implementations, the data is
+stored inside a Map data structure.
+given a key of some item's type(such as basketball or a helmet),the map retrieves
+a value that represents the number of items of such type exist in the locker or
+in the long term storage.
+the usage of map for that purpose makes the handling of the locker and the lst fast and
+convenient, and enables us to use methods such as get, set and delete
+in average of O(1) time.
+
+=====================================
+= data sets for Booping site tests  =
+=====================================
+given three different data sets (empty, small and big), Iv'e checked that each
+method from the BoopingSite API outputs the corrent value, as specified in the
+exercise description. both edge cases that consists illegal inputs and cases of
+legal inputs were checked, while the tests made sure that the results were alligned
+with each data set expected result values.
+
+=============================
+=     compare by rating     =
+=============================
+The method works as follows:
+given some city, the function builds an array consisting of all relevant
+hotels in the city, and sorts (from highest rating to lowest) the valus according
+to a designated compare function.
+the compare function compares the stars rating, and if they are equal, compares by name.
+
+=============================
+=   compare by proximity    =
+=============================
+both of the methods getHotelsByProximity and getHotelsInCityByProximity are
+based on the following:
+given some coordinates, sort all hotels (or all hotels in some given city)
+in order of the distance from the given coordinates. if the distance of some two
+hotels from the coordinates is even, sort by their POI ratio.
