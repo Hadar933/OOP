@@ -136,7 +136,7 @@ public class Locker {
 				return ADDITION_ERROR;
 			}
 			// CASE IV - adding n items is possible
-			if (currentVolume + totalVolume < halfCapacity) {
+			if (currentVolume + totalVolume <= halfCapacity) {
 				if(inventory.containsKey(item.getType())){
 					inventory.put(item.getType(), inventory.get(item.getType()) + n);
 				}
@@ -179,7 +179,10 @@ public class Locker {
 	 * @return - returns the amount of items of the given type are in the lts
 	 */
 	public int getItemCount(String type) {
-		return inventory.get(type);
+		if(inventory.containsKey(type)) {
+			return inventory.get(type);
+		}
+		return 0;
 	}
 
 

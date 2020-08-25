@@ -111,6 +111,25 @@ public class LockerTest {
 		assertEquals("test 10.1 failed",REMOVE_ERROR,locker.removeItem(helmetSize3,1));
 		assertEquals("test 10.2 failed",REMOVE_ERROR,locker.removeItem(helmetSize1,2));
 		assertEquals("test 10.3 failed",SUCCESS,locker.removeItem(helmetSize1,1));
-		
+	}
+
+	@Test
+	public void testInventory(){
+		locker = new Locker(lts,capacity,constraints);
+		lts.resetInventory();
+		assertEquals("test 11 failed",0,locker.getInventory().size());
+		locker.addItem(helmetSize1,1);
+		locker.addItem(baseballBat,1);
+		locker.addItem(helmetSize3,1);
+		assertEquals("test 11.1 failed",2,locker.getInventory().size());
+		assertTrue("test 11.2 failed", locker.getInventory().containsKey(helmetSize1.getType()));
+		assertTrue("test 11.3 failed", locker.getInventory().containsKey(baseballBat.getType()));
+		assertFalse("test 11.3 failed", locker.getInventory().containsKey(helmetSize3.getType()));
+		assertEquals("test 11.4 failed",1, locker.getItemCount(helmetSize1.getType()));
+		assertEquals("test 11.5 failed",0, locker.getItemCount(helmetSize3.getType()));
+		locker.removeItem(baseballBat,1);
+		assertFalse("test 11.6 failed", locker.getInventory().containsKey(baseballBat.getType()));
+		assertEquals("test 11.7 failed",0, locker.getItemCount(baseballBat.getType()));
+		System.out.println("Passed Locker Tests!");
 	}
 }
