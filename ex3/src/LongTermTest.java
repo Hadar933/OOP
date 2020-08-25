@@ -36,6 +36,9 @@ public class LongTermTest {
 		}
 	}
 
+	/*
+	tests the initialization of the data
+	 */
 	@Test
 	public void testInitialization() {
 		assertNotNull("test 1 failed", lts);
