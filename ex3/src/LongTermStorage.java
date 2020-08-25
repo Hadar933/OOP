@@ -25,7 +25,7 @@ public class LongTermStorage {
 	 * a constructor for a lts instance
 	 */
 	public LongTermStorage() {
-		this.inventory = new HashMap<>();
+		this.inventory = new HashMap<String, Integer>();
 		this.capacity = CAPACITY_SIZE;
 		this.availableCapacity = capacity;
 	}

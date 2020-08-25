@@ -61,7 +61,7 @@ public class Locker {
 		this.capacity = capacity;
 		this.constraints = constraints;
 		this.lts = lts;
-		this.inventory = new HashMap<>();
+		this.inventory = new HashMap<String, Integer>();
 		this.availableCapacity = capacity;
 	}
 
@@ -102,11 +102,11 @@ public class Locker {
 	 * 		to lts (yet accommodation is possible)
 	 */
 	public int addItem(Item item, int n) {
-		if (n < 0) {
+		double totalVolume = n * item.getVolume();
+		if (n < 0 || totalVolume > capacity) {
 			System.out.println(CANNOT_ADD_MSG1 + n + ERROR_MSG_PREFIX + item.getType());
 			return ADDITION_ERROR;
 		}
-		double totalVolume = n * item.getVolume();
 		double halfCapacity = (double) availableCapacity / 2;
 		if (itemInConstraints(item)) { //CASE I -  cannot add items that are in the constraints list
 			System.out.println(CONSTRAINTS_MSG1 + item.getType() + CONSTRAINTS_MSG2);

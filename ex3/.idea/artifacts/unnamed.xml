@@ -11,6 +11,7 @@
       <element id="file-copy" path="$PROJECT_DIR$/src/Spaceship.java" />
       <element id="file-copy" path="$PROJECT_DIR$/src/SpaceshipDepositoryTest.java" />
       <element id="file-copy" path="$PROJECT_DIR$/src/SpaceshipTest.java" />
+      <element id="file-copy" path="$PROJECT_DIR$/README" />
     </root>
   </artifact>
 </component>

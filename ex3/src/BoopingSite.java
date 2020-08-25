@@ -24,7 +24,7 @@ public class BoopingSite {
 	 * @param name - the name of the dataset
 	 */
 	public BoopingSite(String name) {
-		this.allHotels = new ArrayList<>();
+		this.allHotels = new ArrayList<Hotel>();
 		allHotels.addAll(Arrays.asList(HotelDataset.getHotels(name)));
 	}
 
@@ -32,7 +32,7 @@ public class BoopingSite {
 	returns all hotels from data set that are located in given city
 	 */
 	private ArrayList<Hotel> getHotelsInCity(String city) {
-		ArrayList<Hotel> hotels = new ArrayList<>();
+		ArrayList<Hotel> hotels = new ArrayList<Hotel>();
 		for (Hotel hotel : allHotels) {
 			if (hotel.getCity().equals(city)) {
 				hotels.add(hotel);
@@ -50,7 +50,7 @@ public class BoopingSite {
 	public Hotel[] getHotelsInCityByRating(String city) {
 		// fetching hotels that are relevant the the city:
 		ArrayList<Hotel> hotels = getHotelsInCity(city);
-		hotels.sort(new Comparator<Hotel>() {
+		Collections.sort(hotels, new Comparator<Hotel>() {
 			@Override
 			public int compare(Hotel h1, Hotel h2) {
 				Integer stars1 = h1.getStarRating();
@@ -91,14 +91,14 @@ public class BoopingSite {
 	 * @return - an array of hotels sorted according to their euclidean distance from the given geographic
 	 * 		location, in ascending order
 	 */
-	public Hotel[] getHotelsByProximity(double latitude, double longitude) {
-		ArrayList<Hotel> hotels = new ArrayList<>();
+	public Hotel[] getHotelsByProximity(final double latitude, final double longitude) {
+		ArrayList<Hotel> hotels = new ArrayList<Hotel>();
 		if (badCoordinates(longitude, latitude)) {
 			//bad coordinates so we return an empty array
 			return hotels.toArray(new Hotel[0]);
 		}
 		hotels = allHotels;
-		hotels.sort(new Comparator<Hotel>() {
+		Collections.sort(hotels, new Comparator<Hotel>() {
 			@Override
 			public int compare(Hotel h1, Hotel h2) {
 				Double distance1 = distance(latitude, longitude, h1.getLatitude(), h1.getLongitude());
@@ -123,15 +123,15 @@ public class BoopingSite {
 	 * @return - an array of hotels sorted according to their euclidean distance from the given geographic
 	 * 		location, in ascending order
 	 */
-	public Hotel[] getHotelsInCityByProximity(String city, double latitude, double longitude) {
+	public Hotel[] getHotelsInCityByProximity(String city,final double latitude,final double longitude) {
 		// fetching hotels that are relevant the the city:
-		ArrayList<Hotel> hotels = new ArrayList<>();
+		ArrayList<Hotel> hotels = new ArrayList<Hotel>();
 		if (badCoordinates(longitude, latitude)) {
 			//bad coordinates so we return an empty array
 			return hotels.toArray(new Hotel[0]);
 		}
 		hotels = getHotelsInCity(city);
-		hotels.sort(new Comparator<Hotel>() {
+		Collections.sort(hotels, new Comparator<Hotel>() {
 			@Override
 			public int compare(Hotel h1, Hotel h2) {
 				Double distance1 = distance(latitude, longitude, h1.getLatitude(),

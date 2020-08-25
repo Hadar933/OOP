@@ -50,6 +50,7 @@ public class SpaceshipTest {
 			spaceship.createLocker(i, i);
 		}
 		assertEquals("test 2.3 failed", REACHED_MAX_LOCKER_CAPACITY, spaceship.createLocker(0, 1));
+
 	}
 
 }
