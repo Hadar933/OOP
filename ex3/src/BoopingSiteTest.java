@@ -7,6 +7,9 @@ import oop.ex3.searchengine.HotelDataset;
 
 import java.util.Random;
 
+/**
+ * a class that tests the booping site class
+ */
 public class BoopingSiteTest {
 	private final static int ARRAY_SIZE = 10;
 	private final static int LATITUDE_THRESHOLD = 90;
@@ -19,11 +22,8 @@ public class BoopingSiteTest {
 			"malvan", "mumbai"}; //in data
 
 	private BoopingSite bigSite;
-	private Hotel[] bigHotels;
 	private BoopingSite smallSite;
-	private Hotel[] smallHotels;
 	private BoopingSite emptySite;
-	private Hotel[] emptyHotels;
 
 	/**
 	 * initializes the data before the tests begin
@@ -33,10 +33,6 @@ public class BoopingSiteTest {
 		bigSite = new BoopingSite(bigData);
 		smallSite = new BoopingSite(smallData);
 		emptySite = new BoopingSite(emptyData);
-
-		bigHotels = HotelDataset.getHotels(bigData);
-		smallHotels = HotelDataset.getHotels(smallData);
-		emptyHotels = HotelDataset.getHotels(emptyData);
 	}
 
 	/**
@@ -170,7 +166,9 @@ public class BoopingSiteTest {
 		}
 	}
 
-
+	/**
+	 * a helper function for the test of the get hotels in city by proximity method
+	 */
 	private void testHelperGetHotelsInCityByProximity(BoopingSite site, double latitude, double longitude,
 													  String city) {
 		Hotel[] sorted = site.getHotelsInCityByProximity(city, latitude, longitude);
@@ -191,6 +189,9 @@ public class BoopingSiteTest {
 		}
 	}
 
+	/**
+	 * tests the method GetHotelsInCityByProximity
+	 */
 	@Test
 	public void testGetHotelsInCityByProximity() {
 
@@ -214,11 +215,11 @@ public class BoopingSiteTest {
 		for (double latitude : latitudeValues) {
 			for (double longitude : longitudeValues) {
 				// checking the small data ( city = manali )
-				testHelperGetHotelsInCityByProximity(smallSite,latitude,longitude,goodCities[0]);
+				testHelperGetHotelsInCityByProximity(smallSite, latitude, longitude, goodCities[0]);
 				smallSite.getHotelsInCityByProximity(goodCities[0], latitude, longitude);
 				// checking the big data ( for various cities)
 				for (String city : goodCities) {
-					testHelperGetHotelsInCityByProximity(bigSite,latitude,longitude,city);
+					testHelperGetHotelsInCityByProximity(bigSite, latitude, longitude, city);
 				}
 			}
 		}

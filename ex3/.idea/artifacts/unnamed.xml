@@ -1,0 +1,16 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="unnamed">
+    <output-path>$PROJECT_DIR$/out/artifacts/unnamed</output-path>
+    <root id="archive" name="ex3.jar">
+      <element id="file-copy" path="$PROJECT_DIR$/src/BoopingSite.java" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/BoopingSiteTest.java" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/Locker.java" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/LockerTest.java" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/LongTermStorage.java" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/LongTermTest.java" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/Spaceship.java" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/SpaceshipDepositoryTest.java" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/SpaceshipTest.java" />
+    </root>
+  </artifact>
+</component>

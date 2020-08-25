@@ -6,11 +6,17 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 
+/**
+ * a class that represents an online booking site
+ */
 public class BoopingSite {
 
 	private final static int LATITUDE_THRESHOLD = 90;
 	private final static int LONGITUDE_THRESHOLD = 180;
 
+	/**
+	 * an array that contains all of the hotels
+	 */
 	private final ArrayList<Hotel> allHotels;
 
 	/**
@@ -87,7 +93,7 @@ public class BoopingSite {
 	 */
 	public Hotel[] getHotelsByProximity(double latitude, double longitude) {
 		ArrayList<Hotel> hotels = new ArrayList<>();
-		if (badCoordinates(longitude,latitude)) {
+		if (badCoordinates(longitude, latitude)) {
 			//bad coordinates so we return an empty array
 			return hotels.toArray(new Hotel[0]);
 		}
@@ -120,7 +126,7 @@ public class BoopingSite {
 	public Hotel[] getHotelsInCityByProximity(String city, double latitude, double longitude) {
 		// fetching hotels that are relevant the the city:
 		ArrayList<Hotel> hotels = new ArrayList<>();
-		if (badCoordinates(longitude,latitude)) {
+		if (badCoordinates(longitude, latitude)) {
 			//bad coordinates so we return an empty array
 			return hotels.toArray(new Hotel[0]);
 		}
