@@ -31,18 +31,21 @@ public class LongTermTest {
 		helmetSize3 = allItems[2];
 		engine = allItems[3];
 		football = allItems[4];
-		for(Item item:allItems){
+		for (Item item : allItems) {
 			System.out.println(item);
 		}
 	}
 
 	@Test
-	public void testInitialization(){
-		assertNotNull("test 1 failed",lts);
+	public void testInitialization() {
+		assertNotNull("test 1 failed", lts);
 	}
 
+	/**
+	 * this method tests the add item process
+	 */
 	@Test
-	public void testAddItem(){
+	public void testAddItem() {
 		// CASE 1 - not enough room in lts
 		assertEquals("test 2 failed", ADDITION_ERROR, lts.addItem(engine, 200));
 		// CASE 2- negative n
@@ -59,29 +62,29 @@ public class LongTermTest {
 		assertEquals("test 2.7 failed", SUCCESS, lts.addItem(baseballBat, 3));
 	}
 
+	/**
+	 * this method cheks some basic functions such as getItemCount, getAvailableCapacity and getInventory
+	 */
 	@Test
-	public void testBasicMethods(){
+	public void testBasicMethods() {
 		lts.resetInventory();
 		// item count and available capacity:
-		lts.addItem(baseballBat,10);
+		lts.addItem(baseballBat, 10);
 		assertEquals("test 3 failed", 10, lts.getItemCount(baseballBat.getType()));
 		assertEquals("test 3.1 failed", 980, lts.getAvailableCapacity());
-		lts.addItem(helmetSize1,5);
+		lts.addItem(helmetSize1, 5);
 		assertEquals("test 3.2 failed", 5, lts.getItemCount(helmetSize1.getType()));
 		assertEquals("test 3.3 failed", 965, lts.getAvailableCapacity());
-		lts.addItem(engine,90);
+		lts.addItem(engine, 90);
 		assertEquals("test 3.4 failed", 65, lts.getAvailableCapacity());
 		assertEquals("test 3.5 failed", 0, lts.getItemCount(football.getType()));
 
 		//get inventory:
-		assertFalse("test 3.6 failed",lts.getInventory().containsKey(football.getType()));
-		assertTrue("test 3.6 failed",lts.getInventory().containsKey(helmetSize1.getType()));
-		assertTrue("test 3.6 failed",lts.getInventory().containsKey(baseballBat.getType()));
+		assertFalse("test 3.6 failed", lts.getInventory().containsKey(football.getType()));
+		assertTrue("test 3.6 failed", lts.getInventory().containsKey(helmetSize1.getType()));
+		assertTrue("test 3.6 failed", lts.getInventory().containsKey(baseballBat.getType()));
 		lts.resetInventory();
 		assertEquals("test 3.6 failed", 1000, lts.getAvailableCapacity());
-
-
-
 
 
 	}

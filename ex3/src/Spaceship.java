@@ -1,33 +1,34 @@
 import oop.ex3.spaceship.Item;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * a class that represents a Spaceship instance, with storage units
  */
-public abstract class Spaceship {
+public class Spaceship {
 	private static final int SUCCESS = 0;
 	private static final int INVALID_ID = -1;
 	private static final int INVALID_CAPACITY = -2;
 	private static final int REACHED_MAX_LOCKER_CAPACITY = -3;
 
-	/**
+	/*
 	 * list of all crew ids
 	 */
 	private final int[] crewIDs;
 
-	/**
+	/*
 	 * the number of lockers in the ship
 	 */
 	private final int numOfLockers;
 
-	/**
+	/*
 	 * list of constraints between items
 	 */
 	private final Item[][] constraints;
 
-	/**
+	/*
 	 * name of the ship
 	 */
 	private final String name;
@@ -37,11 +38,14 @@ public abstract class Spaceship {
 	 */
 	private final LongTermStorage lts;
 
-	/**
-	 * a map of all lockers in the ship. key = crewID, value = Locker
+	/*
+	 * an array of all lockers in the ship. key = crewID, value = Locker
 	 */
-	private final Map<Integer, Locker> storage;
+	private final Locker[] storage;
 
+	/*
+	 * the current number of lockers in the spaceship
+	 */
 	private int currentNumOfLockers;
 
 	/**
@@ -56,8 +60,8 @@ public abstract class Spaceship {
 		this.crewIDs = crewIDs;
 		this.numOfLockers = numOfLockers;
 		this.constraints = constraints;
-		this.storage = new HashMap<>();
 		this.lts = new LongTermStorage();
+		this.storage = new Locker[numOfLockers];
 		this.currentNumOfLockers = 0;
 	}
 
@@ -71,14 +75,15 @@ public abstract class Spaceship {
 	/*
 	finds if some id is in the crew ids list
 	 */
-	private boolean idInArray(int crewID){
-		for(int id: crewIDs){
-			if(id==crewID){
+	private boolean idInArray(int crewID) {
+		for (int id : crewIDs) {
+			if (id == crewID) {
 				return true;
 			}
 		}
 		return false;
 	}
+
 	/**
 	 * creates a locker obj and adds it as part of the spaceship's storage
 	 * @param crewID - the id to which the new locker belongs
@@ -90,13 +95,13 @@ public abstract class Spaceship {
 		if (!idInArray(crewID)) {
 			return INVALID_ID;
 		}
-		if(capacity<0){
+		if (capacity < 0) {
 			return INVALID_CAPACITY;
 		}
-		if(currentNumOfLockers==numOfLockers){
+		if (currentNumOfLockers == numOfLockers) {
 			return REACHED_MAX_LOCKER_CAPACITY;
 		}
-		storage.put(crewID,new Locker(lts,capacity,constraints));
+		storage[currentNumOfLockers] = new Locker(lts, capacity, constraints);
 		currentNumOfLockers++;
 		return SUCCESS;
 	}
@@ -112,13 +117,7 @@ public abstract class Spaceship {
 	 * @return - an array of the lockers, whose length is numoflockers
 	 */
 	public Locker[] getLockers() {
-		int index = 0;
-		Locker[] lockersArray = new Locker[numOfLockers];
-		for (Locker locker : storage.values()) {
-			lockersArray[index] = locker;
-			index++;
-		}
-		return lockersArray;
+		return storage;
 	}
 
 }

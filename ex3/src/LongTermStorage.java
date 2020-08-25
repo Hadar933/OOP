@@ -1,4 +1,3 @@
-import com.sun.net.httpserver.Authenticator;
 import oop.ex3.spaceship.Item;
 
 import java.util.HashMap;

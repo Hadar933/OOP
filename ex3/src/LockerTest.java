@@ -13,21 +13,21 @@ public class LockerTest {
 	private static final int LTS_ERROR = 1;
 	private static final int REMOVE_ERROR = -1;
 
-	LongTermStorage lts = new LongTermStorage();
+	private final LongTermStorage lts = new LongTermStorage();
 	int capacity = 10;
-	Item[][] constraints;
+	private Item[][] constraints;
 	private Locker locker;
-	Item baseballBat;
-	Item helmetSize1;
-	Item helmetSize3;
-	Item engine;
-	Item football;
+	private Item baseballBat;
+	private Item helmetSize1;
+	private Item helmetSize3;
+	private Item engine;
+	private Item football;
 
 	/**
 	 * this method initializes the data
 	 */
 	@Before
-	public void lockerTest() {
+	public void initializeLocker() {
 		this.constraints = ItemFactory.getConstraintPairs();
 		this.locker = new Locker(lts, capacity, constraints);
 		Item[] allItems = ItemFactory.createAllLegalItems();
