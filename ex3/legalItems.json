@@ -18,5 +18,9 @@
   {
     "type": "football",
     "volume": 4
-  }
+  },
+  {
+    "type": "newObject",
+    "volume": 1000
+  }  
 ]

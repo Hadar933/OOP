@@ -16,9 +16,9 @@ public class Locker {
 												  " Problem: no room for ";
 	private static final String NEG_VALUE_ERR = "Error: Your request cannot be completed at this time. " +
 												"Problem: cannot remove a negative number of items of type";
-	private static final String ERROR_MSG_PREFIX = "items of type ";
+	private static final String ERROR_MSG_PREFIX = " items of type ";
 	private static final String LTS_MSG = "Warning: Action successful, but has caused items to be moved to" +
-										  "storage";
+										  " storage";
 
 
 	/*
@@ -70,13 +70,16 @@ public class Locker {
 	 */
 	private boolean itemInConstraints(Item item) {
 		for (Item[] tuple : constraints) {
-			if (tuple[0] == item) { // meaning the item is the first element of some tuple in the constraints
+			if (tuple[0].getType().equals(item.getType())) { // meaning the item is the first element of some tuple in the
+				// constraints
 				{
 					if (inventory.containsKey(tuple[1].getType())) {
 						return true;
 					}
 				}
-			} else if (tuple[1] == item) { // meaning the item is the second element of some tuple in the
+			} else if (tuple[1].getType().equals(item.getType())) { // meaning the item is the second
+				// element of some tuple in
+				// the
 				// constraints
 				{
 					if (inventory.containsKey(tuple[0].getType())) {
@@ -98,18 +101,17 @@ public class Locker {
 	 * 		to lts  (yet accomodation is possible)
 	 */
 	public int addItem(Item item, int n) {
+		if(n<0){
+			System.out.println(CANNOT_ADD_MSG1 + n + ERROR_MSG_PREFIX + item.getType());
+			return ADDITION_ERROR;
+		}
 		double totalVolume = n * item.getVolume();
 		double halfCapacity = (double) availableCapacity / 2;
-		if (itemInConstraints(item)) { // cannot add items that are in the constraints list
+		if (itemInConstraints(item)) { //CASE I -  cannot add items that are in the constraints list
 			System.out.println(CANNOT_ADD_MSG1 + n + ERROR_MSG_PREFIX + item.getType());
 			return ADDITION_ERROR;
 		} else { // items are not in the constraints list
 
-			// CASE I - locker cannot contain n items
-			if (totalVolume > availableCapacity) {
-				System.out.println(CANNOT_ADD_MSG1 + n + ERROR_MSG_PREFIX + item.getType());
-				return ADDITION_ERROR;
-			}
 			// CASE II - adding n items causes storing in lts and lts CAN contain said n items
 			int currentVolume = 0;
 			if (inventory.containsKey(item.getType())) {
@@ -120,8 +122,10 @@ public class Locker {
 				// removing items so that there are 20% left in the locker, and moving all the remaining
 				// to the long term
 				int nItemsToRemove = (int) (REMOVAL_VOLUME * capacity) / item.getVolume();
-				inventory.put(item.getType(), inventory.get(item.getType()) - nItemsToRemove);
-				lts.addItem(item, nItemsToRemove);
+				if(inventory.containsKey(item.getType())){
+					inventory.put(item.getType(), inventory.get(item.getType()) - nItemsToRemove);
+				}
+				lts.addItem(item, n);
 				System.out.println(LTS_MSG);
 				return LTS_ERROR;
 			}
@@ -133,7 +137,10 @@ public class Locker {
 			}
 			// CASE IV - adding n items is possible
 			if (currentVolume + totalVolume < halfCapacity) {
-				inventory.put(item.getType(), inventory.get(item.getType()) + n);
+				if(inventory.containsKey(item.getType())){
+					inventory.put(item.getType(), inventory.get(item.getType()) + n);
+				}
+				inventory.put(item.getType(),n);
 				availableCapacity -= totalVolume;
 				return SUCCESS;
 			}
@@ -149,7 +156,8 @@ public class Locker {
 	 * @return - 0: success. -1: there are less than n items in the locker or n is negative
 	 */
 	public int removeItem(Item item, int n) {
-		if (inventory.get(item.getType()) < n) { // not enough items in inventory
+		if (!inventory.containsKey(item.getType()) || inventory.get(item.getType()) < n) { // not
+			// enough items in inventory
 			System.out.println(CANNOT_DELETE_MSG1 + n + ERROR_MSG_PREFIX + item.getType());
 			return (REMOVE_ERROR);
 		}

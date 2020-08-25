@@ -31,7 +31,12 @@ public class LongTermStorage {
 			System.out.println(CANNOT_ADD_MSG1 + n + ERROR_MSG_PREFIX + item.getType());
 			return ADDITION_ERROR;
 		} else {
-			inventory.put(item.getType(), inventory.get(item.getType()) + n);
+			if(inventory.containsKey(item.getType())){
+				inventory.put(item.getType(), inventory.get(item.getType()) + n);
+			}
+			else{
+				inventory.put(item.getType(), n);
+			}
 			availableCapacity -= totalVolume;
 			return SUCCESS;
 		}
@@ -42,6 +47,7 @@ public class LongTermStorage {
 	 */
 	public void resetInventory() {
 		inventory.clear();
+		availableCapacity = capacity;
 	}
 
 	/**
