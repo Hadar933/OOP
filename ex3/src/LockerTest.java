@@ -78,12 +78,12 @@ public class LockerTest {
 		locker = new Locker(lts, capacity, constraints);
 		assertEquals("test 5 failed", SUCCESS, locker.addItem(baseballBat, 1));
 		assertEquals("test 5.1 failed", SUCCESS, locker.addItem(helmetSize1, 1));
-		assertEquals("test 5.2 failed", LTS_ERROR, locker.addItem(helmetSize3, 1));
-		assertEquals("test 5.3 failed", LTS_ERROR, locker.addItem(engine, 1));
+		assertEquals("test 5.2 failed", SUCCESS, locker.addItem(helmetSize3, 1));
+		assertEquals("test 5.3 failed", ADDITION_ERROR, locker.addItem(engine, 1));
 		assertEquals("test 5.4 failed", CONSTRAINTS_ERROR, locker.addItem(football, 1));
 		assertEquals("test 5.5 failed", ADDITION_ERROR, locker.addItem(helmetSize3, 1000));
-		assertEquals("test 5.6 failed", 5, locker.getAvailableCapacity());
-		assertEquals("test 5.7 failed", 985, lts.getAvailableCapacity());
+		assertEquals("test 5.6 failed", 0, locker.getAvailableCapacity());
+		assertEquals("test 5.7 failed", 1000, lts.getAvailableCapacity());
 
 		// CASE 5 - invalid inputs
 		assertEquals("test 6 failed", ADDITION_ERROR, locker.addItem(helmetSize3, -1));
@@ -119,7 +119,7 @@ public class LockerTest {
 		locker.addItem(helmetSize1, 1);
 		locker.addItem(helmetSize3, 1);
 		assertEquals("test 10 failed", SUCCESS, locker.removeItem(baseballBat, 1));
-		assertEquals("test 10.1 failed", REMOVE_ERROR, locker.removeItem(helmetSize3, 1));
+		assertEquals("test 10.1 failed", REMOVE_ERROR, locker.removeItem(helmetSize3, 10));
 		assertEquals("test 10.2 failed", REMOVE_ERROR, locker.removeItem(helmetSize1, 2));
 		assertEquals("test 10.3 failed", SUCCESS, locker.removeItem(helmetSize1, 1));
 	}
@@ -135,12 +135,13 @@ public class LockerTest {
 		locker.addItem(helmetSize1, 1);
 		locker.addItem(baseballBat, 1);
 		locker.addItem(helmetSize3, 1);
-		assertEquals("test 11.1 failed", 2, locker.getInventory().size());
+		locker.addItem(engine, 1);
+		assertEquals("test 11.1 failed", 3, locker.getInventory().size());
 		assertTrue("test 11.2 failed", locker.getInventory().containsKey(helmetSize1.getType()));
 		assertTrue("test 11.3 failed", locker.getInventory().containsKey(baseballBat.getType()));
-		assertFalse("test 11.3 failed", locker.getInventory().containsKey(helmetSize3.getType()));
+		assertFalse("test 11.3 failed", locker.getInventory().containsKey(engine.getType()));
 		assertEquals("test 11.4 failed", 1, locker.getItemCount(helmetSize1.getType()));
-		assertEquals("test 11.5 failed", 0, locker.getItemCount(helmetSize3.getType()));
+		assertEquals("test 11.5 failed", 0, locker.getItemCount(engine.getType()));
 		locker.removeItem(baseballBat, 1);
 		assertFalse("test 11.6 failed", locker.getInventory().containsKey(baseballBat.getType()));
 		assertEquals("test 11.7 failed", 0, locker.getItemCount(baseballBat.getType()));

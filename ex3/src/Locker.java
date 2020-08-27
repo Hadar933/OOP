@@ -103,20 +103,20 @@ public class Locker {
 	 */
 	public int addItem(Item item, int n) {
 		double totalVolume = n * item.getVolume();
-		if (n < 0 || totalVolume > capacity) {
-			System.out.println(CANNOT_ADD_MSG1 + n + ERROR_MSG_PREFIX + item.getType());
-			return ADDITION_ERROR;
-		}
-		double halfCapacity = (double) availableCapacity / 2;
-		if (itemInConstraints(item)) { //CASE I -  cannot add items that are in the constraints list
+		double halfCapacity = (double) capacity / 2;
+		if (itemInConstraints(item)) { //CASE 0 -  cannot add items that are in the constraints list
 			System.out.println(CONSTRAINTS_MSG1 + item.getType() + CONSTRAINTS_MSG2);
 			return CONSTRAINTS_ERROR;
 		} else { // items are not in the constraints list
 
+			if (n < 0 || totalVolume > availableCapacity) { // CASE I
+				System.out.println(CANNOT_ADD_MSG1 + n + ERROR_MSG_PREFIX + item.getType());
+				return ADDITION_ERROR;
+			}
 			// CASE II - adding n items causes storing in lts and lts CAN contain said n items
 			int currentVolume = 0;
 			if (inventory.containsKey(item.getType())) {
-				currentVolume = inventory.get(item.getType());
+				currentVolume = inventory.get(item.getType()) * item.getVolume();
 			}
 			if (currentVolume + totalVolume > halfCapacity &&
 				currentVolume + totalVolume <= lts.getAvailableCapacity()) {
