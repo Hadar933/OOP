@@ -167,6 +167,4 @@ public class LockerTest {
 		locker.addItem(baseballBat, 1);
 		assertEquals("test 12.3 failed", 1, locker.getItemCount(baseballBat.getType()));
 	}
-
-
 }

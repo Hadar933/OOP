@@ -10,11 +10,9 @@ import static org.junit.Assert.*;
  * a class that tests the long term storage class
  */
 public class LongTermTest {
-	private static final int CAPACITY_SIZE = 1000;
 	private static final int ADDITION_ERROR = -1;
 	private static final int SUCCESS = 0;
 	private LongTermStorage lts;
-	Item[][] constraints;
 	Item baseballBat;
 	Item helmetSize1;
 	Item helmetSize3;
@@ -26,7 +24,6 @@ public class LongTermTest {
 	 */
 	@Before
 	public void lockerTest() {
-		this.constraints = ItemFactory.getConstraintPairs();
 		Item[] allItems = ItemFactory.createAllLegalItems();
 		this.lts = new LongTermStorage();
 		baseballBat = allItems[0];

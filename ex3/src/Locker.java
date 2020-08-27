@@ -122,9 +122,10 @@ public class Locker {
 				currentVolume + totalVolume <= lts.getAvailableCapacity()) {
 				// removing items so that there are 20% left in the locker, and moving all the remaining
 				// to the long term
-				int nItemsToRemove = (int) (REMOVAL_VOLUME * capacity) / item.getVolume();
+				int nItemsToKeep = (int) (REMOVAL_VOLUME * capacity) / item.getVolume();
 				if (inventory.containsKey(item.getType())) {
-					inventory.put(item.getType(), inventory.get(item.getType()) - nItemsToRemove);
+					availableCapacity += (item.getVolume() - nItemsToKeep) * inventory.get(item.getType());
+					inventory.put(item.getType(), nItemsToKeep);
 				}
 				lts.addItem(item, n);
 				System.out.println(LTS_MSG);
