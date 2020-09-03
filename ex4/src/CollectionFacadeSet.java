@@ -2,16 +2,19 @@
  * Wraps an underlying Collection and serves to both simplify its API and give it a common type with the
  * implemented SimpleHashSets.
  */
-public class CollectionFacadeSet implements SimpleSet{
+public class CollectionFacadeSet implements SimpleSet {
 
+	/**
+	 * an instance of a collection
+	 */
 	protected java.util.Collection<java.lang.String> collection;
 
 	/**
 	 * Creates a new facade wrapping the specified collection.
 	 * @param collection - The Collection to wrap.
 	 */
-	public CollectionFacadeSet(java.util.Collection<java.lang.String> collection){
-
+	public CollectionFacadeSet(java.util.Collection<java.lang.String> collection) {
+		this.collection = collection;
 	}
 
 	/**
@@ -21,17 +24,20 @@ public class CollectionFacadeSet implements SimpleSet{
 	 */
 	@Override
 	public boolean add(java.lang.String newValue) {
-		return false;
+		if (collection.contains(newValue)) { // value already exists in the data
+			return false;
+		}
+		return collection.add(newValue);
 	}
 
 	/**
-	 *Look for a specified value in the set.
+	 * Look for a specified value in the set.
 	 * @param searchVal Value to search for
 	 * @return True iff searchVal is found in the set
 	 */
 	@Override
 	public boolean contains(java.lang.String searchVal) {
-		return false;
+		return collection.contains(searchVal);
 	}
 
 	/**
@@ -41,7 +47,10 @@ public class CollectionFacadeSet implements SimpleSet{
 	 */
 	@Override
 	public boolean delete(java.lang.String toDelete) {
-		return false;
+		if(!contains(toDelete)){ // no such element in the data
+			return false;
+		}
+		return collection.remove(toDelete);
 	}
 
 	/**
@@ -49,6 +58,6 @@ public class CollectionFacadeSet implements SimpleSet{
 	 */
 	@Override
 	public int size() {
-		return 0;
+		return collection.size();
 	}
 }
