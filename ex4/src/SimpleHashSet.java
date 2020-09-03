@@ -1,25 +1,53 @@
-public abstract class SimpleHashSet extends java.lang.Object implements SimpleSet {
+/**
+ * A superclass for implementations of hash-sets implementing the SimpleSet interface.
+ */
+public abstract class SimpleHashSet implements SimpleSet {
 
 	/**
 	 * Describes the lower load factor of a newly created hash set.
 	 */
-	protected static final float DEFAULT_LOWER_CAPACITY;
+	protected static final float DEFAULT_LOWER_CAPACITY = 1;
 
 	/**
 	 * Describes the higher load factor of a newly created hash set.
 	 */
-	protected static final float DEFAULT_HIGHER_CAPACITY;
+	protected static final float DEFAULT_HIGHER_CAPACITY = 1;
 
 	/**
 	 * Describes the capacity of a newly created hash set.
 	 */
-	protected static final int INITIAL_CAPACITY;
+	protected static final int INITIAL_CAPACITY = 1;
+
+	/**
+	 * current size of the hash set
+	 */
+	protected int currentSize;
+
+	/**
+	 * the capacity of the hash set
+	 */
+	protected int capacity;
+
+	/**
+	 * the lower capacity to the load factor
+	 */
+	protected float lowerCapacity;
+
+	/**
+	 * the higher capacity to the load factor
+	 */
+	protected float higherCapacity;
 
 	/**
 	 * Constructs a new hash set with the default capacities given in DEFAULT_LOWER_CAPACITY and
 	 * DEFAULT_HIGHER_CAPACITY.
 	 */
 	protected SimpleHashSet() {
+		this.currentSize = 0;
+		this.capacity = INITIAL_CAPACITY;
+		this.higherCapacity = DEFAULT_HIGHER_CAPACITY;
+		this.lowerCapacity = DEFAULT_LOWER_CAPACITY;
+
 
 	}
 
@@ -29,38 +57,38 @@ public abstract class SimpleHashSet extends java.lang.Object implements SimpleSe
 	 * @param lowerLoadFactor - the lower load factor before rehashing
 	 */
 	protected SimpleHashSet(float upperLoadFactor, float lowerLoadFactor) {
-
+		this.currentSize = 0;
+		this.capacity = INITIAL_CAPACITY;
+		this.higherCapacity = upperLoadFactor;
+		this.lowerCapacity = lowerLoadFactor;
 	}
 
 	/**
 	 * @return - The current capacity (number of cells) of the table.
 	 */
 	public int capacity() {
-		return 0;
+		return capacity;
 	}
 
 	/**
-	 * Clamps hashing indices to fit within the current table capacity
+	 * Clamps hashing indices to fit within the current table capacity we set this to abstract - the
+	 * inheriting classes will implement this method
 	 * @param index - an index before clamping
 	 * @return - relevant index value. (different value for open or closed)
 	 */
-	protected int clamp(int index) {
-		return 0;
-	}
+	protected abstract int clamp(int index);
 
 	/**
 	 * @return The lower load factor of the table.
 	 */
 	protected float getLowerLoadFactor() {
-		return 0;
+		return lowerCapacity;
 	}
 
 	/**
 	 * @return The higher load factor of the table.
 	 */
 	protected float getUpperLoadFactor() {
-		return 0;
+		return higherCapacity;
 	}
-
-
 }
