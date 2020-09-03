@@ -4,6 +4,11 @@
 public abstract class SimpleHashSet implements SimpleSet {
 
 	/**
+	 * some capacity and size values will be initialized with 0
+	 */
+	protected static final int INITIAL_SIZE = 0;
+
+	/**
 	 * the capacity cannot be 1
 	 */
 	protected static final int CAPACITY_THRESHOLD = 1;
@@ -52,7 +57,7 @@ public abstract class SimpleHashSet implements SimpleSet {
 	 * DEFAULT_HIGHER_CAPACITY.
 	 */
 	protected SimpleHashSet() {
-		this.currentSize = 0;
+		this.currentSize = INITIAL_SIZE;
 		this.capacity = INITIAL_CAPACITY;
 		this.higherCapacity = DEFAULT_HIGHER_CAPACITY;
 		this.lowerCapacity = DEFAULT_LOWER_CAPACITY;
@@ -64,7 +69,7 @@ public abstract class SimpleHashSet implements SimpleSet {
 	 * @param lowerLoadFactor - the lower load factor before rehashing
 	 */
 	protected SimpleHashSet(float upperLoadFactor, float lowerLoadFactor) {
-		this.currentSize = 0;
+		this.currentSize = INITIAL_SIZE;
 		this.capacity = INITIAL_CAPACITY;
 		this.higherCapacity = upperLoadFactor;
 		this.lowerCapacity = lowerLoadFactor;

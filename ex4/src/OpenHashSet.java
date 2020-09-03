@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.LinkedList;
 
 /**
@@ -26,9 +27,9 @@ public class OpenHashSet extends SimpleHashSet {
 	/*
 	a private method that initializes the hash table as an array of facades
 	 */
-	private void initializeHashTable(int facadeCapacity, int loopSize) {
+	private void initializeHashTable(int facadeCapacity) {
 		this.hashTable = new facade[facadeCapacity];
-		for (int i = 0; i < loopSize; i++) {
+		for (int i = 0; i < hashTable.length; i++) {
 			hashTable[i] = new facade();
 		}
 	}
@@ -40,7 +41,7 @@ public class OpenHashSet extends SimpleHashSet {
 	 */
 	public OpenHashSet(float upperLoadFactor, float lowerLoadFactor) {
 		super(upperLoadFactor, lowerLoadFactor);
-		initializeHashTable(capacity, capacity);
+		initializeHashTable(capacity);
 	}
 
 	/**
@@ -49,7 +50,7 @@ public class OpenHashSet extends SimpleHashSet {
 	 */
 	public OpenHashSet() {
 		super();
-		initializeHashTable(capacity, capacity);
+		initializeHashTable(capacity);
 	}
 
 	/**
@@ -60,7 +61,7 @@ public class OpenHashSet extends SimpleHashSet {
 	 */
 	public OpenHashSet(java.lang.String[] data) {
 		super();
-		initializeHashTable(INITIAL_CAPACITY, hashTable.length);
+		initializeHashTable(INITIAL_CAPACITY);
 		for (String value : data) {
 			add(value);
 		}
@@ -71,6 +72,7 @@ public class OpenHashSet extends SimpleHashSet {
 	 * @param newSize - some size which is a multiply of 2
 	 */
 	private void updateSize(int newSize) {
+		currentSize = INITIAL_SIZE;
 		facade[] hashTableCopy = hashTable.clone();
 		hashTable = new facade[newSize];
 		capacity = hashTable.length;
@@ -119,7 +121,10 @@ public class OpenHashSet extends SimpleHashSet {
 	 */
 	public boolean contains(java.lang.String searchVal) {
 		int index = clamp(searchVal.hashCode());
-		return hashTable[index].contains(searchVal) && hashTable[index].size() != 0;
+		if(hashTable[index]!=null){
+			return hashTable[index].contains(searchVal);
+		}
+		return false;
 	}
 
 	/**

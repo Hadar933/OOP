@@ -92,12 +92,14 @@ public class ClosedHashSet extends SimpleHashSet {
 	 * @return True iff searchVal is found in the set
 	 */
 	public boolean contains(java.lang.String searchVal) {
-		if (size() != 0) {
+		if (size() != INITIAL_SIZE) {
 			int index = searchVal.hashCode();
 			for (int i = 0; i < capacity; i++) {
 				int clamp = (index + (i + i * i) / 2) & (capacity - 1);
-				if (hashTable[clamp].equals(searchVal)) {
-					return true;
+				if(hashTable[clamp]!=null){
+					if (hashTable[clamp].equals(searchVal)) {
+						return true;
+					}
 				}
 			}
 		}
@@ -131,6 +133,7 @@ public class ClosedHashSet extends SimpleHashSet {
 			if(needToRemoveSpace() || capacity != CAPACITY_THRESHOLD){
 				updateSize(hashTable.length / SIZE_FACTOR);
 			}
+			return true;
 		}
 		return false;
 	}
@@ -149,10 +152,11 @@ public class ClosedHashSet extends SimpleHashSet {
 	private void updateSize(int newSize) {
 		Object[] hashTableCopy = hashTable.clone();
 		hashTable = new Object[newSize];
+		currentSize = INITIAL_SIZE;
 		capacity = hashTable.length;
-		for (int i = 0; i < capacity; i++) {
-			if (hashTableCopy[i] instanceof String) {
-				add((String) hashTableCopy[i]);
+		for (Object o : hashTableCopy) {
+			if (o instanceof String) {
+				add((String) o);
 			}
 		}
 	}
