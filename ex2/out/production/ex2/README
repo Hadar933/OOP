@@ -1,0 +1,34 @@
+michael_cohen
+
+
+File Description: (scopes describe inheritance)
+SpaceShipFactory.java
+SpaceShip.java
+    ->Drunkard.java
+    ->Human.java
+    ->Runner.java
+    ->Chaser.java
+        ->Aggressive.java
+        ->Basher.java
+        ->Special.java
+README
+
+Extensibility and Modularity:
+the class SpaceShip is the base, mother-class for all ships. it has the basic functions every ship has.
+since the ships of types Aggressive, Basher, and the special ship have the common feature of chasing enemy
+ships, I created another class, Chaser, which implements the chasing method. Aggressive, Basher, and the
+special ship all inherit this feature from it.
+now if we want to add features to the aggressive-behaving classes, we can work only with the class Chaser
+which all of them inherit from.
+
+Intuitiveness and Understandability:
+we have similar-behaving ships inherit from the same classes. the names of the classes are very descriptive
+and make the use of them very intuitive.
+
+Drunkard behavior: this ship has a drunk pilot who decides to turn based on current energy level (turns every
+round), shoots whenever possible and teleport whenever possible.
+
+Special behavior: this ship body-guards a human player and shoots only at non-human ships. if it is close to
+the human ship it stays near it and acts as a human shield, literally.
+
+
