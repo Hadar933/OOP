@@ -6,17 +6,17 @@ public abstract class SimpleHashSet implements SimpleSet {
 	/**
 	 * Describes the lower load factor of a newly created hash set.
 	 */
-	protected static final float DEFAULT_LOWER_CAPACITY = 1;
+	protected static final float DEFAULT_LOWER_CAPACITY = 0.25f;
 
 	/**
 	 * Describes the higher load factor of a newly created hash set.
 	 */
-	protected static final float DEFAULT_HIGHER_CAPACITY = 1;
+	protected static final float DEFAULT_HIGHER_CAPACITY = 0.75f;
 
 	/**
 	 * Describes the capacity of a newly created hash set.
 	 */
-	protected static final int INITIAL_CAPACITY = 1;
+	protected static final int INITIAL_CAPACITY = 16;
 
 	/**
 	 * current size of the hash set
