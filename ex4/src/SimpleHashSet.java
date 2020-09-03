@@ -4,6 +4,10 @@
 public abstract class SimpleHashSet implements SimpleSet {
 
 	/**
+	 * the capacity cannot be 1
+	 */
+	protected static final int CAPACITY_THRESHOLD = 1;
+	/**
 	 *  a factor by which we increase or decrease a hash set's size
 	 */
 	protected static final int SIZE_FACTOR = 2;
@@ -52,8 +56,6 @@ public abstract class SimpleHashSet implements SimpleSet {
 		this.capacity = INITIAL_CAPACITY;
 		this.higherCapacity = DEFAULT_HIGHER_CAPACITY;
 		this.lowerCapacity = DEFAULT_LOWER_CAPACITY;
-
-
 	}
 
 	/**
@@ -113,4 +115,6 @@ public abstract class SimpleHashSet implements SimpleSet {
 		float loadFactor = (float) (size()-1)/capacity;
 		return loadFactor < lowerCapacity;
 	}
+
+
 }

@@ -18,25 +18,6 @@ public class OpenHashSet extends SimpleHashSet {
 	}
 
 	/*
-	 * updates the size of the table to be newSize
-	 * @param newSize - some size which is a multiply of 2
-	 */
-	private void updateSize(int newSize) {
-		facade[] hashTableCopy = hashTable.clone();
-		hashTable = new facade[newSize];
-		capacity = hashTable.length;
-		for (int i = 0; i < capacity; i++) {
-			hashTable[i] = new facade();
-		}
-		for (facade linkedList : hashTableCopy) {
-			for (String subItem : linkedList.collection) {
-				add(subItem);
-			}
-		}
-	}
-
-
-	/*
 	defining a wrapper-class that has a linkedlist<string> and delegating methods to it
 	and having an array of that class:
 	 */
@@ -85,6 +66,24 @@ public class OpenHashSet extends SimpleHashSet {
 		}
 	}
 
+	/*
+	 * updates the size of the table to be newSize
+	 * @param newSize - some size which is a multiply of 2
+	 */
+	private void updateSize(int newSize) {
+		facade[] hashTableCopy = hashTable.clone();
+		hashTable = new facade[newSize];
+		capacity = hashTable.length;
+		for (int i = 0; i < capacity; i++) {
+			hashTable[i] = new facade();
+		}
+		for (facade linkedList : hashTableCopy) {
+			for (String subItem : linkedList.collection) {
+				add(subItem);
+			}
+		}
+	}
+
 	/**
 	 * for open hashing we use the return value of hash(e) & (tableSize-1) where & is bit-wise AND operator
 	 * @param index - an index before clamping
@@ -111,7 +110,6 @@ public class OpenHashSet extends SimpleHashSet {
 			return true;
 		}
 		return false;
-
 	}
 
 	/**
@@ -134,7 +132,7 @@ public class OpenHashSet extends SimpleHashSet {
 			int index = clamp(toDelete.hashCode());
 			hashTable[index].delete(toDelete);
 			currentSize--;
-			if (capacity != 1 && needToRemoveSpace()) {
+			if (capacity != CAPACITY_THRESHOLD && needToRemoveSpace()) {
 				updateSize(hashTable.length / SIZE_FACTOR);
 			}
 			return true;
