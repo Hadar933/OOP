@@ -8,34 +8,34 @@ public class OpenHashSet extends SimpleHashSet {
 	/*
 	a class that enables accessing protected members
 	 */
-	private class facade extends CollectionFacadeSet {
+	public class facade extends CollectionFacadeSet {
 		/*
 		creating a wrapper
 		 */
 		private facade() {
 			super(new LinkedList<java.lang.String>());
 		}
+	}
 
-		/*
-		 * updates the size of the table to be newSize
-		 * @param newSize - some size which is a multiply of 2
-		 */
-		private void updateSize(int newSize){
-			int currentLength = hashTable.length;
-			facade[] hashTableCopy = hashTable.clone();
-			hashTable = new facade[newSize];
-			capacity = hashTable.length;
-			for(int i=0;i<capacity;i++){
-				hashTable[i] = new facade();
-			}
-			for(facade linkedList: hashTableCopy){
-				for(String subItem : linkedList.collection){
-					add(subItem);
-				}
+	/*
+	 * updates the size of the table to be newSize
+	 * @param newSize - some size which is a multiply of 2
+	 */
+	private void updateSize(int newSize) {
+		facade[] hashTableCopy = hashTable.clone();
+		hashTable = new facade[newSize];
+		capacity = hashTable.length;
+		for (int i = 0; i < capacity; i++) {
+			hashTable[i] = new facade();
+		}
+		for (facade linkedList : hashTableCopy) {
+			for (String subItem : linkedList.collection) {
+				add(subItem);
 			}
 		}
-
 	}
+
+
 	/*
 	defining a wrapper-class that has a linkedlist<string> and delegating methods to it
 	and having an array of that class:
@@ -86,8 +86,7 @@ public class OpenHashSet extends SimpleHashSet {
 	}
 
 	/**
-	 *  for open hashing we use the return value of hash(e) & (tableSize-1)
-	 *  where & is bit-wise AND operator
+	 * for open hashing we use the return value of hash(e) & (tableSize-1) where & is bit-wise AND operator
 	 * @param index - an index before clamping
 	 * @return - valid clamped index
 	 */
@@ -102,12 +101,17 @@ public class OpenHashSet extends SimpleHashSet {
 	 * @return False iff newValue already exists in the set
 	 */
 	public boolean add(java.lang.String newValue) {
-		if(contains(newValue)){
-			return false;
+		if (!contains(newValue)) {
+			int index = clamp(newValue.hashCode());
+			if (needToAddSpace()) {
+				updateSize(hashTable.length * SIZE_FACTOR);
+			}
+			hashTable[index].add(newValue);
+			currentSize++;
+			return true;
 		}
-		if(needToAddSpace()){
-			updateSize();
-		}
+		return false;
+
 	}
 
 	/**
@@ -115,9 +119,9 @@ public class OpenHashSet extends SimpleHashSet {
 	 * @param searchVal Value to search for
 	 * @return True iff searchVal is found in the set
 	 */
-	@Override
 	public boolean contains(java.lang.String searchVal) {
-		return false;
+		int index = clamp(searchVal.hashCode());
+		return hashTable[index].contains(searchVal) && hashTable[index].size() != 0;
 	}
 
 	/**
@@ -125,17 +129,24 @@ public class OpenHashSet extends SimpleHashSet {
 	 * @param toDelete Value to delete
 	 * @return True iff toDelete is found and deleted
 	 */
-	@Override
 	public boolean delete(java.lang.String toDelete) {
+		if (contains(toDelete)) {
+			int index = clamp(toDelete.hashCode());
+			hashTable[index].delete(toDelete);
+			currentSize--;
+			if (capacity != 1 && needToRemoveSpace()) {
+				updateSize(hashTable.length / SIZE_FACTOR);
+			}
+			return true;
+		}
 		return false;
 	}
 
 	/**
 	 * @return The number of elements currently in the set
 	 */
-	@Override
 	public int size() {
-		return 0;
+		return currentSize;
 	}
 
 	/**
@@ -143,9 +154,6 @@ public class OpenHashSet extends SimpleHashSet {
 	 */
 	@Override
 	public int capacity() {
-		return 0;
-
+		return capacity;
 	}
-
-
 }
