@@ -1,0 +1,64 @@
+hadar933
+
+=============================
+=      File description     =
+=============================
+
+README
+SpaceShip.java
+SpaceShipFactory.java
+Aggresive.java
+Basher.java
+Drunkard.java
+Human.java
+Runner.java
+Special.java
+
+==============================
+= Extensibility & Modularity =
+==============================
+
+Each ship i've implemented is an extention to the SpaceShip general instance.
+the SpaceShip class represents a general form of ship, with methods that can be
+over written. the most important method is doAction - the doAction Implementation
+in SpaceShip class is a general method that performs actions that are similar to
+all ships,but each specific class that inherits SpaceShip can override doAction-
+thus enabling further expantion to the method, adding dedicated features.
+
+This makes adding a new ship with different features to our game a rather simple
+task: construct a new class representing some exotic space ship, inherit SpaceShip
+and override doAction as you please. This, in turn, enable us to represent our
+specific ship with some general ship traits such as energy, health, cool-down
+time, etc, combined with dedicated Implementations.
+
+=====================================
+= Intuitiveness & Understandability =
+=====================================
+
+I would say that the Modularity of the implementation has made the code rather
+intuitive and easy to understand. one major factor to this is, as i've mentioned
+before, is that the code can be easily expanded (add more ships, change ship
+traits and so on.). Furthermore, the Inheritance tree is small, contaitining one
+"node" (SpaceShip class) and 6 "leafs" (each ship class), which I believe corresponds
+with simplicity
+
+=============================
+= Representation of Classes =
+=============================
+
+It is worth while mentioning that each ship class should be obliviate to its
+neighbors. for example, an instance of Human ship, should not rely on a basher
+ship, and vice verca. I think that this implementation has made clear that each
+Class illustrates this idea
+
+=================================
+= Drunkard & Special ships Idea =
+=================================
+Drunkard: the ship will moves in the other direction from the closest ship to it,
+          and will shoot randomly in all directions.
+
+Special: the special ship has a defense mode in which when ever some ship is too
+         close (some constant threshold), it automatically recognises it and
+        shoots towards the ship (specifically, the special ship will adjust its
+        angle towards the enemy ship and shoot). other then that, the ship will
+        more freely, based on random values.
