@@ -1,8 +1,10 @@
+
 /**
  * Wraps an underlying Collection and serves to both simplify its API and give it a common type with the
  * implemented SimpleHashSets.
  */
 public class CollectionFacadeSet implements SimpleSet {
+
 
 	/**
 	 * an instance of a collection
@@ -22,7 +24,6 @@ public class CollectionFacadeSet implements SimpleSet {
 	 * @param newValue New value to add to the set
 	 * @return - False iff newValue already exists in the set
 	 */
-	@Override
 	public boolean add(java.lang.String newValue) {
 		if (collection.contains(newValue)) { // value already exists in the data
 			return false;
@@ -35,7 +36,6 @@ public class CollectionFacadeSet implements SimpleSet {
 	 * @param searchVal Value to search for
 	 * @return True iff searchVal is found in the set
 	 */
-	@Override
 	public boolean contains(java.lang.String searchVal) {
 		return collection.contains(searchVal);
 	}
@@ -45,9 +45,8 @@ public class CollectionFacadeSet implements SimpleSet {
 	 * @param toDelete Value to delete
 	 * @return True iff toDelete is found and deleted
 	 */
-	@Override
 	public boolean delete(java.lang.String toDelete) {
-		if(!contains(toDelete)){ // no such element in the data
+		if (!contains(toDelete)) { // no such element in the data
 			return false;
 		}
 		return collection.remove(toDelete);
@@ -56,7 +55,6 @@ public class CollectionFacadeSet implements SimpleSet {
 	/**
 	 * @return The number of elements currently in the set
 	 */
-	@Override
 	public int size() {
 		return collection.size();
 	}

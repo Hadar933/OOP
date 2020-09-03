@@ -1,21 +1,75 @@
+import java.util.LinkedList;
+
 /**
  * a class that extends the simple hash set using an open hash set implementaion
  */
 public class OpenHashSet extends SimpleHashSet {
+
+	/*
+	a class that enables accessing protected members
+	 */
+	private class facade extends CollectionFacadeSet {
+		/*
+		creating a wrapper
+		 */
+		private facade() {
+			super(new LinkedList<java.lang.String>());
+		}
+
+		/*
+		 * updates the size of the table to be newSize
+		 * @param newSize - some size which is a multiply of 2
+		 */
+		private void updateSize(int newSize){
+			int currentLength = hashTable.length;
+			facade[] hashTableCopy = hashTable.clone();
+			hashTable = new facade[newSize];
+			capacity = hashTable.length;
+			for(int i=0;i<capacity;i++){
+				hashTable[i] = new facade();
+			}
+			for(facade linkedList: hashTableCopy){
+				for(String subItem : linkedList.collection){
+					add(subItem);
+				}
+			}
+		}
+
+	}
+	/*
+	defining a wrapper-class that has a linkedlist<string> and delegating methods to it
+	and having an array of that class:
+	 */
+	private facade[] hashTable;
+
+	/*
+	a private method that initializes the hash table as an array of facades
+	 */
+	private void initializeHashTable(int facadeCapacity, int loopSize) {
+		this.hashTable = new facade[facadeCapacity];
+		for (int i = 0; i < loopSize; i++) {
+			hashTable[i] = new facade();
+		}
+	}
+
 	/**
 	 * Constructs a new, empty table with the specified load factors, and the default initial capacity (16).
 	 * @param upperLoadFactor- The upper load factor of the hash table.
 	 * @param lowerLoadFactor- The lower load factor of the hash table.
 	 */
 	public OpenHashSet(float upperLoadFactor, float lowerLoadFactor) {
-
+		super(upperLoadFactor, lowerLoadFactor);
+		initializeHashTable(capacity, capacity);
 	}
 
 	/**
 	 * A default constructor. Constructs a new, empty table with default initial capacity (16), upper load
 	 * factor (0.75) and lower load factor (0.25).
 	 */
-	public OpenHashSet() {}
+	public OpenHashSet() {
+		super();
+		initializeHashTable(capacity, capacity);
+	}
 
 	/**
 	 * Data constructor - builds the hash set by adding the elements one by one. Duplicate values should be
@@ -24,22 +78,36 @@ public class OpenHashSet extends SimpleHashSet {
 	 * @param data- Values to add to the set.
 	 */
 	public OpenHashSet(java.lang.String[] data) {
-
-	}
-
-	@Override
-	protected int clamp(int index) {
-		return 0;
+		super();
+		initializeHashTable(INITIAL_CAPACITY, hashTable.length);
+		for (String value : data) {
+			add(value);
+		}
 	}
 
 	/**
-	 *Add a specified element to the set if it's not already in it.
+	 *  for open hashing we use the return value of hash(e) & (tableSize-1)
+	 *  where & is bit-wise AND operator
+	 * @param index - an index before clamping
+	 * @return - valid clamped index
+	 */
+	@Override
+	protected int clamp(int index) {
+		return index & (capacity - 1);
+	}
+
+	/**
+	 * Add a specified element to the set if it's not already in it.
 	 * @param newValue New value to add to the set
 	 * @return False iff newValue already exists in the set
 	 */
-	@Override
 	public boolean add(java.lang.String newValue) {
-		return false;
+		if(contains(newValue)){
+			return false;
+		}
+		if(needToAddSpace()){
+			updateSize();
+		}
 	}
 
 	/**
@@ -74,7 +142,10 @@ public class OpenHashSet extends SimpleHashSet {
 	 * @return The current capacity (number of cells) of the table.
 	 */
 	@Override
-	public int capacity(){
+	public int capacity() {
 		return 0;
+
 	}
+
+
 }

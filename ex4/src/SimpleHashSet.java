@@ -4,6 +4,11 @@
 public abstract class SimpleHashSet implements SimpleSet {
 
 	/**
+	 *  a factor by which we increase or decrease a hash set's size
+	 */
+	protected static final int SIZE_FACTOR = 2;
+
+	/**
 	 * Describes the lower load factor of a newly created hash set.
 	 */
 	protected static final float DEFAULT_LOWER_CAPACITY = 0.25f;
@@ -64,11 +69,10 @@ public abstract class SimpleHashSet implements SimpleSet {
 	}
 
 	/**
+	 * each inheriting class will implement the relevant capacity
 	 * @return - The current capacity (number of cells) of the table.
 	 */
-	public int capacity() {
-		return capacity;
-	}
+	public abstract int capacity();
 
 	/**
 	 * Clamps hashing indices to fit within the current table capacity we set this to abstract - the
@@ -90,5 +94,23 @@ public abstract class SimpleHashSet implements SimpleSet {
 	 */
 	protected float getUpperLoadFactor() {
 		return higherCapacity;
+	}
+
+	/*
+	a method that checks if we need to increase the size of the table
+	in order to insert more elements
+	 */
+	protected boolean needToAddSpace(){
+		float loadFactor = (float) (size()+1)/capacity;
+		return loadFactor > higherCapacity;
+	}
+
+	/*
+	a method that checks if we need to decrease the size of the table
+	when removing elements
+	 */
+	protected boolean needToRemoveSpace(){
+		float loadFactor = (float) (size()-1)/capacity;
+		return loadFactor < lowerCapacity;
 	}
 }
