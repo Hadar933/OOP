@@ -31,17 +31,8 @@ public class SimpleSetPerformanceAnalyzer {
 	 * all the sets that will be used in the tests, represented as an array
 	 */
 	private final SimpleSet[] sets = new SimpleSet[NUM_OF_SETS];
-
-	/*
-	arrays that represents the data files
-	 */
-	private ArrayList<String> data1;
-	private ArrayList<String> data2;
-
+	
 	public SimpleSetPerformanceAnalyzer() {
-		this.data1 = new ArrayList<>();
-		this.data2 = new ArrayList<>();
-
 		// data 1 :
 		this.sets[0] = new OpenHashSet();
 		this.sets[1] = new ClosedHashSet();
@@ -59,6 +50,16 @@ public class SimpleSetPerformanceAnalyzer {
 
 
 	/*
+	a basic method that prints the percentage of the test passed
+	(prints a message every 10%)
+	*/
+	private void printPercentage(int index, int dataSize) {
+		if (index % PERCENTAGE == 0) {// printing precentage
+			System.out.println(index / dataSize * 100 + "%");
+		}
+	}
+
+	/*
 	 * a loop that performs contain operation on the data
 	 * @param start - index to start from in sets array
 	 * @param end - index to end in sets array
@@ -67,23 +68,45 @@ public class SimpleSetPerformanceAnalyzer {
 	 */
 	private void containsLoop(int start, int end, int linkedListIndex, String item) {
 		for (int i = start; i < end + 1; i++) {
+			System.out.println("data type- "+sets[i].toString());
 			if (i == linkedListIndex) {
-				System.out.println("Contains (linked list):\n");
+				System.out.println("Contains " + item + "(linked list):\n");
 				long timeBefore = System.nanoTime();
 				for (int j = 0; j < LINKED_LIST_ITERATIONS; j++) {
 					sets[i].contains(item);
+					printPercentage(j, LINKED_LIST_ITERATIONS);
 				}
 				long difference = System.nanoTime() - timeBefore;
-				System.out.println("Time elapsed: " + (difference / MILLISECONDS));
+				System.out.println("Avg Time for contain: " + (difference / LINKED_LIST_ITERATIONS));
 			} else { // not a linked list
-				System.out.println("Contains (not linked list):\n");
+				warmUp(start, end, item);
+				System.out.println("Contains " + item + " (not linked list):\n");
 				long timeBefore = System.nanoTime();
 				for (int j = 0; j < GENERAL_ITERATIONS; j++) {
 					sets[i].contains(item);
+					printPercentage(j, GENERAL_ITERATIONS);
 				}
 				long difference = System.nanoTime() - timeBefore;
-				System.out.println("Time elapsed: " + (difference / MILLISECONDS));
+				System.out.println("Avg Time for contain: " + (difference / GENERAL_ITERATIONS));
 			}
+		}
+	}
+
+	/*
+	 * performs 70,000 of unmeasured contains on every data that is not a linked list
+	 * @param start - start index in sets array
+	 * @param end - end index in sets array
+	 * @param item - item to check contain on
+	 */
+	private void warmUp(int start, int end, String item) {
+		System.out.println("Warming up:\n");
+		for (int i = start; i < end + 1; i++) {
+			for (int j = 0; j < GENERAL_ITERATIONS; j++) {
+				sets[i].contains(item);
+				printPercentage(j, GENERAL_ITERATIONS);
+			}
+			System.out.println("finished warm up\n");
+
 		}
 	}
 
@@ -93,7 +116,7 @@ public class SimpleSetPerformanceAnalyzer {
 	 * @param fileName - data1 or data2
 	 */
 	private void containsRunTime(String item, String fileName) {
-		System.out.println(fileName + "\n");
+		System.out.println("Testing contains "+item+" in file "+fileName);
 		if (fileName.equals("data1.txt")) {
 			containsLoop(DATA_1_START_INDEX, DATA_1_END_INDEX, DATA_1_LINKED_LIST_INDEX, item);
 		} else { //data 2
@@ -109,11 +132,10 @@ public class SimpleSetPerformanceAnalyzer {
 	 */
 	private void additionLoop(int start, int end, String[] data) {
 		for (int i = start; i < end + 1; i++) {
+			System.out.println("data type- "+sets[i].toString());
 			for (int j = 0; j < data.length; j++) {
 				sets[i].add(data[j]);
-				if (j % PERCENTAGE == 0) {
-					System.out.println((float) j / data.length * 100 + "%");
-				}
+				printPercentage(j, data.length);
 			}
 		}
 	}
@@ -135,9 +157,25 @@ public class SimpleSetPerformanceAnalyzer {
 		System.out.println("Time elapsed: " + (difference / MILLISECONDS));
 	}
 
+
 	public static void main(String[] args) {
+		String data1 = "data1.txt";
+		String data2 = "data2.txt";
 		SimpleSetPerformanceAnalyzer analyzer = new SimpleSetPerformanceAnalyzer();
+		//step 1
+		analyzer.additionRunTime(data1);
+		//step 2
+		analyzer.additionRunTime(data2);
+		//step 3
+		analyzer.containsRunTime("hi", data1);
+		//step 4
+		analyzer.containsRunTime("-13170890158", data1);
+		//step 5
+		analyzer.containsRunTime("23", data2);
+		//step 6
+		analyzer.containsRunTime("hi",data2);
 
 	}
 }
+
 
