@@ -117,7 +117,7 @@ public abstract class SimpleHashSet implements SimpleSet {
 	when removing elements
 	 */
 	protected boolean needToRemoveSpace(){
-		float loadFactor = (float) (size()-1)/capacity;
+		float loadFactor = (float) size()/capacity;
 		return loadFactor < lowerCapacity;
 	}
 
