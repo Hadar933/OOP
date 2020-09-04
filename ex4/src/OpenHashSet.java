@@ -103,10 +103,10 @@ public class OpenHashSet extends SimpleHashSet {
 	 */
 	public boolean add(java.lang.String newValue) {
 		if (!contains(newValue)) {
-			int index = clamp(newValue.hashCode());
 			if (needToAddSpace()) {
 				updateSize(hashTable.length * SIZE_FACTOR);
 			}
+			int index = clamp(newValue.hashCode());
 			hashTable[index].add(newValue);
 			currentSize++;
 			return true;
@@ -120,11 +120,11 @@ public class OpenHashSet extends SimpleHashSet {
 	 * @return True iff searchVal is found in the set
 	 */
 	public boolean contains(java.lang.String searchVal) {
-		int index = clamp(searchVal.hashCode());
-		if(hashTable[index]!=null){
-			return hashTable[index].contains(searchVal);
+		int clamp = this.clamp(searchVal.hashCode());
+		if(hashTable[clamp].size() == 0){
+			return false;
 		}
-		return false;
+		return hashTable[clamp].contains(searchVal);
 	}
 
 	/**
@@ -159,4 +159,5 @@ public class OpenHashSet extends SimpleHashSet {
 	public int capacity() {
 		return capacity;
 	}
+
 }

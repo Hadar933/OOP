@@ -1,0 +1,54 @@
+hadar933
+
+=============================
+=      File description     =
+=============================
+
+README
+RESULTS
+SimpleHashSet.java
+OpenHashSet.java
+ClosedHashSet.java
+CollectionFacadeSet.java
+SimpleSetPerformanceAnalyzer.java
+
+==============================
+= OpenHashSet implementation =
+==============================
+An implementation of a nested class that inherits from CollectionFacadeSet
+gave me the ability to create an array of facades, that each wraps a linked list.
+This, in turn, made it easy to manipulate data members of the CollectionFacadeSet
+and use linked list methods when needed.
+
+=====================================
+= ClosedHashSet deletion mechanism  =
+=====================================
+the data is initialized as a genetic Object[] instance. when a deletion of a String type
+is requested, it is being replaced with a non String instance, instead of a null.
+in other words, our flag for a deleted cell, is a cell containing some non string item.
+this will ensure that when iterating the data in the future, we will continue our search
+after we have reached some cell that is marked as deleted.
+
+===============================
+= Runtime Analysis Discussion =
+===============================
+bad results for data1.txt:
+items with the same hash code will eventually cause the add function to perform many iterations,
+in order to find an empty spot to insert the needed item.
+
+Strengthes and weaknesses:
+HashSet: overall best performance - performs all of the operations the fastest (theoretically constant O(1) time)
+	specifically, open hash had better run times than closed hash. a open hash might come handy when the data
+	is evenly distributed, therefore we can expect that not many linked list concatenations will be made.
+LinkedList: slowest data set. this is mostly due to the fact that when checking for contains and when deleting
+	    the given item to check for or delete must be found first, which demands iterating over all elements.
+HashTree: better contains run time then linked list (theoretically O(log(n)) time < O(n)). this is worse than a hashset
+	  yet there are some advantages to maintaining your data in some order (unlike a hashset)
+
+Similarities:
+aside from the type of the data structure itself, most of the operations are being performed similarly. that is,
+the algorithms are similar. then again, the runtime of closed and open hashing differs quite a bit.
+on the other hand, compared to the Java built in implementations, the runtime falls far behind. 
+This might be due to the fact that the java implementation does not stick to a single hash method, 
+and changed the implementation on the go. the data structure is changing according to the data itself and that might
+improve runtime significantly.
