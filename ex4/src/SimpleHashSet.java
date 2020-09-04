@@ -13,7 +13,7 @@ public abstract class SimpleHashSet implements SimpleSet {
 	 */
 	protected static final int CAPACITY_THRESHOLD = 1;
 	/**
-	 *  a factor by which we increase or decrease a hash set's size
+	 * a factor by which we increase or decrease a hash set's size
 	 */
 	protected static final int SIZE_FACTOR = 2;
 
@@ -107,8 +107,8 @@ public abstract class SimpleHashSet implements SimpleSet {
 	a method that checks if we need to increase the size of the table
 	in order to insert more elements
 	 */
-	protected boolean needToAddSpace(){
-		float loadFactor = (float) (size()+1)/capacity;
+	protected boolean needToAddSpace() {
+		float loadFactor = (float) (size() + 1) / capacity;
 		return loadFactor > higherCapacity;
 	}
 
@@ -116,10 +116,8 @@ public abstract class SimpleHashSet implements SimpleSet {
 	a method that checks if we need to decrease the size of the table
 	when removing elements
 	 */
-	protected boolean needToRemoveSpace(){
-		float loadFactor = (float) size()/capacity;
+	protected boolean needToRemoveSpace() {
+		float loadFactor = (float) size() / capacity;
 		return loadFactor < lowerCapacity;
 	}
-
-
 }

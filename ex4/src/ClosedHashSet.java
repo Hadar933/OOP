@@ -95,8 +95,8 @@ public class ClosedHashSet extends SimpleHashSet {
 		if (size() != INITIAL_SIZE) {
 			int index = searchVal.hashCode();
 			for (int i = 0; i < capacity; i++) {
-				int clamp = (index + (i + i * i) / 2) & (capacity - 1);
-				if(hashTable[clamp]!=null){
+				int clamp = (index + ((i + i * i) / 2)) & (capacity - 1);
+				if (hashTable[clamp] != null) {
 					if (hashTable[clamp].equals(searchVal)) {
 						return true;
 					}
@@ -130,7 +130,7 @@ public class ClosedHashSet extends SimpleHashSet {
 			int index = getIndex(toDelete);
 			hashTable[index] = BAD_INDEX; // a strictly non-String arbitrary assignment
 			currentSize--;
-			if(needToRemoveSpace() || capacity != CAPACITY_THRESHOLD){
+			if (needToRemoveSpace() || capacity != CAPACITY_THRESHOLD) {
 				updateSize(hashTable.length / SIZE_FACTOR);
 			}
 			return true;
