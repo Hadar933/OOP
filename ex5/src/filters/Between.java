@@ -4,9 +4,9 @@ import java.io.File;
 import java.util.ArrayList;
 
 /**
- * a class that represents the smaller than filter
+ * a class that represents the between filter
  */
-public class smallerThan implements generic {
+public class Between implements Generic {
 	/*
 	conversion to kilobytes
 	 */
@@ -18,17 +18,19 @@ public class smallerThan implements generic {
 	private final ArrayList<File> allFilesFiltered = new ArrayList<>();
 
 	/**
-	 * adds a file iff its size is smaller then the argument provided
+	 * adds a file iff its size is larger then the first arg, and smaller than the second arg
 	 * @param allFiles - an array containing all files in some folder
 	 * @param filterArgs - the arguments the filter is being provided with
 	 * @return - the filtered files
 	 */
 	@Override
 	public ArrayList<File> filter(ArrayList<File> allFiles, String[] filterArgs) {
-		double givenSize = Double.parseDouble(filterArgs[1]);
-		double sizeInKB = KILO * givenSize;
+		double smallSize = Double.parseDouble(filterArgs[1]);
+		double smallSizeInKB = KILO * smallSize;
+		double largeSize = Double.parseDouble(filterArgs[2]);
+		double largeSizeInKB = KILO * largeSize;
 		for (File file : allFiles) {
-			if (sizeInKB > file.length()) {
+			if (smallSizeInKB <= file.length() && file.length() <= largeSizeInKB) {
 				allFilesFiltered.add(file);
 			}
 		}

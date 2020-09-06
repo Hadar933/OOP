@@ -6,7 +6,7 @@ import java.util.ArrayList;
 /**
  * an interface representing some type of filter
  */
-public interface generic {
+public interface Generic {
 
 	/**
 	 * a method that filters all files according to some filter

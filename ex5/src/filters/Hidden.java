@@ -4,33 +4,26 @@ import java.io.File;
 import java.util.ArrayList;
 
 /**
- * a class that represents the between filter
+ * a class that represents the hidden filter
  */
-public class between implements generic {
-	/*
-	conversion to kilobytes
-	 */
-	private static final int KILO = 1028;
+public class Hidden implements Generic {
 
 	/*
 	an array of filtered files, according to the class filter
-	 */
+ 	*/
 	private final ArrayList<File> allFilesFiltered = new ArrayList<>();
 
 	/**
-	 * adds a file iff its size is larger then the first arg, and smaller than the second arg
+	 * if arg is YES - adds the file if it is hidden. if arg is False - the opposite
 	 * @param allFiles - an array containing all files in some folder
 	 * @param filterArgs - the arguments the filter is being provided with
 	 * @return - the filtered files
 	 */
 	@Override
 	public ArrayList<File> filter(ArrayList<File> allFiles, String[] filterArgs) {
-		double smallSize = Double.parseDouble(filterArgs[1]);
-		double smallSizeInKB = KILO * smallSize;
-		double largeSize = Double.parseDouble(filterArgs[2]);
-		double largeSizeInKB = KILO * largeSize;
 		for (File file : allFiles) {
-			if (smallSizeInKB <= file.length() && file.length() <= largeSizeInKB) {
+			if ((filterArgs[1].equals("YES") && file.isHidden()) ||
+				(filterArgs[1].equals("NO") && !file.isHidden())) {
 				allFilesFiltered.add(file);
 			}
 		}
