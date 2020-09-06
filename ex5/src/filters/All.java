@@ -4,14 +4,9 @@ import java.io.File;
 import java.util.ArrayList;
 
 /**
- * a class that represents the executable filter
+ * a class that represents the all filter
  */
 public class All implements Generic {
-
-	/*
-	an array of filtered files, according to the class filter
- 	*/
-	private final ArrayList<File> allFilesFiltered = new ArrayList<>();
 
 	/**
 	 * simply returns the data untouched
