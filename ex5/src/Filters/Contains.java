@@ -1,12 +1,12 @@
-package filters;
+package Filters;
 
 import java.io.File;
 import java.util.ArrayList;
 
 /**
- * a class that represents the writable filter
+ * a class that represents the contain filter
  */
-public class Writable implements Generic {
+public class Contains implements Generic {
 
 	/*
 	an array of filtered files, according to the class filter
@@ -14,7 +14,7 @@ public class Writable implements Generic {
 	private final ArrayList<File> allFilesFiltered = new ArrayList<>();
 
 	/**
-	 * if arg is YES - adds the file if it is writable. if arg is False - the opposite
+	 * adds a file iff its the argument is containd in the file's name
 	 * @param allFiles - an array containing all files in some folder
 	 * @param filterArgs - the arguments the filter is being provided with
 	 * @return - the filtered files
@@ -22,8 +22,7 @@ public class Writable implements Generic {
 	@Override
 	public ArrayList<File> filter(ArrayList<File> allFiles, String[] filterArgs) {
 		for (File file : allFiles) {
-			if ((filterArgs[1].equals("YES") && file.canWrite()) ||
-				(filterArgs[1].equals("NO") && !file.canWrite())) {
+			if (file.getName().contains(filterArgs[1])) {
 				allFilesFiltered.add(file);
 			}
 		}

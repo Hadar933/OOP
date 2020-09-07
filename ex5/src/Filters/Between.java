@@ -1,29 +1,36 @@
-package filters;
+package Filters;
 
 import java.io.File;
 import java.util.ArrayList;
 
 /**
- * a class that represents the executable filter
+ * a class that represents the between filter
  */
-public class Executable implements Generic {
+public class Between implements Generic {
+	/*
+	conversion to kilobytes
+	 */
+	private static final int KILO = 1028;
 
 	/*
 	an array of filtered files, according to the class filter
- 	*/
+	 */
 	private final ArrayList<File> allFilesFiltered = new ArrayList<>();
 
 	/**
-	 * if arg is YES - adds the file if it is executable. if arg is False - the opposite
+	 * adds a file iff its size is larger then the first arg, and smaller than the second arg
 	 * @param allFiles - an array containing all files in some folder
 	 * @param filterArgs - the arguments the filter is being provided with
 	 * @return - the filtered files
 	 */
 	@Override
 	public ArrayList<File> filter(ArrayList<File> allFiles, String[] filterArgs) {
+		double smallSize = Double.parseDouble(filterArgs[1]);
+		double smallSizeInKB = KILO * smallSize;
+		double largeSize = Double.parseDouble(filterArgs[2]);
+		double largeSizeInKB = KILO * largeSize;
 		for (File file : allFiles) {
-			if ((filterArgs[1].equals("YES") && file.canExecute()) ||
-				(filterArgs[1].equals("NO") && !file.canExecute())) {
+			if (smallSizeInKB <= file.length() && file.length() <= largeSizeInKB) {
 				allFilesFiltered.add(file);
 			}
 		}

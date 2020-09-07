@@ -1,4 +1,4 @@
-package FileParsing;
+package Sections;
 
 import java.io.File;
 import java.io.FileNotFoundException;

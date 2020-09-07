@@ -1,12 +1,12 @@
-package filters;
+package Filters;
 
 import java.io.File;
 import java.util.ArrayList;
 
 /**
- * a class that represents the suffix filter
+ * a class that represents the writable filter
  */
-public class Suffix implements Generic {
+public class Writable implements Generic {
 
 	/*
 	an array of filtered files, according to the class filter
@@ -14,7 +14,7 @@ public class Suffix implements Generic {
 	private final ArrayList<File> allFilesFiltered = new ArrayList<>();
 
 	/**
-	 * adds a file iff its the argument is suffix of the file's name
+	 * if arg is YES - adds the file if it is writable. if arg is False - the opposite
 	 * @param allFiles - an array containing all files in some folder
 	 * @param filterArgs - the arguments the filter is being provided with
 	 * @return - the filtered files
@@ -22,7 +22,8 @@ public class Suffix implements Generic {
 	@Override
 	public ArrayList<File> filter(ArrayList<File> allFiles, String[] filterArgs) {
 		for (File file : allFiles) {
-			if (file.getName().endsWith(filterArgs[1])) {
+			if ((filterArgs[1].equals("YES") && file.canWrite()) ||
+				(filterArgs[1].equals("NO") && !file.canWrite())) {
 				allFilesFiltered.add(file);
 			}
 		}

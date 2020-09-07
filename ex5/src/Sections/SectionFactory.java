@@ -1,4 +1,4 @@
-package FileParsing;
+package Sections;
 
 import java.util.ArrayList;
 
@@ -165,5 +165,23 @@ public class SectionFactory {
 			section.setErrors(WARNING_MSG + orderIndex);
 		}
 		return section;
+	}
+
+	/**
+	 * this method uses the previous one to generate all the sections that are in the file
+	 * (multiple calls to the generateSection method)
+	 * @param commandFileData - array represents the content of a command file
+	 * @return an array consisting of section instances
+	 */
+	public ArrayList<Section> generateAllSections(ArrayList<String> commandFileData){
+		int blockSize = 3;
+		ArrayList<Section> allSections = new ArrayList<Section>();
+		for(int i=0;i<commandFileData.size();i++){
+			if(commandFileData.get(i).equals("FILTER") && commandFileData.get(i+blockSize).equals("ORDER")){
+				Section newSection = generateSection(commandFileData,i,i+blockSize);
+				allSections.add(newSection);
+			}
+		}
+		return allSections;
 	}
 }
