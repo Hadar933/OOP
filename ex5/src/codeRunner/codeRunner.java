@@ -1,11 +1,13 @@
 package codeRunner;
 
+import Sections.CommandFileParser;
 import Sections.Section;
 import Sections.SectionFactory;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.logging.Filter;
 
 /**
  * this class runs the program entirely
@@ -37,8 +39,12 @@ public class codeRunner {
 			try{
 				String sourceDir = args[0];
 				String commandFile = args[1];
-
-				ArrayList<Section> allSections = new SectionFactory().generateAllSections();
+				ArrayList<File> allFiles = new codeRunner().dir2array(sourceDir);
+				ArrayList<String> commandData = new CommandFileParser(commandFile).generateCommandData();
+				ArrayList<Section> allSections = new SectionFactory().generateAllSections(commandData);
+				for(Section section:allSections){
+					// TODO: continue from here
+				}
 			}
 			catch (Exception e){
 				System.err.println(" "+e);
