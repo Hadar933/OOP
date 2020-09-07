@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- * converts a command file to a strings array
+ * converts a command file to a strings array and checks its in valid format
  */
 public class CommandFileParser {
 	private static final String FILTER = "FILTER";
@@ -50,10 +50,19 @@ public class CommandFileParser {
 		return count == 0;
 	}
 
+
+
 	/*
 	 * checks if all condition of a valid file are met, and throws the relevant exceptions
 	 */
-	public void checkValidData(ArrayList<String> data) {
+	public void checkValidData() throws Exception{
+		ArrayList<String> data = file2array();
+		if(!equalNumOfFilterAndOrder(data)) { //TODO: throw something
+			int x  = 2;
+		}
+		//TODO: some more cases to check
+
 
 	}
+
 }
