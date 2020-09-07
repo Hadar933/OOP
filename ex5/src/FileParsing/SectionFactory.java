@@ -7,6 +7,7 @@ import java.util.ArrayList;
  * format
  */
 public class SectionFactory {
+	private static final String WARNING_MSG = "Warning in line ";
 	/*
 	the number of arguments expected for the filters (with or without concatenated NOT at the end)
 	 */
@@ -122,6 +123,18 @@ public class SectionFactory {
 		}
 	}
 
+	/*
+	a helper method that returns true if item in array and false otherwise
+	 */
+	private boolean itemInArray(String item, String[] array) {
+		for (String element : array) {
+			if (item.equals(element)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	/**
 	 * generates a section object from a command file data
 	 * @param commandFileData - array represents the content of a command file
@@ -131,13 +144,26 @@ public class SectionFactory {
 	 */
 	public Section generateSection(ArrayList<String> commandFileData, int filterIndex, int orderIndex) {
 		String delimiter = "#";
+		Section section = new Section();
 		String[] filter = commandFileData.get(filterIndex).split(delimiter);
 		String[] order = commandFileData.get(orderIndex).split(delimiter);
-		if(isFilterValid(filter) && isOrderValid(order)){
-
+		if (isFilterValid(filter)) { //valid filters
+			section.setFilter(filter);
+			if (itemInArray(NOT, filter)) { // there is a NOT
+				section.setFilterNot(true);
+			}
+		} else { // invalid filters
+			section.setErrors(WARNING_MSG + filterIndex);
 		}
-
+		if (isOrderValid(order)) { // valid order
+			section.setOrder(order[0]);
+			if (itemInArray(REVERSE, order)) { // there is a REVERSE
+				section.setOrderReverse(true);
+			}
+		}
+		else{ //invalid order
+			section.setErrors(WARNING_MSG + orderIndex);
+		}
+		return section;
 	}
-
-
 }

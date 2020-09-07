@@ -112,7 +112,7 @@ public class Section {
 	/*
 	errors setter
 	 */
-	public void setErrors(ArrayList<String> errors) {
-		this.errors = errors;
+	public void setErrors(String error) {
+		this.errors.add(error);
 	}
 }
