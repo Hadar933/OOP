@@ -28,7 +28,6 @@ public class SectionFactory {
 	private static final String NOT = "NOT";
 	private static final String REVERSE = "REVERSE";
 
-
 	/**
 	 * a method that checks if the order section arguments are valid
 	 * @param orderArgs - the args provided in the order section in command file
@@ -39,18 +38,6 @@ public class SectionFactory {
 		return (orderArgs.length == UNARY_OP_SIZE ||
 				(orderArgs.length == UNARY_REVERSE_OP_SIZE && orderArgs[1].equals(REVERSE)));
 	}
-
-	/**
-	 * a method that checks if the filter arguments are valid
-	 * @param filterArgs - the args provided in the order section in command file
-	 * @return - true - valid, false- invalid
-	 */
-
-	private boolean isFilterValid(String[] filterArgs) {
-
-
-	}
-
 
 	/**
 	 * checks if the greater/smaller than filter is valid
@@ -107,9 +94,48 @@ public class SectionFactory {
 		return false;
 	}
 
+	/*
+	 * combines all the checks to validate a filter
+	 * @param filter - some filter to check if it is valid
+	 * @return - true: valid. false-invalid
+	 */
+	private boolean isFilterValid(String[] filter) {
+		String name = filter[0];
+		switch (name) {
+		case "greater_than":
+		case "smaller_than":
+			return isSizeFilterValid(filter);
+		case "between":
+			return isBetweenFilterValid(filter);
+		case "file":
+		case "contains":
+		case "prefix":
+		case "suffix":
+		case "all":
+			return isStringFormatFilterValid(filter);
+		case "writable":
+		case "executable":
+		case "hidden":
+			return isOperationFormatFilterValid(filter);
+		default:
+			return false;
+		}
+	}
 
-	public Section generateSection(String[] commandFileData) {
+	/**
+	 * generates a section object from a command file data
+	 * @param commandFileData - array represents the content of a command file
+	 * @param filterIndex - the line in which the filter section occurs
+	 * @param orderIndex - the line in which the order section occurs
+	 * @return - a relevant section object
+	 */
+	public Section generateSection(ArrayList<String> commandFileData, int filterIndex, int orderIndex) {
+		String delimiter = "#";
+		String[] filter = commandFileData.get(filterIndex).split(delimiter);
+		String[] order = commandFileData.get(orderIndex).split(delimiter);
+		if(isFilterValid(filter) && isOrderValid(order)){
 
+		}
 
 	}
 
