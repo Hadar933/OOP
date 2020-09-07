@@ -61,8 +61,11 @@ public class CommandFileParser {
 			int x  = 2;
 		}
 		//TODO: some more cases to check
+	}
 
-
+	public ArrayList<String> generateCommandData(){
+		ArrayList<String> commandData = new ArrayList<String>(); // TODO: this need some owork obviously
+		return commandData;
 	}
 
 }

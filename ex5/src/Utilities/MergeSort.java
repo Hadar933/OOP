@@ -9,7 +9,14 @@ a class that implements merge sort
  */
 public class MergeSort {
 
-
+	/**
+	 * divide and conquer method to split an array to singletons and sort it
+	 * @param data - data to sort
+	 * @param left - left index
+	 * @param mid - middle index
+	 * @param right - right index
+	 * @param comparator - comparator to compare with
+	 */
 	private static void merge(File[] data, int left, int mid, int right, Comparator<File> comparator) {
 		int sizeLeft = mid - left + 1;
 		int sizeRight = right - mid;
@@ -51,6 +58,13 @@ public class MergeSort {
 		}
 	}
 
+	/**
+	 * merge sort algorithm
+	 * @param data - data to sort
+	 * @param left - left index
+	 * @param right - right index
+	 * @param comparator - an object to compare with
+	 */
 	public void mergeSort(File[] data,int left,int right,Comparator<File> comparator){
 		if(left<right){
 			int mid = (right+left)/2;
@@ -59,6 +73,4 @@ public class MergeSort {
 			merge(data,left,mid,right,comparator);
 		}
 	}
-
-
 }
