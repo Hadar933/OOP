@@ -31,7 +31,7 @@ public class codeRunner {
 	public static void main(String[] args) throws Exception{
 		int validArgs = 2;
 		if (args.length < validArgs) {
-			System.err.println("");
+			System.err.println(""); //TODO: add error msg
 		} else if (args.length > validArgs) {
 			System.err.println("");
 		} else {
@@ -42,7 +42,6 @@ public class codeRunner {
 				ArrayList<String> commandData = new CommandFileParser(commandFile).generateCommandData();
 				ArrayList<Section> allSections = new SectionFactory().generateAllSections(commandData);
 				for(Section section:allSections){
-					// TODO: continue from here
 				}
 			}
 			catch (Exception e){
