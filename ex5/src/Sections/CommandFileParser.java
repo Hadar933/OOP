@@ -1,5 +1,7 @@
 package Sections;
 
+import Exeptions.SectionExeption;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -34,38 +36,41 @@ public class CommandFileParser {
 		return result;
 	}
 
-	/*
-	checks if the data contains the same amount of filter titles and order titles
+	/**
+	 * a method that checks if the data (that represents a command file) is in valid format and returns a
+	 * valid array of the data
+	 * @param data - some data to check
+	 * @return - a valid array representing a valid command file
 	 */
-	private boolean equalNumOfFilterAndOrder(ArrayList<String> data) {
-		int count = 0;
-		for (int i = 0; i < data.size() - 1; i++) {
-			if (data.get(i).equals(FILTER)) {
-				count++;
+	public ArrayList<String> checkData(ArrayList<String> data) throws Exception {
+		ArrayList<String> result = new ArrayList<>();
+		result.add(data.get(0));
+		// marking so called "bad" in a different array.
+		for (int i = 1; i < data.size(); i++) {
+			if ((data.get(i).equals("ORDER") && result.get(i - 1).equals("FILTER")) || (data.get(i).equals(
+					"FILTER") && result.get(i - 1).equals("ORDER"))) {
+				data.add("BAD_VAL");
 			}
-			else if(data.get(i).equals(ORDER)){
-				count--;
+		}// now throwing the relevant exceptions:
+		int sectionSize = 4;
+		int startIndex = 0;
+		int currentIndex = 0;
+		if (!result.get(0).equals("FILTER")) {
+			throw new SectionExeption("FILTER");
+		}
+		for (int i = 1; i < data.size(); i++) {
+			if (data.get(i).equals("FILTER")) {
+				currentIndex = i;
+				if (currentIndex - startIndex > sectionSize) {
+					throw new SectionExeption("FILTER");
+				}
 			}
+			int nextOrderIndex = 2;
+			if (!data.get(currentIndex + nextOrderIndex).equals("ORDER")) {
+				throw new SectionExeption("ORDER");
+			}
+			startIndex = currentIndex;
 		}
-		return count == 0;
+		return result;
 	}
-
-
-
-	/*
-	 * checks if all condition of a valid file are met, and throws the relevant exceptions
-	 */
-	public void checkValidData() throws Exception{
-		ArrayList<String> data = file2array();
-		if(!equalNumOfFilterAndOrder(data)) { //TODO: throw something
-			int x  = 2;
-		}
-		//TODO: some more cases to check
-	}
-
-	public ArrayList<String> generateCommandData(){
-		ArrayList<String> commandData = new ArrayList<String>(); // TODO: this need some owork obviously
-		return commandData;
-	}
-
 }

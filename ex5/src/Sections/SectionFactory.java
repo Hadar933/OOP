@@ -102,25 +102,13 @@ public class SectionFactory {
 	 */
 	private boolean isFilterValid(String[] filter) {
 		String name = filter[0];
-		switch (name) {
-		case "greater_than":
-		case "smaller_than":
-			return isSizeFilterValid(filter);
-		case "between":
-			return isBetweenFilterValid(filter);
-		case "file":
-		case "contains":
-		case "prefix":
-		case "suffix":
-		case "all":
-			return isStringFormatFilterValid(filter);
-		case "writable":
-		case "executable":
-		case "hidden":
-			return isOperationFormatFilterValid(filter);
-		default:
-			return false;
-		}
+		return switch (name) {
+			case "greater_than", "smaller_than" -> isSizeFilterValid(filter);
+			case "between" -> isBetweenFilterValid(filter);
+			case "file", "contains", "prefix", "suffix", "all" -> isStringFormatFilterValid(filter);
+			case "writable", "executable", "hidden" -> isOperationFormatFilterValid(filter);
+			default -> false;
+		};
 	}
 
 	/*
