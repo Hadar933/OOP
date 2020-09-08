@@ -25,14 +25,14 @@ public class TypeCompare implements Comparator<File> {
 	}
 
 	/**
-	 * uses regex to get the type of a file
+	 * get the type of a file
 	 * @param file - some file
 	 * @return - file type (as string)
 	 */
 	private String fileType(File file) {
-		String name = file.getName();
-		Pattern p = Pattern.compile("\\.[^.]+$");
-		Matcher m = p.matcher(name);
-		return toString().substring(m.start(), m.end());
+		String delimiter = "\\.";
+		String path = file.getAbsolutePath();
+		String[] split = path.split(delimiter);
+		return split[split.length - 1];
 	}
 }

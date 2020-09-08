@@ -4,18 +4,15 @@ import java.io.File;
 import java.util.ArrayList;
 
 /**
- * a class that represents the all filter
+ * an interface representing some type of filter
  */
-public class All implements Filters.GenericFilter {
+public interface GenericFilter {
 
     /**
-     * simply returns the data untouched
+     * a method that filters all files according to some filter
      * @param allFiles - an array containing all files in some folder
      * @param filterArgs - the arguments the filter is being provided with
      * @return - the filtered files
      */
-    @Override
-    public ArrayList<File> filter(ArrayList<File> allFiles, String[] filterArgs) {
-        return allFiles;
-    }
+    public ArrayList<File> filter(ArrayList<File> allFiles, String[] filterArgs);
 }

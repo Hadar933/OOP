@@ -1,28 +1,26 @@
 package Filters;
 
-import java.io.File;
 import java.util.ArrayList;
 
 /**
- * a class that represents the suffix filter
+ * a class that represents the file filter
  */
-public class Suffix implements GenericFilter {
-
+public class FileFilter implements GenericFilter {
     /*
 	an array of filtered files, according to the class filter
 	 */
-    private final ArrayList<File> allFilesFiltered = new ArrayList<>();
+    private final ArrayList<java.io.File> allFilesFiltered = new ArrayList<>();
 
     /**
-     * adds a file iff its the argument is suffix of the file's name
+     * adds a file iff its name is the name provided by argument
      * @param allFiles - an array containing all files in some folder
      * @param filterArgs - the arguments the filter is being provided with
      * @return - the filtered files
      */
     @Override
-    public ArrayList<File> filter(ArrayList<File> allFiles, String[] filterArgs) {
-        for (File file : allFiles) {
-            if (file.getName().endsWith(filterArgs[1])) {
+    public ArrayList<java.io.File> filter(ArrayList<java.io.File> allFiles, String[] filterArgs) {
+        for (java.io.File file : allFiles) {
+            if (filterArgs[1].equals(file.getName())) {
                 allFilesFiltered.add(file);
             }
         }

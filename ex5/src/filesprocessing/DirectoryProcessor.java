@@ -1,26 +1,29 @@
 package filesprocessing;
 
-import Filters.FilterFactory;
+import commandfile.CommandFileParser;
+import commandfile.Section;
+import Filters.Filter;
 import Orders.CompareFactory;
-import Sections.CommandFileParser;
-import Sections.Section;
-import Sections.SectionFactory;
 import Helpers.MergeSort;
+import commandfile.SectionFactory;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Objects;
 
 /**
- * this class runs the program entirely
+ * a class that initiates the program and performs the entire operation
  */
 public class DirectoryProcessor {
+	private final static String ERROR = "ERROR: ";
+	private final static String MANY_ARGS = "ERROR: Too many arguments";
+	private final static String MISSING_ARGS = "ERROR: Missing arguments.";
 
 	/**
 	 * generates an array of files from a given directory
 	 * @param sourceDir - a source directory
 	 */
-	private ArrayList<File> dir2array(String sourceDir) {
+	static ArrayList<File> dir2array(String sourceDir) {
 		ArrayList<File> result = new ArrayList<File>();
 		File files = new File(sourceDir);
 		for (File file : Objects.requireNonNull(files.listFiles())) { // iterate if value dir isn't empty
@@ -31,36 +34,45 @@ public class DirectoryProcessor {
 		return result;
 	}
 
-	public static void main(String[] args) throws Exception {
+	/*
+	a static method that prints all of the current section errors thus far
+	 */
+	static void printErrors(Section section) {
+		for (String error : section.getErrors()) {
+			System.err.println(error);
+		}
+	}
+
+	public static void main(String[] args) {
 		int validArgs = 2;
 		if (args.length < validArgs) {
-			System.err.println(""); //TODO: add error msg
+			System.err.println(MISSING_ARGS);
 		} else if (args.length > validArgs) {
-			System.err.println("");
+			System.err.println(MANY_ARGS);
 		} else {
 			try {
 				String sourceDir = args[0];
 				String commandFile = args[1];
-				ArrayList<String> commandData = new CommandFileParser(commandFile).generateCommandData();
-				ArrayList<File> allFiles = new DirectoryProcessor().dir2array(sourceDir);
-				ArrayList<Section> allSections = new SectionFactory().generateAllSections(commandData);
-				FilterFactory filterFactory = new FilterFactory();
+				ArrayList<Section> sections = new SectionFactory()
+						.generateAllSections(new CommandFileParser(commandFile).getValidData());
+				ArrayList<File> allDirFiles = dir2array(sourceDir);
+				for (Section section : sections) {
+					ArrayList<File> finalArray = new Filter().filterFiles(allDirFiles, section.getFilter(),
+																		  section.isFilterNot());
+//					finalArray = new MergeSort().finalMergeSort(finalArray, new CompareFactory()
+//							.generateComparator(section.getOrder()), section.isOrderReverse());
+					finalArray = new MergeSort().mergeSort(finalArray, new CompareFactory()
+							.generateComparator(section.getOrder()), section.isOrderReverse());
 
-				for (Section section : allSections) {
-					ArrayList<File> result = filterFactory.generateFilter(section.getFilter())
-							.filter(allFiles, section.getFilter());
-					new MergeSort().mergeSort(result,0,result.size()-1,
-											  new CompareFactory().generateComparator(section.getOrder()));
-					for(String error: section.getErrors()){
-						System.err.println(error);
+					for (File file : finalArray) {
+						System.out.println(file.getName());
 					}
+					printErrors(section);
 				}
-
 			} catch (Exception e) {
-				System.err.println(" " + e);
+				System.err.println(ERROR + e);
 			}
 		}
-
 
 	}
 }
