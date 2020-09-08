@@ -7,7 +7,6 @@ import Sections.SectionFactory;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.logging.Filter;
 
 /**
  * this class runs the program entirely
