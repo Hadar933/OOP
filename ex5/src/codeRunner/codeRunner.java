@@ -1,8 +1,11 @@
 package codeRunner;
 
+import Filters.FilterFactory;
+import Orders.CompareFactory;
 import Sections.CommandFileParser;
 import Sections.Section;
 import Sections.SectionFactory;
+import Helpers.MergeSort;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -28,24 +31,33 @@ public class codeRunner {
 		return result;
 	}
 
-	public static void main(String[] args) throws Exception{
+	public static void main(String[] args) throws Exception {
 		int validArgs = 2;
 		if (args.length < validArgs) {
 			System.err.println(""); //TODO: add error msg
 		} else if (args.length > validArgs) {
 			System.err.println("");
 		} else {
-			try{
+			try {
 				String sourceDir = args[0];
 				String commandFile = args[1];
-				ArrayList<File> allFiles = new codeRunner().dir2array(sourceDir);
 				ArrayList<String> commandData = new CommandFileParser(commandFile).generateCommandData();
+				ArrayList<File> allFiles = new codeRunner().dir2array(sourceDir);
 				ArrayList<Section> allSections = new SectionFactory().generateAllSections(commandData);
-				for(Section section:allSections){
+				FilterFactory filterFactory = new FilterFactory();
+
+				for (Section section : allSections) {
+					ArrayList<File> result = filterFactory.generateFilter(section.getFilter())
+							.filter(allFiles, section.getFilter());
+					new MergeSort().mergeSort(result,0,result.size()-1,
+											  new CompareFactory().generateComparator(section.getOrder()));
+					for(String error: section.getErrors()){
+						System.err.println(error);
+					}
 				}
-			}
-			catch (Exception e){
-				System.err.println(" "+e);
+
+			} catch (Exception e) {
+				System.err.println(" " + e);
 			}
 		}
 

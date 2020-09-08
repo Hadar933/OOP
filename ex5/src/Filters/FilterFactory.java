@@ -7,10 +7,11 @@ public class FilterFactory {
 
 	/**
 	 * this method generates a filter instance based on given name
-	 * @param filterName - some filter name provided in the command file
+	 * @param filter- some filter provided in the command file
 	 * @return - an object corresponding to the filter name
 	 */
-	public Generic generateFilter(String filterName){
+	public Generic generateFilter(String[] filter){
+		String filterName = filter[0];
 		switch (filterName){
 		case "between":
 			return new Between();
