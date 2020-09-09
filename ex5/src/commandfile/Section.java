@@ -7,112 +7,115 @@ import java.util.ArrayList;
  */
 public class Section {
 
-    /*
+	/*
 	default order
 	 */
-    private static final String ABS = "abs";
+	private static final String ABS = "abs";
 
-    /*
+	/*
 	default filter
 	 */
-    private static final String[] ALL = {"all"};
+	private static final String[] ALL = {"all"};
 
-    /*
+	/*
 	the data of filters and orders itself
 	 */
-    private String[] filter;
-    private String order;
+	private String[] filter;
+	private String order;
 
-    /*
+	/*
 	boolean value represents if a filter is concatenated with #not
 	or if an order is concatenated with #reverse
 	 */
-    private boolean isFilterNot;
-    private boolean isOrderReverse;
+	private boolean isFilterNot;
+	private boolean isOrderReverse;
 
-    /*
+	/*
 	all errors to be printed in the section
 	 */
-    private final ArrayList<String> errors;
+	private final ArrayList<String> errors;
 
-    /**
-     * initializes the data of a section
-     */
-    public Section() {
-        this.isFilterNot = false;
-        this.isOrderReverse = false;
-        this.filter = ALL;
-        this.order = ABS;
-        this.errors = new ArrayList<String>();
-    }
-
-    /*
-	filter getter
+	/**
+	 * initializes the data of a section
 	 */
-    public String[] getFilter() {
-        return filter;
-    }
+	public Section() {
+		this.isFilterNot = false;
+		this.isOrderReverse = false;
+		this.filter = ALL;
+		this.order = ABS;
+		this.errors = new ArrayList<String>();
+	}
 
-    /*
-	order getter
-	 */
-    public String getOrder() {
-        return order;
-    }
-
-    /*
+	/*
 	#not getter
 	 */
-    public boolean isFilterNot() {
-        return isFilterNot;
-    }
+	public boolean isFilterNot() {
+		return isFilterNot;
+	}
 
-    /*
+	/*
 	#reverse getter
 	 */
-    public boolean isOrderReverse() {
-        return isOrderReverse;
-    }
+	public boolean isOrderReverse() {
+		return isOrderReverse;
+	}
 
-    /*
+	/*
+	filter getter
+	 */
+	public String[] getFilter() {
+		return filter;
+	}
+
+	/*
+	order getter
+	 */
+	public String getOrder() {
+		return order;
+	}
+
+
+	/*
 	errors list getter
 	 */
-    public ArrayList<String> getErrors() {
-        return errors;
-    }
+	public ArrayList<String> getErrors() {
+		return errors;
+	}
 
-    /*
-	filter setter
-	 */
-    public void setFilter(String[] filter) {
-        this.filter = filter;
-    }
-
-    /*
+	/*
 	order setter
 	 */
-    public void setOrder(String order) {
-        this.order = order;
-    }
+	public void setOrder(String order) {
+		this.order = order;
+	}
 
-    /*
-	not setter
+	/*
+	filter setter
 	 */
-    public void setFilterNot(boolean filterNot) {
-        isFilterNot = filterNot;
-    }
+	public void setFilter(String[] filter) {
+		this.filter = filter;
+	}
 
-    /*
+	/*
 	reverse setter
 	 */
-    public void setOrderReverse(boolean orderReverse) {
-        isOrderReverse = orderReverse;
-    }
+	public void setOrderReverse(boolean orderReverse) {
+		isOrderReverse = orderReverse;
+	}
 
-    /*
+	/*
 	errors setter
 	 */
-    public void setErrors(String error) {
-        this.errors.add(error);
-    }
+	public void setErrors(String error) {
+		this.errors.add(error);
+	}
+
+	/*
+	not setter
+	 */
+	public void setFilterNot(boolean filterNot) {
+		isFilterNot = filterNot;
+	}
+
+
 }

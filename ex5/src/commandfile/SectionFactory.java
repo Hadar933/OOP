@@ -34,7 +34,6 @@ public class SectionFactory {
 	private static final String NOT = "NOT";
 	private static final String REVERSE = "REVERSE";
 
-
 	/**
 	 * checks if the between filter is valid
 	 * @param FilterArgs - the filter data
@@ -190,25 +189,25 @@ public class SectionFactory {
 	 * @return an array consisting of section instances
 	 */
 	public ArrayList<Section> generateAllSections(ArrayList<String> commandFileData) {
-		ArrayList<Section> sectionArrayList = new ArrayList<Section>();
+		ArrayList<Section> result = new ArrayList<Section>();
 		int blockSize = 3;
 		for (int i = 0; i < commandFileData.size(); i++) {
 			if ("FILTER".equals(commandFileData.get(i))) {
 				if (commandFileData.size() > i + blockSize) {
 					if ("FILTER".equals(commandFileData.get(i + blockSize))) {
-						sectionArrayList.add(generateSection(commandFileData.
+						result.add(generateSection(commandFileData.
 								subList(i, i + blockSize), i + 1));
 					} else {
-						sectionArrayList.add(generateSection(new ArrayList<>(commandFileData.subList
+						result.add(generateSection(new ArrayList<>(commandFileData.subList
 								(i, i + blockSize + 1)), i + 1));
 					}
 				} else {
-					sectionArrayList.add(generateSection(commandFileData.subList
+					result.add(generateSection(commandFileData.subList
 							(i, i + blockSize), i + 1));
 				}
 			}
 		}
-		return sectionArrayList;
+		return result;
 	}
 
 	/*

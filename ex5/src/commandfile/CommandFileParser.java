@@ -1,8 +1,8 @@
 package commandfile;
 
+import java.util.Scanner;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 /**
  * converts a command file to a strings array and checks its in valid format
@@ -11,7 +11,6 @@ public class CommandFileParser {
 	private static final String FILTER = "FILTER";
 	private static final String ORDER = "ORDER";
 	private final Scanner scanner;
-	private final String FLAG = "FLAG";
 
 	/**
 	 * a constructor for the class.
@@ -27,7 +26,7 @@ public class CommandFileParser {
 	 * @return - array of strings
 	 */
 	public ArrayList<String> file2array() throws Exception {
-		ArrayList<String> result = new ArrayList<>();
+		ArrayList<String> result = new ArrayList<String>();
 		while (scanner.hasNext()) {
 			result.add(scanner.nextLine());
 		}
@@ -35,20 +34,21 @@ public class CommandFileParser {
 	}
 
 	/**
-	 * a method that iterates over the data (that represents a command file) and returns an permuted array
-	 * of the data. the process is as followed - whenever theres an unexpected number of
-	 * ORDER or FILTER fields, a "BAD_VALUE" is added in the same index, representing the problem.
+	 * a method that iterates over the data (that represents a command file) and returns an permuted array of
+	 * the data. the process is as followed - whenever theres an unexpected number of ORDER or FILTER fields,
+	 * a "BAD_VALUE" is added in the same index, representing the problem.
 	 * @param data - some data to check
 	 * @return - a valid array representing a valid command file
 	 */
 	public ArrayList<String> getEditedArray(ArrayList<String> data) throws SectionException {
-		ArrayList<String> result = new ArrayList<>();
+		ArrayList<String> result = new ArrayList<String>();
 		if (data.size() == 0) {
 			return result;
 		}
 		result.add(data.get(0));
 		for (int i = 1; i < data.size(); i++) {
 			int prevIndex = i - 1;
+			// there are two conditions that indicate invalid data:
 			boolean condition1 = data.get(i).equals(FILTER) && data.get(prevIndex).equals(FILTER);
 			boolean condition2 = (data.get(i).equals(ORDER) && (result.get(prevIndex).equals(FILTER) ||
 																result.get(prevIndex).equals(ORDER)));
@@ -63,8 +63,8 @@ public class CommandFileParser {
 
 
 	/**
-	 * the method iterates over the return value array of the previous method
-	 * and throws the relevant exceptions if the data isnt of valid form
+	 * iterates over the return value array of the previous method and throws the relevant
+	 * exceptions if the data isn't of valid form
 	 * @param data the array to check.
 	 * @throws Exception if there is a filter or order that are missing.
 	 */
@@ -91,11 +91,11 @@ public class CommandFileParser {
 		}
 	}
 
+
 	/**
-	 * This method combines all processes implemented in the other methods in this class, and returns a final
-	 * legal array of commands.
-	 * @return String ArrayList.
-	 * @throws Exception if there is a filter or order that are missing.
+	 * checks if the data is valid and returns a valid data
+	 * @return - a valid data that represents the command file
+	 * @throws Exception -
 	 */
 	public ArrayList<String> getValidData() throws Exception {
 		ArrayList<String> edited = getEditedArray(file2array());
