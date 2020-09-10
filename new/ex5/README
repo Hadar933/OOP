@@ -1,0 +1,90 @@
+hadar933
+
+=============================
+=      File description     =
+=============================
+
+README
+
+commandfile package: 
+CommandFileParser.java
+Section.java
+SectionException.java
+SectionFactory.java
+
+filesprocessing package: 
+DirectoryProcessor.java
+
+Filters package: 
+All.java
+Between.java
+Contains.java
+Executable.java
+FileFilter.java
+FilterFactory.java
+GenericFilter.java
+GreaterThan.java
+Hidden.java
+Prefix.java
+SmallerThan.java
+Suffix.java
+Writable.java
+
+Helpers package:
+MergeSort.java
+validateFilters.java
+
+Orders package:
+AbsCompare.java
+CompareFactory.java
+SizeCompare.java
+TypeCompare.java
+
+
+
+
+==============================
+=       Desing Choice        =
+==============================
+when a source directory and a command file are being processed, the program will generate
+various arrays that encapsulates the data given in the input.
+some arrays will contains files, as specified in the source directory, and others will
+contains string that represents the instructions given in the command file.
+more specifically, when given these two inputs, the program will:
+1. generate an array of objects of type Section, corresponding to the sections in the command file.
+each section consits of all the relevant filters and orders, as well some boolean indicators for the not 
+and reverse concatenations, and a list of errors that might or might not be empty.
+2. a list of files is generated from the source directory
+3.for each of the sections, we perform the following:
+- process the files according to the filter
+- order the files according to the order
+- print the files in order
+- print the relevant errors (if there are any)
+4. the program will throw some relevant exceptions, if such exist.
+
+let us also briefly present the packages:
+commandfile package: responsible for the parsing of the file into setions
+filesprocessing package: the main runner of the program
+Filters package: generates filter instances
+Helpers package: method that are helpers to the main project
+Orders package: generates order instances
+
+===============================
+=         Exceptions          =
+===============================
+when looking for invalid command file format, i've used the fact that a section has a pre-defined
+size, and whenever some provided section exceeds such size, we know for a fact that the command file is invalid.
+this has made it intuitive to implement an exception that is relevant to such errors in the given file, that are 
+regarded to the order or the filter size in the segment.
+other then that, errors that involves invalid input (such as too many arguments) were handled in the main method
+whenever they were encountered.
+
+===============================
+=          Sorting            =
+===============================
+the process of sorting the given source directory efficiently, Ive implemented the MegreSort algorithm, but with a twist.
+since the items that were needed to be compared with one another were files (and not integers for example), when comparing 
+two items, I used a comparator method that compares according to the file's type size or absolute path.
+other than that, the algorithm is implemented similarly to the well known mergeSort algorithm,
+all in all sorting in O(nlogn) runtime, where n is the size of the directory file (i.e the size of the array that consitst
+all the files that are in the given directory)

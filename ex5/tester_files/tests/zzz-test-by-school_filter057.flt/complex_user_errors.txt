@@ -1,0 +1,7 @@
+Exception in thread "main" java.lang.NoClassDefFoundError: commandfile/SectionFactory
+	at filesprocessing.DirectoryProcessor.main(DirectoryProcessor.java:58)
+Caused by: java.lang.ClassNotFoundException: commandfile.SectionFactory
+	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:581)
+	at java.base/jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:178)
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:521)
+	... 1 more

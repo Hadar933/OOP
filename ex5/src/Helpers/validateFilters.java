@@ -1,12 +1,9 @@
 package Helpers;
 
 import Filters.*;
-
 import java.io.File;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 
 /**
  * this class operates on an array of files and a given filter as followed: filter the relevant files

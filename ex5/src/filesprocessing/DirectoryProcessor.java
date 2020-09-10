@@ -59,9 +59,10 @@ public class DirectoryProcessor {
 						.generateAllSections(new CommandFileParser(commandFile).getValidData());
 				ArrayList<File> allDirFiles = dir2array(sourceDir);
 				for (Section section : allSections) { // sorts each section:
-					ArrayList<File> result = new validateFilters().filterFiles(allDirFiles, section.getFilter(),
-																			   section.isFilterNot());
-					Comparator<File> comparator = new CompareFactory().generateComparator(section.getOrder());
+					ArrayList<File> result = new validateFilters()
+							.filterFiles(allDirFiles, section.getFilter(), section.isFilterNot());
+					Comparator<File> comparator =
+							new CompareFactory().generateComparator(section.getOrder());
 					result = new MergeSort().mergeSort(result, comparator, section.isOrderReverse());
 					for (File file : result) { // print the file names in order:
 						System.out.println(file.getName());
