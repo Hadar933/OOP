@@ -1,0 +1,21 @@
+package oop.ex6.Tokenizer;
+
+import java.util.Arrays;
+import java.util.List;
+
+/*
+this class consists all the relevant regexes and relevant keywords
+we name each regex with an r prefix for shorter use
+ */
+public class ReGex {
+	public static final List<String> TypeArray = Arrays.asList("boolean", "char", "int", "double", "String");
+	public static enum TYPE {BAD_FLAG,GOOD_FLAG,REF, BOOLEAN, INT, DOUBLE, STRING, CHAR}
+
+	public static final String rLine = "\\s=\\s|\\s";
+	public static final String rString = "\"\\w*\"";
+	public static final String rChar = "'.'";
+	public static final String rInt = "-?\\d+";
+	public static final String rDouble = "-?\\d+(\\.\\d+)?";
+	public static final String rBoolean = "true|false|" + rInt + "|" + rDouble;
+	public static final String rIdentifier = "_+\\w|\\w+";
+}
