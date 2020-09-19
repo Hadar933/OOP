@@ -260,7 +260,42 @@ public class Variable {
 		return ReGex.TYPE.GOOD_FLAG;
 	}
 
-	
+	/**
+	 * checks that an assignment line is valid
+	 * @param s - a scope instance
+	 * @return - the relevant type
+	 */
+	public static ReGex.TYPE assignVars(Scope s){
+		int firstLineIndex = 0;
+		ArrayList<String> scopeCode = s.getScopeCode();
+		if (scopeCode.size() != ONE_LINER) {
+			return ReGex.TYPE.BAD_FLAG;
+		}
+		Variable var = new Variable(scopeCode.get(firstLineIndex));
+		if(Pattern.compile(ReGex.rIdentifier).matcher(var.getIdentifier()).matches()){
+			return ReGex.TYPE.BAD_FLAG;
+		}
+		if(var.getValue()==null||var.getIdentifier()==null){
+			return ReGex.TYPE.BAD_FLAG;
+		}
+		String value = var.getValue();
+		if(Pattern.compile(ReGex.rInt).matcher(value).matches()){
+			return ReGex.TYPE.INT;
+		}
+		else if(Pattern.compile(ReGex.rString).matcher(value).matches()){
+			return ReGex.TYPE.STRING;
+		}
+		else if(Pattern.compile(ReGex.rChar).matcher(value).matches()){
+			return ReGex.TYPE.CHAR;
+		}
+		else if(Pattern.compile(ReGex.rBoolean).matcher(value).matches()){
+			return ReGex.TYPE.BOOLEAN;
+		}
+		else{
+			return ReGex.TYPE.BAD_FLAG;
+		}
+	}
+
 
 
 }
