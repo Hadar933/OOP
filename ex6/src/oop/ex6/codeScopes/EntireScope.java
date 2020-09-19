@@ -1,4 +1,4 @@
-package oop.ex6.FileParsing;
+package oop.ex6.codeScopes;
 
 public class EntireScope{
 

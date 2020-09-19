@@ -1,14 +1,15 @@
 package oop.ex6.Tokenizer;
 
-import oop.ex6.FileParsing.Scope;
+import oop.ex6.codeScopes.Scope;
 
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * a class that represents a line of variable declaration or initialization
+ * This class represents a one line code of a variable initialization or instantiation (of the form
+ * (final)? (String|char|boolean|int|double)? identifier (=value)?), and checks that the line is in valid
+ * sJava form
  */
 public class Variable {
 	private final static String EMPTY_LINE = "";
@@ -22,34 +23,24 @@ public class Variable {
 	private final static int THREE_ARGS = 3; //ex. final int x; or int x = 2;
 	private final static int FOUR_ARGS = 4; // ex. final int x = 2;
 
-	/* these are the allowed types */
-
 	/* indicates if the first item is the keyword final */
 	private final boolean isFinal;
 
-	/* of the form {type,identifier,value} */
+	/* this array contains the line's data. the form is {type,identifier,value} */
 	private final String[] lineArray;
 	private final static int TYPE_INDEX = 0;
 	private final static int ID_INDEX = 1;
 	private final static int VALUE_INDEX = 2;
 	private final static int SIZE = 3;
 
-
-	/* does the type of the value corresponds with the lines title? */
-	private final boolean doesValueMatchesType;
-
-	/* types enumerator */;
-
-	private Map<ReGex.TYPE, Pattern> TypeReGex;
-
 	/**
+	 * constructor
 	 * @param line - (final)?(String|char|boolean|int|double)? identifier (=value)?;
 	 */
-	Variable(String line) {
+	public Variable(String line) {
 		this.lineArray = new String[SIZE];
 		this.isFinal = line.startsWith("final");
 		initializeLineArray(line);
-		this.doesValueMatchesType = doesValueMatchesType();
 
 	}
 
@@ -81,13 +72,6 @@ public class Variable {
 		return lineArray[VALUE_INDEX];
 	}
 
-	/**
-	 * getter for the value
-	 */
-	public boolean getIsLineValid() {
-		return doesValueMatchesType;
-	}
-
 	/*
 	assigns the given values to the lineArray
 	 */
@@ -106,7 +90,7 @@ public class Variable {
 		String[] data = line.split(ReGex.rLine); // assume valid spaces here
 		switch (data.length) {
 		case TWO_ARGS:
-			if (ReGex.TypeArray.contains(data[0])) {
+			if (ReGex.TypeArray.contains(data[0])) { // has a type keyword
 				assignValuesToArray(data[0], data[1], null); // ex. int x;
 			} else {
 				assignValuesToArray(null, data[0], data[1]); // ex. x = 2;
@@ -133,8 +117,8 @@ public class Variable {
 	private boolean doesValueMatchesType() {
 		String value = getValue();
 		if (getType() == null || getValue() == null) {
-			return true;
-		} // if there isn't a type in the line, it is true vacuously
+			return true;  // if there isn't a type or a value in the line -> true vacuously
+		}
 		Pattern p;
 		switch (getType()) {
 		case "char":
@@ -166,7 +150,7 @@ public class Variable {
 	private boolean findMatch(Pattern p, String value) {
 		Matcher m = p.matcher(value);
 		if (m.matches()) {
-			lineArray[VALUE_INDEX] = value; //assigning given value
+			lineArray[VALUE_INDEX] = value;
 			return true;
 		}
 		return false;
@@ -178,7 +162,7 @@ public class Variable {
 	 * @param s - a Scope
 	 * @return - the relevant TYPE (enum)
 	 */
-	public ReGex.TYPE declareVars(Scope s) {
+	public static ReGex.TYPE checkDeclareVar(Scope s) {
 		int firstLineIndex = 0;
 		ArrayList<String> scopeCode = s.getScopeCode();
 		if (scopeCode.size() != ONE_LINER) {
@@ -188,7 +172,7 @@ public class Variable {
 		String type = var.getType();
 		String value = var.getValue();
 
-		if (validDeclare(var) == ReGex.TYPE.BAD_FLAG) {
+		if (validDeclareHelper(var) == ReGex.TYPE.BAD_FLAG) {
 			return ReGex.TYPE.BAD_FLAG;
 		}
 		if (ReGex.TypeArray.contains(type)) { // check type
@@ -210,7 +194,7 @@ public class Variable {
 	 * @param value - a value to check the conent of
 	 * @return - given type (enum)
 	 */
-	private ReGex.TYPE getDeclateType(String type, String value) {
+	private static ReGex.TYPE getDeclateType(String type, String value) {
 		switch (type) {
 		case "int":
 			if (value == null || Pattern.compile(ReGex.rInt).matcher(value).matches()) {
@@ -242,7 +226,7 @@ public class Variable {
 	 * @param var - some variable instance (a code line)
 	 * @return - a bad flag enum if theres a problem. a good flag enum otherwise.
 	 */
-	private ReGex.TYPE validDeclare(Variable var) {
+	private static ReGex.TYPE validDeclareHelper(Variable var) {
 		boolean isFinal = var.isFinal;
 		String type = var.getType();
 		String id = var.getIdentifier();
@@ -265,7 +249,7 @@ public class Variable {
 	 * @param s - a scope instance
 	 * @return - the relevant type
 	 */
-	public static ReGex.TYPE assignVars(Scope s){
+	public static ReGex.TYPE checkAssignVar(Scope s){
 		int firstLineIndex = 0;
 		ArrayList<String> scopeCode = s.getScopeCode();
 		if (scopeCode.size() != ONE_LINER) {

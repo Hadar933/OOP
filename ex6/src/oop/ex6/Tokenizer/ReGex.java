@@ -9,7 +9,7 @@ we name each regex with an r prefix for shorter use
  */
 public class ReGex {
 	public static final List<String> TypeArray = Arrays.asList("boolean", "char", "int", "double", "String");
-	public static enum TYPE {BAD_FLAG,GOOD_FLAG,REF, BOOLEAN, INT, DOUBLE, STRING, CHAR}
+	public enum TYPE {BAD_FLAG,GOOD_FLAG,REF, BOOLEAN, INT, DOUBLE, STRING, CHAR}
 
 	public static final String rLine = "\\s=\\s|\\s";
 	public static final String rString = "\"\\w*\"";
