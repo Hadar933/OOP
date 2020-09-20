@@ -26,7 +26,7 @@ public class IfWhile {
 	 * @return - true: valid.
 	 */
 	public boolean isConditionValid(){
-		return Pattern.compile(RegEx.rIfWhile).matcher(condition).matches();
+		return Pattern.compile(RegEx.rBoolean).matcher(condition).matches();
 	}
 
 }

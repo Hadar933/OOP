@@ -19,10 +19,8 @@ public class RegEx {
 	public static final String rInt = "-?\\d+";
 	public static final String rDouble = "-?\\d+(\\.\\d+)?";
 	public static final String rBoolean = "true|false|" + rInt + "|" + rDouble;
-	public static final String rIdentifier = "_+\\w|\\w+";
+	public static final String rIdentifier = "_*[a-zA-Z]*\\w*";
 
-
-	public static final String rIfWhile= rBoolean;
 	public static final String rMethodCall= "\\s*\\w+\\(\\w*\\);\\s*";
 }
 
