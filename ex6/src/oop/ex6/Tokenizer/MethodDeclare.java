@@ -50,7 +50,7 @@ public class MethodDeclare {
 	}
 
 	/**
-	 initializes the parameters map
+	 * initializes the parameters map
 	 */
 	private void setParams(String declaration) {
 		String[] allParams = declaration.substring(declaration.indexOf("(") + 1, declaration.indexOf(")"))
@@ -63,7 +63,7 @@ public class MethodDeclare {
 			String[] splitted = param.split(RegEx.rSpace);
 			String key = splitted[1];
 			String value = splitted[0];
-			params.put(key,value);
+			params.put(key, value);
 		}
 	}
 
@@ -79,7 +79,7 @@ public class MethodDeclare {
 	 * @return the name of the method
 	 */
 	private String setName() {
-		String name = declarationAsArray[METHOD_NAME_INDEX]; //foo(int
+		String name = declarationAsArray[METHOD_NAME_INDEX];
 		Pattern p = Pattern.compile("[^(]+");
 		Matcher m = p.matcher(name);
 		if (m.find()) {
@@ -92,16 +92,16 @@ public class MethodDeclare {
 	 * a method that checks if the declaration is valid
 	 */
 	public boolean isDeclarationValid() {
-		if (!Pattern.compile(RegEx.rIdentifier).matcher(methodName).matches()) { // bad name
+		if (!Pattern.compile(RegEx.rIdentifier).matcher(methodName).matches() &&
+			!methodName.equals(BAD_NAME)) { // bad name
 			return false;
 		}
-		for(String type: params.values()){ // bad type for a parameter
-			if(!RegEx.TypeArray.contains(type)){
+		for (String type : params.values()) { // bad type for a parameter
+			if (!RegEx.TypeArray.contains(type)) {
 				return false;
 			}
 		}
 		return true;
-
 	}
 
 }

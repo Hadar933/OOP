@@ -11,8 +11,8 @@ import java.util.regex.Pattern;
 public class MethodCall {
 	private static final int ONE_LINER = 1;
 	private static final int FIRST_CODE_LINE = 0;
-
 	private String call = null;
+
 	public MethodCall(Scope s){
 		if(s.getScopeCode().size()!=ONE_LINER){
 			call = s.getScopeCode().get(FIRST_CODE_LINE);

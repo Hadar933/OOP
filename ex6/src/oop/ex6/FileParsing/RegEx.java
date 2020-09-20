@@ -22,5 +22,6 @@ public class RegEx {
 	public static final String rIdentifier = "_*[a-zA-Z]*\\w*";
 
 	public static final String rMethodCall= "\\s*\\w+\\(\\w*\\);\\s*";
+	public static final String rReturn= "\\s*return;";
 }
 
