@@ -1,5 +1,6 @@
 package oop.ex6.Tokenizer;
 
+import oop.ex6.FileParsing.ReGex;
 import oop.ex6.codeScopes.Scope;
 
 import java.util.ArrayList;
