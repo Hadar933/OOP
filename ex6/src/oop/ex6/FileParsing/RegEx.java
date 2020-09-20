@@ -12,6 +12,7 @@ public class RegEx {
 	public enum TYPE {BAD_FLAG,GOOD_FLAG,REF, BOOLEAN, INT, DOUBLE, STRING, CHAR}
 
 	// Variable related RegEx:
+	public static final String rSpace = " ";
 	public static final String rLine = "\\s=\\s|\\s";
 	public static final String rString = "\"\\w*\"";
 	public static final String rChar = "'.'";
