@@ -7,7 +7,7 @@ import java.util.List;
 this class consists all the relevant regexes and relevant keywords
 we name each regex with an r prefix for shorter use
  */
-public class ReGex {
+public class RegEx {
 	public static final List<String> TypeArray = Arrays.asList("boolean", "char", "int", "double", "String");
 	public enum TYPE {BAD_FLAG,GOOD_FLAG,REF, BOOLEAN, INT, DOUBLE, STRING, CHAR}
 
@@ -20,6 +20,8 @@ public class ReGex {
 	public static final String rBoolean = "true|false|" + rInt + "|" + rDouble;
 	public static final String rIdentifier = "_+\\w|\\w+";
 
-	//If or while RegEx:
-	public static final String rIfWhile= "\\s*-?(\\d+\\.\\d+)?;";
+
+	public static final String rIfWhile= rBoolean;
+	public static final String rMethodCall= "\\s*\\w+\\(\\w*\\);\\s*";
 }
+

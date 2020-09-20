@@ -1,5 +1,9 @@
 package oop.ex6.Tokenizer;
 
+import oop.ex6.FileParsing.RegEx;
+
+import java.util.regex.Pattern;
+
 /**
  * a class that represents the parsing of an if or while conditions
  */
@@ -16,4 +20,13 @@ public class IfWhile {
 	public String getCondition() {
 		return condition;
 	}
+
+	/**
+	 * checks if the condition is valid
+	 * @return - true: valid.
+	 */
+	public boolean isConditionValid(){
+		return Pattern.compile(RegEx.rIfWhile).matcher(condition).matches();
+	}
+
 }

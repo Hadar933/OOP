@@ -1,6 +1,6 @@
 package oop.ex6.codeScopes;
 
-import oop.ex6.FileParsing.ReGex;
+import oop.ex6.FileParsing.RegEx;
 import oop.ex6.Tokenizer.Variable;
 
 import java.util.ArrayList;
@@ -73,7 +73,7 @@ public class Scope {
 				ArrayList<String> innerCode = subArrayList(scopeCode,startIdx+1,endIdx);
 				Scope innerScope = new Scope(innerCode);
 				if (innerCode.size() == ONE_LINER) { // a variable is one line
-					if (Variable.checkDeclareVar(innerScope) != ReGex.TYPE.BAD_FLAG) {
+					if (Variable.checkDeclareVar(innerScope) != RegEx.TYPE.BAD_FLAG) {
 						Variable var = new Variable(innerScope.getScopeCode().get(FIRST_CODE_LINE));
 						innerScope.setOuterScope(this);
 						declareVars.add(var);

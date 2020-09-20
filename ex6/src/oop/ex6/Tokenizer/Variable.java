@@ -1,6 +1,6 @@
 package oop.ex6.Tokenizer;
 
-import oop.ex6.FileParsing.ReGex;
+import oop.ex6.FileParsing.RegEx;
 import oop.ex6.codeScopes.Scope;
 
 import java.util.ArrayList;
@@ -88,10 +88,10 @@ public class Variable {
 	 */
 	private void initializeLineArray(String line) {
 		line = line.replaceAll(END_LINE, EMPTY_LINE);
-		String[] data = line.split(ReGex.rLine); // assume valid spaces here
+		String[] data = line.split(RegEx.rLine); // assume valid spaces here
 		switch (data.length) {
 		case TWO_ARGS:
-			if (ReGex.TypeArray.contains(data[0])) { // has a type keyword
+			if (RegEx.TypeArray.contains(data[0])) { // has a type keyword
 				assignValuesToArray(data[0], data[1], null); // ex. int x;
 			} else {
 				assignValuesToArray(null, data[0], data[1]); // ex. x = 2;
@@ -123,19 +123,19 @@ public class Variable {
 		Pattern p;
 		switch (getType()) {
 		case "char":
-			p = Pattern.compile(ReGex.rChar);
+			p = Pattern.compile(RegEx.rChar);
 			return findMatch(p, value);
 		case "String":
-			p = Pattern.compile(ReGex.rString);
+			p = Pattern.compile(RegEx.rString);
 			return findMatch(p, value);
 		case "boolean":
-			p = Pattern.compile(ReGex.rBoolean); // true false int or double
+			p = Pattern.compile(RegEx.rBoolean); // true false int or double
 			return findMatch(p, value);
 		case "int":
-			p = Pattern.compile(ReGex.rInt);
+			p = Pattern.compile(RegEx.rInt);
 			return findMatch(p, value);
 		case "double":
-			p = Pattern.compile(ReGex.rDouble);
+			p = Pattern.compile(RegEx.rDouble);
 			return findMatch(p, value);
 		default:
 			return false;
@@ -163,28 +163,28 @@ public class Variable {
 	 * @param s - a Scope
 	 * @return - the relevant TYPE (enum)
 	 */
-	public static ReGex.TYPE checkDeclareVar(Scope s) {
+	public static RegEx.TYPE checkDeclareVar(Scope s) {
 		int firstLineIndex = 0;
 		ArrayList<String> scopeCode = s.getScopeCode();
 		if (scopeCode.size() != ONE_LINER) {
-			return ReGex.TYPE.BAD_FLAG;
+			return RegEx.TYPE.BAD_FLAG;
 		}
 		Variable var = new Variable(scopeCode.get(firstLineIndex));
 		String type = var.getType();
 		String value = var.getValue();
 
-		if (validDeclareHelper(var) == ReGex.TYPE.BAD_FLAG) {
-			return ReGex.TYPE.BAD_FLAG;
+		if (validDeclareHelper(var) == RegEx.TYPE.BAD_FLAG) {
+			return RegEx.TYPE.BAD_FLAG;
 		}
-		if (ReGex.TypeArray.contains(type)) { // check type
+		if (RegEx.TypeArray.contains(type)) { // check type
 			if (value != null) { // assignment
-				if (Pattern.compile(ReGex.rIdentifier).matcher(value).matches()
+				if (Pattern.compile(RegEx.rIdentifier).matcher(value).matches()
 					&& !value.matches("true|false")) {
-					return ReGex.TYPE.REF; // a reference
+					return RegEx.TYPE.REF; // a reference
 				}
 			}
 		} else {
-			return ReGex.TYPE.BAD_FLAG;
+			return RegEx.TYPE.BAD_FLAG;
 		}
 		return getDeclateType(type, value);
 	}
@@ -195,30 +195,30 @@ public class Variable {
 	 * @param value - a value to check the conent of
 	 * @return - given type (enum)
 	 */
-	private static ReGex.TYPE getDeclateType(String type, String value) {
+	private static RegEx.TYPE getDeclateType(String type, String value) {
 		switch (type) {
 		case "int":
-			if (value == null || Pattern.compile(ReGex.rInt).matcher(value).matches()) {
-				return ReGex.TYPE.INT;
+			if (value == null || Pattern.compile(RegEx.rInt).matcher(value).matches()) {
+				return RegEx.TYPE.INT;
 			}
 		case "double":
-			if (value == null || Pattern.compile(ReGex.rDouble).matcher(value).matches()) {
-				return ReGex.TYPE.DOUBLE;
+			if (value == null || Pattern.compile(RegEx.rDouble).matcher(value).matches()) {
+				return RegEx.TYPE.DOUBLE;
 			}
 		case "boolean":
-			if (value == null || Pattern.compile(ReGex.rBoolean).matcher(value).matches()) {
-				return ReGex.TYPE.BOOLEAN;
+			if (value == null || Pattern.compile(RegEx.rBoolean).matcher(value).matches()) {
+				return RegEx.TYPE.BOOLEAN;
 			}
 		case "char":
-			if (value == null || Pattern.compile(ReGex.rChar).matcher(value).matches()) {
-				return ReGex.TYPE.CHAR;
+			if (value == null || Pattern.compile(RegEx.rChar).matcher(value).matches()) {
+				return RegEx.TYPE.CHAR;
 			}
 		case "String":
-			if (value == null || Pattern.compile(ReGex.rString).matcher(value).matches()) {
-				return ReGex.TYPE.STRING;
+			if (value == null || Pattern.compile(RegEx.rString).matcher(value).matches()) {
+				return RegEx.TYPE.STRING;
 			}
 		default:
-			return ReGex.TYPE.BAD_FLAG;
+			return RegEx.TYPE.BAD_FLAG;
 		}
 	}
 
@@ -227,22 +227,22 @@ public class Variable {
 	 * @param var - some variable instance (a code line)
 	 * @return - a bad flag enum if theres a problem. a good flag enum otherwise.
 	 */
-	private static ReGex.TYPE validDeclareHelper(Variable var) {
+	private static RegEx.TYPE validDeclareHelper(Variable var) {
 		boolean isFinal = var.isFinal;
 		String type = var.getType();
 		String id = var.getIdentifier();
 		String value = var.getValue();
 		if (isFinal && value == null) { //when declared a value must be assigned
-			return ReGex.TYPE.BAD_FLAG;
+			return RegEx.TYPE.BAD_FLAG;
 		}
 		if (type == null) { // bad type
-			return ReGex.TYPE.BAD_FLAG;
+			return RegEx.TYPE.BAD_FLAG;
 		}
-		Pattern idPattern = Pattern.compile(ReGex.rIdentifier);
+		Pattern idPattern = Pattern.compile(RegEx.rIdentifier);
 		if (!idPattern.matcher(id).matches()) { // bad identifier
-			return ReGex.TYPE.BAD_FLAG;
+			return RegEx.TYPE.BAD_FLAG;
 		}
-		return ReGex.TYPE.GOOD_FLAG;
+		return RegEx.TYPE.GOOD_FLAG;
 	}
 
 	/**
@@ -250,34 +250,34 @@ public class Variable {
 	 * @param s - a scope instance
 	 * @return - the relevant type
 	 */
-	public static ReGex.TYPE checkAssignVar(Scope s){
+	public static RegEx.TYPE checkAssignVar(Scope s){
 		int firstLineIndex = 0;
 		ArrayList<String> scopeCode = s.getScopeCode();
 		if (scopeCode.size() != ONE_LINER) {
-			return ReGex.TYPE.BAD_FLAG;
+			return RegEx.TYPE.BAD_FLAG;
 		}
 		Variable var = new Variable(scopeCode.get(firstLineIndex));
-		if(Pattern.compile(ReGex.rIdentifier).matcher(var.getIdentifier()).matches()){
-			return ReGex.TYPE.BAD_FLAG;
+		if(Pattern.compile(RegEx.rIdentifier).matcher(var.getIdentifier()).matches()){
+			return RegEx.TYPE.BAD_FLAG;
 		}
 		if(var.getValue()==null||var.getIdentifier()==null){
-			return ReGex.TYPE.BAD_FLAG;
+			return RegEx.TYPE.BAD_FLAG;
 		}
 		String value = var.getValue();
-		if(Pattern.compile(ReGex.rInt).matcher(value).matches()){
-			return ReGex.TYPE.INT;
+		if(Pattern.compile(RegEx.rInt).matcher(value).matches()){
+			return RegEx.TYPE.INT;
 		}
-		else if(Pattern.compile(ReGex.rString).matcher(value).matches()){
-			return ReGex.TYPE.STRING;
+		else if(Pattern.compile(RegEx.rString).matcher(value).matches()){
+			return RegEx.TYPE.STRING;
 		}
-		else if(Pattern.compile(ReGex.rChar).matcher(value).matches()){
-			return ReGex.TYPE.CHAR;
+		else if(Pattern.compile(RegEx.rChar).matcher(value).matches()){
+			return RegEx.TYPE.CHAR;
 		}
-		else if(Pattern.compile(ReGex.rBoolean).matcher(value).matches()){
-			return ReGex.TYPE.BOOLEAN;
+		else if(Pattern.compile(RegEx.rBoolean).matcher(value).matches()){
+			return RegEx.TYPE.BOOLEAN;
 		}
 		else{
-			return ReGex.TYPE.BAD_FLAG;
+			return RegEx.TYPE.BAD_FLAG;
 		}
 	}
 
