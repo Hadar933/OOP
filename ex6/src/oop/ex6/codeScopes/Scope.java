@@ -1,8 +1,9 @@
 package oop.ex6.codeScopes;
 
 import oop.ex6.FileParsing.RegEx;
-import oop.ex6.Tokenizer.Variable;
+import oop.ex6.Tokenizer.*;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -14,17 +15,27 @@ public class Scope {
 
 	/* length of a one line code  */
 	private final static int ONE_LINER = 1;
+	private final static int EMPTY_LINE = 0;
 	private final static int FIRST_CODE_LINE = 0;
 
 	private final ArrayList<Scope> innerScopes;
 	private Scope outerScope;
 
+	/* if or while, return statement, declaration, variable, etc...*/
+	private String scopeType;
+
+	/* all the relevant variables */
 	private final ArrayList<Variable> declareVars;
 	private final ArrayList<Variable> referVars;
 	private final ArrayList<Variable> assignVars;
 
+	/* the code that represents the scope */
 	private final ArrayList<String> scopeCode;
 
+	/**
+	 * constructor for a scope instance
+	 * @param codeLines - the code lines that represent the scope
+	 */
 	public Scope(ArrayList<String> codeLines) {
 		this.scopeCode = codeLines;
 		declareVars = new ArrayList<>();
@@ -34,8 +45,8 @@ public class Scope {
 		getInnerScopes();
 	}
 
-	/*
-	a helper method that generate a sub array list from given array list
+	/**
+	 * a helper method that generate a sub array list from given array list
 	 */
 	private ArrayList<String> subArrayList(ArrayList<String> data, int startIdx, int endIdx) {
 		ArrayList<String> result = new ArrayList<>();
@@ -46,7 +57,7 @@ public class Scope {
 	}
 
 	/**
-	a setter for the outer scope
+	 * a setter for the outer scope
 	 */
 	public void setOuterScope(Scope outerScope) {
 		this.outerScope = outerScope;
@@ -68,9 +79,9 @@ public class Scope {
 		}
 		if (openBracketIndex.size() == closingBracketIndex.size()) { // valid brackets
 			for (int i = 0; i < openBracketIndex.size(); i++) {
-				int startIdx = openBracketIndex.get(openBracketIndex.size()-(i+1));
+				int startIdx = openBracketIndex.get(openBracketIndex.size() - (i + 1));
 				int endIdx = closingBracketIndex.get(i);
-				ArrayList<String> innerCode = subArrayList(scopeCode,startIdx+1,endIdx);
+				ArrayList<String> innerCode = subArrayList(scopeCode, startIdx + 1, endIdx);
 				Scope innerScope = new Scope(innerCode);
 				if (innerCode.size() == ONE_LINER) { // a variable is one line
 					if (Variable.checkDeclareVar(innerScope) != RegEx.TYPE.BAD_FLAG) {
@@ -91,4 +102,47 @@ public class Scope {
 		return scopeCode;
 	}
 
+	/**
+	 * updates the scopeType data member
+	 */
+	private RegEx.SCOPE_TYPE setScopeType(Scope s) {
+		ArrayList<String> code = s.getScopeCode();
+		if (code.size() == EMPTY_LINE) { // zero lines
+			return RegEx.SCOPE_TYPE.EMPTY;
+		} else if (code.size() == ONE_LINER) { // one line
+			if (Variable.checkDeclareVar(s) != RegEx.TYPE.BAD_FLAG) {
+				return RegEx.SCOPE_TYPE.VAR_DECLARE;
+			}
+			if (Variable.checkAssignVar(s) != RegEx.TYPE.BAD_FLAG) {
+				return RegEx.SCOPE_TYPE.VAR_ASSIGN;
+			}
+			if (new Return(s).isReturnValValid()) {
+				return RegEx.SCOPE_TYPE.RETURN;
+			}
+			if (new MethodDeclare(code.get(FIRST_CODE_LINE)).isMethodDeclareValid()) {
+				return RegEx.SCOPE_TYPE.METHOD_DECLARE;
+			}
+			if (new MethodCall(s).isMethodCallValid()) {
+				return RegEx.SCOPE_TYPE.METHOD_CALL;
+			}
+		}// two or more lines
+		if (isIfOrWhile(code)) {
+			return RegEx.SCOPE_TYPE.IF_WHILE;
+		}
+
+		return RegEx.SCOPE_TYPE.BAD_TYPE;
+	}
+
+	/**
+	 * checks if scope s is an if or while scope
+	 * @param code - some scope code
+	 * @return - true: yes, false: no
+	 */
+	private static boolean isIfOrWhile(ArrayList<String> code) {
+		if (code.get(FIRST_CODE_LINE).startsWith("if") || code.get(FIRST_CODE_LINE).startsWith("while")) {
+			return new IfWhile(code.get(FIRST_CODE_LINE)).isConditionValid();
+		}
+		return false;
+	}
 }
+

@@ -91,7 +91,7 @@ public class MethodDeclare {
 	/**
 	 * a method that checks if the declaration is valid
 	 */
-	public boolean isDeclarationValid() {
+	public boolean isMethodDeclareValid() {
 		if (!Pattern.compile(RegEx.rIdentifier).matcher(methodName).matches() &&
 			!methodName.equals(BAD_NAME)) { // bad name
 			return false;

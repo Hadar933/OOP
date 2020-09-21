@@ -8,12 +8,12 @@ import java.util.regex.Pattern;
 /**
  * a class that represents the parsing of the return value
  */
-public class ReturnVal {
+public class Return {
 	private static final int ONE_LINER = 1;
 	private static final int FIRST_CODE_LINE = 0;
 	private String returnVal = null;
 
-	public ReturnVal(Scope s) {
+	public Return(Scope s) {
 		if (s.getScopeCode().size() != ONE_LINER) {
 			returnVal = s.getScopeCode().get(FIRST_CODE_LINE);
 		}
