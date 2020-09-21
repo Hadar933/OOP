@@ -3,7 +3,6 @@ package oop.ex6.codeScopes;
 import oop.ex6.FileParsing.RegEx;
 import oop.ex6.Tokenizer.*;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -22,7 +21,7 @@ public class Scope {
 	private Scope outerScope;
 
 	/* if or while, return statement, declaration, variable, etc...*/
-	private String scopeType;
+	private RegEx.SCOPE_TYPE scopeType;
 
 	/* all the relevant variables */
 	private final ArrayList<Variable> declareVars;
@@ -42,13 +41,13 @@ public class Scope {
 		referVars = new ArrayList<>();
 		assignVars = new ArrayList<>();
 		innerScopes = new ArrayList<>();
-		getInnerScopes();
+		findInnerScopes();
 	}
 
 	/**
 	 * a helper method that generate a sub array list from given array list
 	 */
-	private ArrayList<String> subArrayList(ArrayList<String> data, int startIdx, int endIdx) {
+	private static ArrayList<String> subArrayList(ArrayList<String> data, int startIdx, int endIdx) {
 		ArrayList<String> result = new ArrayList<>();
 		for (int i = startIdx; i < endIdx; i++) {
 			result.add(data.get(i));
@@ -66,7 +65,7 @@ public class Scope {
 	/**
 	 * find the inner scopes based on the "{" and "}" brackets
 	 */
-	private void getInnerScopes() {
+	private void findInnerScopes() {
 		ArrayList<Integer> openBracketIndex = new ArrayList<>();
 		ArrayList<Integer> closingBracketIndex = new ArrayList<>();
 		for (int i = 0; i < scopeCode.size(); i++) {
@@ -96,6 +95,37 @@ public class Scope {
 	}
 
 	/**
+	 * find all the referenced variables from the given variables array
+	 * @param vars - some variable array
+	 */
+	public void findReferenceVars(ArrayList<Variable> vars){
+		for(Variable var: vars){
+			String value = var.getValue();
+			if(var.getValue()!=null){
+				if(value.matches(RegEx.rIdentifier)){
+					if(!value.matches("true|false")){
+						referVars.add(var);
+					}
+				}
+			}
+		}
+	}
+
+	/**
+	getter for the declared variable array
+	 */
+	public ArrayList<Variable> getDeclareVars() {
+		return declareVars;
+	}
+
+	/**
+	 getter for the assigned variable array
+	 */
+	public ArrayList<Variable> getAssignVars() {
+		return assignVars;
+	}
+
+	/**
 	 * getter for the scope's code array
 	 */
 	public ArrayList<String> getScopeCode() {
@@ -103,46 +133,33 @@ public class Scope {
 	}
 
 	/**
-	 * updates the scopeType data member
+	a setter for the scope's type (empty line, method declaration, if, while, etc...)
 	 */
-	private RegEx.SCOPE_TYPE setScopeType(Scope s) {
-		ArrayList<String> code = s.getScopeCode();
-		if (code.size() == EMPTY_LINE) { // zero lines
-			return RegEx.SCOPE_TYPE.EMPTY;
-		} else if (code.size() == ONE_LINER) { // one line
-			if (Variable.checkDeclareVar(s) != RegEx.TYPE.BAD_FLAG) {
-				return RegEx.SCOPE_TYPE.VAR_DECLARE;
-			}
-			if (Variable.checkAssignVar(s) != RegEx.TYPE.BAD_FLAG) {
-				return RegEx.SCOPE_TYPE.VAR_ASSIGN;
-			}
-			if (new Return(s).isReturnValValid()) {
-				return RegEx.SCOPE_TYPE.RETURN;
-			}
-			if (new MethodDeclare(code.get(FIRST_CODE_LINE)).isMethodDeclareValid()) {
-				return RegEx.SCOPE_TYPE.METHOD_DECLARE;
-			}
-			if (new MethodCall(s).isMethodCallValid()) {
-				return RegEx.SCOPE_TYPE.METHOD_CALL;
-			}
-		}// two or more lines
-		if (isIfOrWhile(code)) {
-			return RegEx.SCOPE_TYPE.IF_WHILE;
-		}
-
-		return RegEx.SCOPE_TYPE.BAD_TYPE;
+	public void setScopeType(RegEx.SCOPE_TYPE scopeType) {
+		this.scopeType = scopeType;
 	}
 
 	/**
-	 * checks if scope s is an if or while scope
-	 * @param code - some scope code
-	 * @return - true: yes, false: no
+	getter for outer scope
 	 */
-	private static boolean isIfOrWhile(ArrayList<String> code) {
-		if (code.get(FIRST_CODE_LINE).startsWith("if") || code.get(FIRST_CODE_LINE).startsWith("while")) {
-			return new IfWhile(code.get(FIRST_CODE_LINE)).isConditionValid();
-		}
-		return false;
+	public Scope getOuterScope() {
+		return outerScope;
 	}
+
+	/**
+	getter for the type
+	 */
+	public RegEx.SCOPE_TYPE getScopeType() {
+		return scopeType;
+	}
+
+	/**
+	getter for the inner scopes
+	 */
+	public ArrayList<Scope> getInnerScopes(){
+		return innerScopes;
+	}
+
+
 }
 
