@@ -14,15 +14,17 @@ public class CodeFile {
 	private ArrayList<Variable> variablesDeclaredInScope;
 	private ArrayList<Variable> variablesAssignedInScope;
 	private ArrayList<Variable> variablesReferencedInScope;
+	private ArrayList<Scope> fileScopesArray;
 
 	/**
 	 * constructor for the CodeFile class
 	 */
-	public CodeFile(){
+	public CodeFile(ArrayList<Scope> scopesArray){
 		fileMethods = new HashMap<>();
 		variablesAssignedInScope = new ArrayList<>();
 		variablesDeclaredInScope = new ArrayList<>();
 		variablesReferencedInScope = new ArrayList<>();
+		fileScopesArray = scopesArray;
 	}
 
 	/**
@@ -42,6 +44,14 @@ public class CodeFile {
 	 * @return the array variablesAssignedInScope
 	 */
 	public ArrayList<Variable> getVariablesAssignedInScope(){ return variablesAssignedInScope; }
+
+	/**
+	 * getter for fileScopesArray
+	 * @return array of the scopes in the file
+	 */
+	public ArrayList<Scope> getFileScopesArray() {
+		return fileScopesArray;
+	}
 
 	/**
 	 * adds given variable to the array of reference variables

@@ -7,6 +7,7 @@ import oop.ex6.main.SyntaxException;
 import oop.ex6.main.UsageException;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 
 /**
@@ -21,7 +22,7 @@ public class ScopeVerifier {
 	/**
 	 * updates the scopeType data member
 	 */
-	private RegEx.SCOPE_TYPE checkScopeType(Scope s) {
+	private static RegEx.SCOPE_TYPE checkScopeType(Scope s) {
 		ArrayList<String> code = s.getScopeCode();
 		if (code.size() == EMPTY_LINE) { // zero lines
 			return RegEx.SCOPE_TYPE.EMPTY;
@@ -64,26 +65,26 @@ public class ScopeVerifier {
 	 * main method of this class, verifies a scope s
 	 * @param s - some scope instance
 	 */
-	public void VerifyScope(Scope s) throws CodeException {
+	public static void VerifyScope(Scope s, CodeFile allCode) throws CodeException {
 		RegEx.SCOPE_TYPE scopeType = checkScopeType(s);
 		switch (scopeType) {
 		case METHOD_CALL:
-			verifyMethodCall(s);
+			verifyMethodCall(s, allCode);
 			break;
 		case RETURN:
 			s.setScopeType(RegEx.SCOPE_TYPE.RETURN);
 			break;
 		case VAR_DECLARE:
-			verifyVarDeclare(s);
+			verifyVarDeclare(s,allCode);
 			break;
 		case VAR_ASSIGN:
-			verifyVarAssign(s);
+			verifyVarAssign(s, allCode);
 			break;
 		case METHOD_DECLARE:
-			verifyMethodDeclare(s);
+			verifyMethodDeclare(s, allCode);
 			break;
 		case IF_WHILE:
-			verifyIfWhie(s);
+			verifyIfWhie(s, allCode);
 			break;
 		case EMPTY:
 			s.setScopeType(RegEx.SCOPE_TYPE.EMPTY);
@@ -91,21 +92,52 @@ public class ScopeVerifier {
 		throw new SyntaxException("bad scope form");
 	}
 
-	private void verifyMethodDeclare(Scope s) {
-		if (s.getOuterScope() == null) {
-			ArrayList<Scope> subSections = s.getInnerScopes();
-			//TODO: finish this somehow
+	private static void verifyMethodDeclare(Scope s, CodeFile allCode) throws CodeException {
+		if (s.getOuterScope() != null) {
+			return;
+		}
+		ArrayList<Scope> subScopes = s.getInnerScopes();
+		if (new Return(s).isReturnValValid()) {
+			if (subScopes != null) {
+				for (Scope sub : subScopes) {
+					sub.setOuterScope(s);
+					VerifyScope(sub, allCode);
+				}
+			}
+		}
+		s.findReferenceVars(s.getAssignVars());
+		s.findReferenceVars(s.getDeclareVars());
+		boolean exists;
+		for (Variable refVar : s.getReferVars()) {
+			exists = false;
+			for (Variable declareVar : s.getDeclareVars()) {
+				if (refVar.getValue().equals(declareVar.getValue())) {
+					exists = true;
+					break;
+				}
+			}
+			if (!exists) {
+				for (Variable declareVar : s.getOuterScope().getDeclareVars()) {
+					if (refVar.getValue().equals(declareVar.getValue())) {
+						exists = true;
+						break;
+					}
+				}
+				if (!exists) {
+					throw new SyntaxException("haven't declared a ref var");
+				}
+			}
 		}
 	}
 
 	/**
 	 * verifies an if or a while
 	 */
-	private void verifyIfWhie(Scope s) throws CodeException {
+	private static void verifyIfWhie(Scope s, CodeFile allCode) throws CodeException {
 		s.setScopeType(RegEx.SCOPE_TYPE.IF_WHILE);
 		ArrayList<Scope> subScopes = s.getInnerScopes();
 		for (Scope sub : subScopes) {
-			VerifyScope(sub);
+			VerifyScope(sub, allCode);
 		}
 		s.findReferenceVars(s.getAssignVars());
 		s.findReferenceVars(s.getDeclareVars());
@@ -114,7 +146,7 @@ public class ScopeVerifier {
 	/**
 	 * verifies a variable assignment
 	 */
-	private void verifyVarAssign(Scope s) {
+	private static void verifyVarAssign(Scope s, CodeFile allCode) {
 		s.setScopeType(RegEx.SCOPE_TYPE.VAR_ASSIGN);
 		//TODO: need to implement the global scope for this
 	}
@@ -122,15 +154,29 @@ public class ScopeVerifier {
 	/**
 	 * verifies a variable declaration
 	 */
-	private void verifyVarDeclare(Scope s) {
+	private static void verifyVarDeclare(Scope s, CodeFile allCode) throws CodeException {
 		s.setScopeType(RegEx.SCOPE_TYPE.VAR_DECLARE);
-		//TODO: need to implement the global scope for this
+		if (s.getOuterScope() != null) {
+			//TODO: theres a need for a setter here
+		}
+		if(allCode.getFileScopesArray().contains(s)){
+			if(Variable.checkDeclareVar(s) == RegEx.TYPE.REF){
+				//TODO: theres a need for a setter here
+				// TODO: implement IsRefDeclarationInsideSection
+			}
+			else if(s.getOuterScope()!=null){
+				// TODO: implement IsRefDeclarationInsideSection
+				throw new CodeException("var not declared");
+			}
+
+		}
+
 	}
 
 	/**
 	 * verifies a method call
 	 */
-	private void verifyMethodCall(Scope s) throws UsageException {
+	private static void verifyMethodCall(Scope s, CodeFile allCode) throws UsageException {
 		s.setScopeType(RegEx.SCOPE_TYPE.METHOD_CALL);
 		Scope scopy = s;
 		while (scopy.getOuterScope() != null) { // getting the most outer scope
@@ -141,7 +187,22 @@ public class ScopeVerifier {
 		}
 		MethodDeclare method = new MethodDeclare(s.getScopeCode().get(0));
 		String methodName = method.getMethodName();
-		//TODO: continue this part
+		if (allCode.getFileMethods().containsKey(methodName)) {
+			throw new UsageException("calling method without declaring");
+		}
+		Map<String, String> params = method.getParams();
+		ArrayList<Variable> vars = new ArrayList<>();
+		for (String key : params.keySet()) {
+			vars.add(new Variable(key)); //TODO: i need to add the variable not only the key. fix this
+		}
+		ArrayList<Variable> methodsInFile = allCode.getFileMethods().get(params);
+		for (Variable callVar : vars) {
+			for (Variable declareVar : methodsInFile) {
+				if (!callVar.getType().equals(declareVar.getType())) {
+					throw new UsageException("argument type mismatch");
+				}
+			}
+		}
 	}
 
 

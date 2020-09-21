@@ -95,6 +95,13 @@ public class Scope {
 	}
 
 	/**
+	getter for the referenced vars
+	 */
+	public ArrayList<Variable> getReferVars() {
+		return referVars;
+	}
+
+	/**
 	 * find all the referenced variables from the given variables array
 	 * @param vars - some variable array
 	 */
